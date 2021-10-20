@@ -2,18 +2,75 @@
 #include <vector>
 #include <iostream>
 
+template <typename T>
+class Vector
+{
+    public:
+        
+    private:
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// iterator of vector
+
 template <typename Vector>
 class VectorIterator
 {
     private:
         PointerType m_Ptr;
+        
     public:
         using ValueType = typename Vector::ValueType;
         using PointerType = ValueType*;
         using ReferenceType = ValueType&;
-    public:
-        VectorIterator(PointerType ptr) : m_Ptr(ptr) {}
 
+    public:
+
+        VectorIterator(PointerType ptr) : m_Ptr(ptr) {}
 
         VectorIterator operator++()
         {
@@ -36,7 +93,7 @@ class VectorIterator
 
         VectorIterator operator--(int)
         {
-            VectorIterator iterator = *this;
+            VectorIterator iterator = *this; 
             --(*this);
             return iterator;
         }
@@ -65,4 +122,4 @@ class VectorIterator
         {
             return !(m_Ptr == other.m_Ptr);
         }
-}
+};
