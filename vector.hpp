@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+// #include <vector>
 
 template <typename T>
 class Vector
@@ -16,13 +16,13 @@ class Vector
             m_data = newBlock;
             m_Capacity = newCapacity;
         }
+    private:
+        T* m_data;
 
-        T* m_data = nullptr;
-
-        size_t m_Size = 0;
-        size_t m_Capacity = 0;
+        size_t m_Size;
+        size_t m_Capacity;
     public:
-        Vector()
+        Vector() : m_data(nullptr), m_Size(0), m_Capacity(0)
         {
             ReAlloc(2);
         }
@@ -40,10 +40,16 @@ class Vector
             *this = obj;
         }
 
+        const T&  operator[](size_t index) const
+        {
+            return (m_data[index]);
+        }
+        
         T&  operator[](size_t index)
         {
             return (m_data[index]);
         }
+
 
         size_t Size() const
         {
