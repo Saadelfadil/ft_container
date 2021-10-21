@@ -17,8 +17,7 @@ class Vector
             m_Capacity = newCapacity;
         }
     private:
-        T* m_data;
-
+        T* m_data; 
         size_t m_Size;
         size_t m_Capacity;
     public:
@@ -26,13 +25,34 @@ class Vector
         {
             ReAlloc(2);
         }
+
+        ~Vector()
+        {
+            delete[] m_data;
+        }
 		
         void PushBack(const T&value)
         {
             if (m_Size >= m_Capacity)
-                ReAlloc(m_Capacity + (m_Capacity / 2));
+                ReAlloc(m_Capacity * 2);
             m_data[m_Size] = value;
             m_Size++;
+        }
+
+        void popBack()
+        {
+            if (m_Size > 0)
+            {
+                m_Size--;
+                m_data[m_Size].~T();
+            }
+        }
+
+        void Clear()
+        {
+            for (size_t i = 0; i < m_Size; i++)
+                m_data[i].~T();
+            m_Size = 0;
         }
 
         T&  operator=(T const &obj)
