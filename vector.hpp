@@ -1,4 +1,7 @@
 #pragma once
+#include <iostream>
+#include <string>
+
 // #include <vector>
 
 template <typename T>
@@ -39,6 +42,23 @@ class Vector
             m_Size++;
         }
 
+        void insert(T item)
+        {
+            if (m_Size >= m_Capacity)
+                ReAlloc(m_Capacity * 2);
+            m_data[m_Size++] = item;
+        }
+
+        size_t isEmpty() const
+        {
+            return m_Size == 0;
+        }
+
+        size_t Size() const
+        {
+            return (this->m_Size);
+        }
+
         void popBack()
         {
             if (m_Size > 0)
@@ -68,12 +88,6 @@ class Vector
         T&  operator[](size_t index)
         {
             return (m_data[index]);
-        }
-
-
-        size_t Size() const
-        {
-            return (this->m_Size);
         }
 
 };
