@@ -23,7 +23,7 @@ int main()
     vector.PushBack("Agadir");
     vector.insert("1337");
     vector.popBack();
-    vector.deallocate_memory();
+    // vector.deallocate_memory();
     std::cout << "Size of the vector : " << vector.Size() <<  std::endl;
     Printvector(vector);
     
