@@ -128,25 +128,32 @@ class Vector
 
 };
 
+template <typename T, class Allocator = std::allocator<T> >
+class 
+{
 
+}
 // iterator of vector
 
 template <typename T>
-class VectorIterator
+class VectorIterator : public std::iterator<std::random_access_iterator_tag, T>
 {
-    private:
-        PointerType m_Ptr;
+    protected:
+        pointer m_ptr;
     public:
-        using ValueType = typename T::ValueType;
-        using PointerType = ValueType*;
-        using ReferenceType = ValueType&;
-
+        typedef T value_type;
+        typedef value_type* pointer;
+        typedef value_type const * const_pointer;
+        typedef value_type& reference;
+        typedef value_type const & const_reference;
+        typedef std::ptrdiff_t difference_type;
     public:
 
-        VectorIterator(PointerType ptr) : m_Ptr(ptr) {}
+        VectorIterator(pointer ptr) : m_ptr(ptr) {}
+        virtual ~VectorIterator() {}
         VectorIterator operator++()
         {
-            m_Ptr++;
+            m_ptr++;
             return *this;
         }
 
@@ -159,39 +166,39 @@ class VectorIterator
 
         VectorIterator operator--()
         {
-            m_Ptr--;
+            m_ptr--;
             return *this;
         }
 
         VectorIterator operator--(int)
         {
-            VectorIterator iterator = *this; 
+            VectorIterator iterator = *this;
             --(*this);
             return iterator;
         }
 
-        ReferenceType operator[](int index)
+        reference operator[](int index)
         {
-            return *(m_Ptr + index);
+            return *(m_ptr + index);
         }
 
-        PointerType operator->()
+        pointer operator->()
         {
-            return m_Ptr;
+            return m_ptr;
         }
 
-        PointerType operator*()
+        pointer operator*()
         {
-            return *m_Ptr;
+            return *m_ptr;
         }
 
         bool operator==(const VectorIterator &other) const
         {
-            return m_Ptr == other.m_Ptr;
+            return m_ptr == other.m_ptr;
         }
 
         bool operator!=(const VectorIterator &other) const
         {
-            return !(m_Ptr == other.m_Ptr);
+            return !(m_ptr == other.m_ptr);
         }
 };

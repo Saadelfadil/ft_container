@@ -13,6 +13,5 @@ class iterator_traits
         typedef          difference_type Iter::distance_type;
         typedef typename Iter::pointer pointer;
         typedef typename Iter::reference reference;
-
 };
 
