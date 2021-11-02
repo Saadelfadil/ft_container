@@ -21,4 +21,4 @@ class VectorIterator
         typedef value_type &reference;
     public:
         
-}
+};

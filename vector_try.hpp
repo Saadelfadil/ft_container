@@ -1,8 +1,9 @@
 #pragma once
 #include <iostream>
 #include <string>
-
 #include <vector>
+
+
 template <typename T, class Allocator = std::allocator<T> >
 class Vector
 {
@@ -125,14 +126,8 @@ class Vector
         {
             return (m_data[index]);
         }
-
 };
 
-template <typename T, class Allocator = std::allocator<T> >
-class 
-{
-
-}
 // iterator of vector
 
 template <typename T>
@@ -147,10 +142,44 @@ class VectorIterator : public std::iterator<std::random_access_iterator_tag, T>
         typedef value_type& reference;
         typedef value_type const & const_reference;
         typedef std::ptrdiff_t difference_type;
-    public:
 
+    public:
+        VectorIterator() : p(nullptr) {}
         VectorIterator(pointer ptr) : m_ptr(ptr) {}
+        VectorIterator(pointer const &obj) : p(obj.p) {}
         virtual ~VectorIterator() {}
+
+
+        VectorIterator &operator=(VectorIterator const &obj)
+        {
+            this->p = obj.p;
+            return (*this);
+        }
+
+        VectorIterator &operator+=(int value) const
+        {
+            this->p += value;
+            return (*this);
+        }
+
+        VectorIterator &operator-=(int value) const
+        {
+            this->p -= value;
+            return (*this);
+        }
+
+        VectorIterator &operator+(int value) const
+        {
+            VectorIterator it(*this);
+            return (it += value);
+        }
+
+        VectorIterator &operator-(int value) const
+        {
+            VectorIterator it(*this);
+            return (it -= value);
+        }
+
         VectorIterator operator++()
         {
             m_ptr++;
@@ -159,9 +188,9 @@ class VectorIterator : public std::iterator<std::random_access_iterator_tag, T>
 
         VectorIterator operator++(int)
         {
-            VectorIterator iterator = *this;
+            VectorIterator it(*this);
             ++(*this);
-            return iterator;
+            return it;
         }
 
         VectorIterator operator--()
@@ -172,12 +201,17 @@ class VectorIterator : public std::iterator<std::random_access_iterator_tag, T>
 
         VectorIterator operator--(int)
         {
-            VectorIterator iterator = *this;
+            VectorIterator it(*this);
             --(*this);
-            return iterator;
+            return it;
         }
 
         reference operator[](int index)
+        {
+            return *(m_ptr + index);
+        }
+
+        const_reference operator[](int index) const
         {
             return *(m_ptr + index);
         }
@@ -187,18 +221,47 @@ class VectorIterator : public std::iterator<std::random_access_iterator_tag, T>
             return m_ptr;
         }
 
+        const_pointer operator->() const
+        {
+            return m_ptr;
+        }
+
         pointer operator*()
         {
             return *m_ptr;
         }
-
-        bool operator==(const VectorIterator &other) const
+        
+        const_pointer operator*() const
         {
-            return m_ptr == other.m_ptr;
+            return *m_ptr;
         }
 
-        bool operator!=(const VectorIterator &other) const
+        difference_type operator-(VectorIterator const &obj) const
         {
-            return !(m_ptr == other.m_ptr);
+            return (this->p - obj.p);
+        }
+
+        bool operator==(VectorIterator const &obj) const {
+		    return (this->m_ptr == obj.m_ptr);
+        }
+
+        bool operator!=(VectorIterator const &obj) const {
+            return (this->m_ptr != obj.m_ptr);
+        }
+
+        bool operator<(VectorIterator const &obj) const {
+            return (this->m_ptr < obj.m_ptr);
+        }
+
+        bool operator<=(VectorIterator const &obj) const {
+            return (this->m_ptr <= obj.m_ptr);
+        }
+
+        bool operator>(VectorIterator const &obj) const {
+            return (this->m_ptr > obj.m_ptr);
+        }
+
+        bool operator>=(VectorIterator const &obj) const {
+            return (this->m_ptr >= obj.m_ptr);
         }
 };
