@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-// iterator of vector
 namespace ft {
+
 	template <typename T, class Allocator = std::allocator<T> >
 	class Vector
 	{
@@ -15,8 +15,8 @@ namespace ft {
 			typedef value_type& reference;
 			typedef value_type const & const_reference;
 			typedef std::ptrdiff_t difference_type;
-			typedef VectorIterator<value_type> iterator;
-			typedef VectorIterator<value_type const> const_iterator;
+			typedef typename VectorIterator<value_type> iterator;
+			typedef typename VectorIterator<value_type const> const_iterator;
 			// typedef ReverseIterator<iterator> reverse_iterator;
 			// typedef ReverseIterator<const_iterator> const_reverse_iterator;
 		private:
@@ -145,11 +145,11 @@ namespace ft {
 	};
 
 
-	template <typename T>
+	template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
 	class VectorIterator : public std::iterator<std::random_access_iterator_tag, T>
 	{
 		public:
-			typedef T value_type;
+			typedef typename  value_type;
 			typedef value_type* pointer;
 			typedef value_type const * const_pointer;
 			typedef value_type& reference;
