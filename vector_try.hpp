@@ -1,10 +1,143 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <vector>
 #include "iterator_traits.hpp"
 
 namespace ft {
+	
+	template <typename T>
+	class VectorIterator : public ft::iterator<std::random_access_iterator_tag, T>
+	{
+		public:
+			typedef T value_type;
+			typedef value_type* pointer;
+			typedef value_type const * const_pointer;
+			typedef value_type& reference;
+			typedef value_type const & const_reference;
+			typedef std::ptrdiff_t difference_type;
+		protected:
+			pointer p;
+		public:
+			VectorIterator() {}
+			VectorIterator(pointer ptr) : p(ptr) {}
+			// VectorIterator(pointer const &obj) : p(obj) {}
+			virtual ~VectorIterator() {}
+
+			VectorIterator &operator=(VectorIterator<T> const &obj)
+			{
+				this->p = obj.p;
+				return (*this);
+			}
+
+			VectorIterator &operator+=(int value) const
+			{
+				this->p += value;
+				return (*this);
+			}
+
+			VectorIterator &operator-=(int value) const
+			{
+				this->p -= value;
+				return (*this);
+			}
+
+			VectorIterator &operator+(int value) const
+			{
+				VectorIterator it(*this);
+				return (it += value);
+			}
+
+			VectorIterator &operator-(int value) const
+			{
+				VectorIterator it(*this);
+				return (it -= value);
+			}
+
+			VectorIterator operator++()
+			{
+				p++;
+				return *this;
+			}
+
+			VectorIterator operator++(int)
+			{
+				VectorIterator it(*this);
+				++(*this);
+				return it;
+			}
+
+			VectorIterator operator--()
+			{
+				p--;
+				return *this;
+			}
+
+			VectorIterator operator--(int)
+			{
+				VectorIterator it(*this);
+				--(*this);
+				return it;
+			}
+
+			reference operator[](int index)
+			{
+				return *(p + index);
+			}
+
+			const_reference operator[](int index) const
+			{
+				return *(p + index);
+			}
+
+			pointer operator->()
+			{
+				return p;
+			}
+
+			const_pointer operator->() const
+			{
+				return p;
+			}
+
+			reference operator*()
+			{
+				return *p;
+			}
+			
+			const_pointer operator*() const
+			{
+				return *p;
+			}
+
+			difference_type operator-(VectorIterator const &obj) const
+			{
+				return (this->p - obj.p);
+			}
+
+			bool operator==(VectorIterator const &obj) const {
+				return (this->p == obj.p);
+			}
+
+			bool operator!=(VectorIterator const &obj) const {
+				return (this->p != obj.p);
+			}
+
+			bool operator<(VectorIterator const &obj) const {
+				return (this->p < obj.p);
+			}
+
+			bool operator<=(VectorIterator const &obj) const {
+				return (this->p <= obj.p);
+			}
+
+			bool operator>(VectorIterator const &obj) const {
+				return (this->p > obj.p);
+			}
+
+			bool operator>=(VectorIterator const &obj) const {
+				return (this->p >= obj.p);
+			}
+	};
 
 	template <typename T, class Allocator = std::allocator<T> >
 	class Vector
@@ -16,6 +149,7 @@ namespace ft {
 			typedef value_type& reference;
 			typedef value_type const & const_reference;
 			typedef std::ptrdiff_t difference_type;
+			typedef VectorIterator<value_type> iterator;
 			// typedef typename VectorIterator<value_type> iterator;
 			// typedef typename VectorIterator<value_type const> const_iterator;
 			// typedef ReverseIterator<iterator> reverse_iterator;
@@ -121,10 +255,10 @@ namespace ft {
 				m_Size = 0;
 			}
 
-			T&  operator=(Vector<T> const &obj)
-			{
-				*this = obj;
-			}
+			// T&  operator=(Vector<T> const &obj)
+			// {
+			// 	*this = obj;
+			// }
 
 			bool operator==(Vector<T> const &obj) const
 			{
@@ -143,140 +277,11 @@ namespace ft {
 			{
 				return (m_data[index]);
 			}
+
+			iterator begin()
+			{
+				return (iterator(m_data));
+			}
 	};
 
-
-	template <typename T>
-	class VectorIterator : public ft::iterator<std::random_access_iterator_tag, T>
-	{
-		public:
-			typedef T value_type;
-			typedef value_type* pointer;
-			typedef value_type const * const_pointer;
-			typedef value_type& reference;
-			typedef value_type const & const_reference;
-			typedef std::ptrdiff_t difference_type;
-		protected:
-			pointer p;
-		public:
-			VectorIterator() {}
-			VectorIterator(pointer ptr) : m_ptr(ptr) {}
-			VectorIterator(pointer const &obj) : p(obj) {}
-			virtual ~VectorIterator() {}
-
-			VectorIterator &operator=(VectorIterator<T> const &obj)
-			{
-				this->p = obj.p;
-				return (*this);
-			}
-
-			VectorIterator &operator+=(int value) const
-			{
-				this->p += value;
-				return (*this);
-			}
-
-			VectorIterator &operator-=(int value) const
-			{
-				this->p -= value;
-				return (*this);
-			}
-
-			VectorIterator &operator+(int value) const
-			{
-				VectorIterator it(*this);
-				return (it += value);
-			}
-
-			VectorIterator &operator-(int value) const
-			{
-				VectorIterator it(*this);
-				return (it -= value);
-			}
-
-			VectorIterator operator++()
-			{
-				p++;
-				return *this;
-			}
-
-			VectorIterator operator++(int)
-			{
-				VectorIterator it(*this);
-				++(*this);
-				return it;
-			}
-
-			VectorIterator operator--()
-			{
-				p--;
-				return *this;
-			}
-
-			VectorIterator operator--(int)
-			{
-				VectorIterator it(*this);
-				--(*this);
-				return it;
-			}
-
-			reference operator[](int index)
-			{
-				return *(p + index);
-			}
-
-			const_reference operator[](int index) const
-			{
-				return *(p + index);
-			}
-
-			pointer operator->()
-			{
-				return p;
-			}
-
-			const_pointer operator->() const
-			{
-				return p;
-			}
-
-			pointer operator*()
-			{
-				return *p;
-			}
-			
-			const_pointer operator*() const
-			{
-				return *p;
-			}
-
-			difference_type operator-(VectorIterator const &obj) const
-			{
-				return (this->p - obj.p);
-			}
-
-			bool operator==(VectorIterator const &obj) const {
-				return (this->p == obj.p);
-			}
-
-			bool operator!=(VectorIterator const &obj) const {
-				return (this->p != obj.p);
-			}
-
-			bool operator<(VectorIterator const &obj) const {
-				return (this->p < obj.p);
-			}
-
-			bool operator<=(VectorIterator const &obj) const {
-				return (this->p <= obj.p);
-			}
-
-			bool operator>(VectorIterator const &obj) const {
-				return (this->p > obj.p);
-			}
-
-			bool operator>=(VectorIterator const &obj) const {
-				return (this->p >= obj.p);
-			}
-	};
 }

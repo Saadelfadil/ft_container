@@ -14,11 +14,16 @@ int main()
 {
     ft::Vector<int> vector;
     
-    vector++;
-    vector++;
-    // vector.PushBack("Saad");
-    // vector.PushBack("El fadil");
-    // vector.PushBack("Agadir");
+
+    vector.PushBack(1);
+    vector.PushBack(3);
+    vector.PushBack(5);
+    vector.PushBack(7);
+
+    ft::Vector<int>::iterator it = vector.begin();
+    for(size_t i = 0; i < 3;i++)
+    { std::cout << *it<< std::endl;it++;}
+    // ft::VectorIterator<int> it = vector.end();
     // vector.Clear();
     // vector.PushBack("Saad");
     // vector.PushBack("El fadil");
@@ -28,7 +33,6 @@ int main()
     // // vector.deallocate_memory();
     // std::cout << "Size of the vector : " << vector.Size() <<  std::endl;
     // Printvector(vector);
-    
 }
 
 
