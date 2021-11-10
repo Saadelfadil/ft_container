@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "Iterator_traits.hpp"
+#include "iterator_traits.hpp"
 
 namespace ft {
 
@@ -16,8 +16,8 @@ namespace ft {
 			typedef value_type& reference;
 			typedef value_type const & const_reference;
 			typedef std::ptrdiff_t difference_type;
-			typedef typename VectorIterator<value_type> iterator;
-			typedef typename VectorIterator<value_type const> const_iterator;
+			// typedef typename VectorIterator<value_type> iterator;
+			// typedef typename VectorIterator<value_type const> const_iterator;
 			// typedef ReverseIterator<iterator> reverse_iterator;
 			// typedef ReverseIterator<const_iterator> const_reverse_iterator;
 		private:
@@ -150,7 +150,7 @@ namespace ft {
 	class VectorIterator : public ft::iterator<std::random_access_iterator_tag, T>
 	{
 		public:
-			typedef typename  value_type;
+			typedef T value_type;
 			typedef value_type* pointer;
 			typedef value_type const * const_pointer;
 			typedef value_type& reference;

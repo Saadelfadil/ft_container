@@ -14,6 +14,8 @@ int main()
 {
     ft::Vector<int> vector;
     
+    vector++;
+    vector++;
     // vector.PushBack("Saad");
     // vector.PushBack("El fadil");
     // vector.PushBack("Agadir");
