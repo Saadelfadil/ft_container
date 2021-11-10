@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Iterator_traits.hpp"
 
 namespace ft {
 
@@ -145,8 +146,8 @@ namespace ft {
 	};
 
 
-	template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&>
-	class VectorIterator : public std::iterator<std::random_access_iterator_tag, T>
+	template <typename T>
+	class VectorIterator : public ft::iterator<std::random_access_iterator_tag, T>
 	{
 		public:
 			typedef typename  value_type;
@@ -159,10 +160,9 @@ namespace ft {
 			pointer p;
 		public:
 			VectorIterator() {}
-			// VectorIterator(pointer ptr) : m_ptr(ptr) {}
+			VectorIterator(pointer ptr) : m_ptr(ptr) {}
 			VectorIterator(pointer const &obj) : p(obj) {}
 			virtual ~VectorIterator() {}
-
 
 			VectorIterator &operator=(VectorIterator<T> const &obj)
 			{
