@@ -197,6 +197,11 @@ namespace ft {
 			size_t m_Size;
 			size_t m_Capacity;
 		public:
+			Vector(size_t size, size_t capacity) : m_Size(size), m_Capacity(capacity)
+			{
+				// ReAlloc(2);
+				allocate_memory(2);
+			}
 			Vector() : m_data(nullptr), m_Size(0), m_Capacity(0)
 			{
 				// ReAlloc(2);
@@ -223,6 +228,8 @@ namespace ft {
 
 			void push_back(const T&value)
 			{
+				if (m_Size == 0)
+					allocate_memory(1);
 				if (m_Size >= m_Capacity)
 					allocate_memory(m_Capacity * 2);
 				m_data[m_Size] = value;
@@ -265,10 +272,10 @@ namespace ft {
 				}
 			}
 			
-			void swap()
-			{
+			// void swap()
+			// {
 				
-			}
+			// }
 
 			void clear()
 			{

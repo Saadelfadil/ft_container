@@ -24,13 +24,13 @@ int main()
     {
         std::cout << *it<< std::endl;
     }
-    vector.insert(8);
+    vector.pop_back();
+    vector.insert(1);
+    vector.clear();
     // ft::VectorIterator<int> it = vector.end();
-    // vector.Clear();
     // vector.PushBack("Saad");
     // vector.PushBack("El fadil");
     // vector.PushBack("Agadir");
-    // vector.pop_back();
     // // vector.deallocate_memory();
     Printvector(vector);
 }
