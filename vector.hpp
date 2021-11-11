@@ -202,11 +202,18 @@ namespace ft {
 				// ReAlloc(2);
 				allocate_memory(2);
 			}
-			Vector(Vector const &obj) {this->p = obj.p;}
-			Vector&operator=(Vector const &obj) {
+
+			Vector(Vector const &obj)
+			{
+				this->p = obj.p;
+			}
+
+			Vector&operator=(Vector const &obj)
+			{
 				this->p = obj.p;
 				return *this;
-				}
+			}
+
 			virtual ~Vector()
 			{
 				destroy_memory(m_data);
@@ -214,7 +221,7 @@ namespace ft {
 				// delete[] m_data;
 			}
 
-			void PushBack(const T&value)
+			void push_back(const T&value)
 			{
 				if (m_Size >= m_Capacity)
 					allocate_memory(m_Capacity * 2);
@@ -229,17 +236,27 @@ namespace ft {
 				m_data[m_Size++] = item;
 			}
 
-			size_t isEmpty() const
+			size_t empty() const
 			{
 				return m_Size == 0;
 			}
 
-			size_t Size() const
+			size_t size() const
 			{
 				return (this->m_Size);
 			}
 
-			void popBack()
+			// size_t max_size() const
+			// {
+			// 	return (Allocator.max_size());
+			// }
+
+			size_t capacity() const
+			{
+				return (this->m_Capacity);
+			}
+
+			void pop_back()
 			{
 				if (m_Size > 0)
 				{
@@ -247,8 +264,13 @@ namespace ft {
 					m_data[m_Size].~T();
 				}
 			}
+			
+			void swap()
+			{
+				
+			}
 
-			void Clear()
+			void clear()
 			{
 				for (size_t i = 0; i < m_Size; i++)
 					m_data[i].~T();
@@ -282,6 +304,22 @@ namespace ft {
 			{
 				return (iterator(m_data));
 			}
+
+			iterator rbegin()
+			{
+				return (iterator(m_data + m_Size - 1));
+			}
+
+			iterator end()
+			{
+				return (iterator(m_data + m_Size));
+			}
+
+			iterator rend()
+			{
+				return (iterator(m_data - 1));
+			}
+
 	};
 
 }
