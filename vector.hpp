@@ -150,6 +150,8 @@ namespace ft {
 			typedef value_type const & const_reference;
 			typedef std::ptrdiff_t difference_type;
 			typedef VectorIterator<value_type> iterator;
+			typedef Allocator allocator_type;
+			typedef size_t size_type;
 			// typedef typename VectorIterator<value_type> iterator;
 			// typedef typename VectorIterator<value_type const> const_iterator;
 			// typedef ReverseIterator<iterator> reverse_iterator;
@@ -193,25 +195,54 @@ namespace ft {
 			}
 
 		private:
-			T* m_data; 
-			size_t m_Size;
-			size_t m_Capacity;
+			value_type *m_data;
+			size_type m_Size;
+			size_type m_Capacity;
+			allocator_type _alloc;
 		public:
-			Vector(size_t size, size_t capacity) : m_Size(size), m_Capacity(capacity)
+			explicit Vector (const allocator_type& alloc = allocator_type()) : m_data(nullptr), m_Size(0), m_Capacity(0), _alloc(alloc)
 			{
-				// ReAlloc(2);
-				allocate_memory(2);
 			}
-			Vector() : m_data(nullptr), m_Size(0), m_Capacity(0)
+			
+			explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 			{
-				// ReAlloc(2);
-				allocate_memory(2);
+				m_data = _alloc.allocate(n);
+				if (n < m_Size)
+					m_Size = n;
+				for (size_type i = 0; i < n; i++)
+					_alloc.construct(&m_data[i], val);
+				m_Capacity = n;
+				m_Size = n;
 			}
 
-			Vector(Vector const &obj)
+			template <class InputIterator>
+			Vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
+			{
+				size_type i = 0;
+				while (first != last)
+				{
+					_alloc.construct(&m_data[i], *first);
+					first++;
+					i++;
+				}
+ 	 		}
+			
+			Vector (const Vector &x)
 			{
 				this->p = obj.p;
 			}
+
+			// Vector(size_t size, size_t capacity) : m_Size(size), m_Capacity(capacity)
+			// {
+			// 	// ReAlloc(2);
+			// 	allocate_memory(2);
+			// }
+			// Vector() : m_data(nullptr), m_Size(0), m_Capacity(0)
+			// {
+			// 	// ReAlloc(2);
+			// 	allocate_memory(2);
+			// }
+
 
 			Vector&operator=(Vector const &obj)
 			{
