@@ -153,7 +153,7 @@ namespace ft {
 			typedef Allocator allocator_type;
 			typedef size_t size_type;
 			// typedef typename VectorIterator<value_type> iterator;
-			// typedef typename VectorIterator<value_type const> const_iterator;
+			typedef VectorIterator<value_type const> const_iterator;
 			// typedef ReverseIterator<iterator> reverse_iterator;
 			// typedef ReverseIterator<const_iterator> const_reverse_iterator;
 		private:
@@ -227,7 +227,7 @@ namespace ft {
 				}
  	 		}
 			
-			Vector (const Vector &x)
+			Vector (const Vector &obj)
 			{
 				this->p = obj.p;
 			}
@@ -343,20 +343,20 @@ namespace ft {
 				return (iterator(m_data));
 			}
 
-			iterator rbegin()
-			{
-				return (iterator(m_data + m_Size - 1));
-			}
+			// iterator rbegin()
+			// {
+			// 	return (iterator(m_data + m_Size - 1));
+			// }
 
 			iterator end()
 			{
 				return (iterator(m_data + m_Size));
 			}
 
-			iterator rend()
-			{
-				return (iterator(m_data - 1));
-			}
+			// iterator rend()
+			// {
+			// 	return (iterator(m_data - 1));
+			// }
 
 	};
 
