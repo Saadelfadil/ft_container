@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/13 01:04:50 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/13 01:14:37 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,11 +250,12 @@ namespace ft {
 			virtual ~Vector()
 			{
 				for (size_type i = 0; i < m_Size; i++)
-					this->m_data[i].value_type::~value_type();
+					Allocator.deallocate(&m_data[i], m_Size);
+				// this->m_data[i].value_type::~value_type();
 				this->size = 0;
 				if (m_data)
 					Allocator.destroy(m_data);
-				// Allocator.deallocate(m_data);
+				// Allocator.deallocate(m_data, m_Size);
 					
 				// destroy_memory(m_data);
 				// deallocate_memory(m_data, m_Capacity);
