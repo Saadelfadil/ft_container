@@ -24,9 +24,9 @@ int main()
     {
         std::cout << *it<< std::endl;
     }
-    vector.pop_back();
-    vector.insert(1);
-    vector.clear();
+    // vector.pop_back();
+    // vector.insert(1);
+    // vector.clear();
     // ft::VectorIterator<int> it = vector.end();
     // vector.PushBack("Saad");
     // vector.PushBack("El fadil");

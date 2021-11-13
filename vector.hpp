@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
+/*   Updated: 2021/11/13 01:04:50 by sel-fadi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 #include <iostream>
 #include <string>
@@ -204,7 +216,7 @@ namespace ft {
 			{
 			}
 			
-			explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
+			explicit Vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type()) : _alloc(alloc)
 			{
 				m_data = _alloc.allocate(n);
 				if (n < m_Size)
@@ -215,9 +227,11 @@ namespace ft {
 				m_Size = n;
 			}
 
-			template <class InputIterator>
+			template <class iterator>
 			Vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
 			{
+				size_type len = last - first;
+				m_data = _alloc.allocate(len);
 				size_type i = 0;
 				while (first != last)
 				{
@@ -225,6 +239,7 @@ namespace ft {
 					first++;
 					i++;
 				}
+				m_Capacity = m_Size = i;
  	 		}
 			
 			Vector (const Vector &obj)
@@ -232,6 +247,19 @@ namespace ft {
 				this->p = obj.p;
 			}
 
+			virtual ~Vector()
+			{
+				for (size_type i = 0; i < m_Size; i++)
+					this->m_data[i].value_type::~value_type();
+				this->size = 0;
+				if (m_data)
+					Allocator.destroy(m_data);
+				// Allocator.deallocate(m_data);
+					
+				// destroy_memory(m_data);
+				// deallocate_memory(m_data, m_Capacity);
+			}
+			
 			// Vector(size_t size, size_t capacity) : m_Size(size), m_Capacity(capacity)
 			// {
 			// 	// ReAlloc(2);
@@ -250,12 +278,6 @@ namespace ft {
 				return *this;
 			}
 
-			virtual ~Vector()
-			{
-				destroy_memory(m_data);
-				deallocate_memory(m_data, m_Capacity);
-				// delete[] m_data;
-			}
 
 			void push_back(const T&value)
 			{
