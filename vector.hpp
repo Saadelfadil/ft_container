@@ -250,11 +250,11 @@ namespace ft {
 			virtual ~Vector()
 			{
 				for (size_type i = 0; i < m_Size; i++)
-					Allocator.deallocate(&m_data[i], m_Size);
+					Allocator.destroy(&m_data[i], m_Size);
 				// this->m_data[i].value_type::~value_type();
-				this->size = 0;
 				if (m_data)
-					Allocator.destroy(m_data);
+					Allocator.deallocate(m_data);
+				this->size = 0;
 				// Allocator.deallocate(m_data, m_Size);
 					
 				// destroy_memory(m_data);
