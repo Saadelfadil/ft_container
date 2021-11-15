@@ -218,7 +218,7 @@ namespace ft {
 					my_allocator.destroy(&m_data[i]);
 				if (m_data)
 					my_allocator.deallocate(m_data, m_Size);
-				this->size = 0;
+				this->m_Size = 0;
 			}
 
 			Vector&operator=(Vector const &obj)
@@ -227,25 +227,47 @@ namespace ft {
 				return *this;
 			}
 
-			void reserve (size_type n);
+			void reserve (size_type n)
 			{
 			    value_type *newBlock = _alloc.allocate(n);
 			    for (size_t i = 0; i < m_Size; i++)
 			        _alloc.construct(&newBlock[i], m_data[i]);
 			    for (size_type i = 0; i < m_Size; i++)
 					_alloc.destroy(&m_data[i]);
-				if (m_data)
-					_alloc.deallocate(m_data, m_Size);
+				// if (m_data)
+				// 	_alloc.deallocate(m_data, m_Size);
 			    m_data = newBlock;
 			    m_Capacity = n;
 			}
 			
-			void push_back(const T&value)
+			void resize (size_type n, value_type val = value_type())
 			{
-				if (m_Size == 0)
-					_alloc.allocate(1);
-				if (m_Size >= m_Capacity)
-					_alloc.allocate(m_Capacity * 2);
+				size_type tmp;
+
+				if (n < m_Size)
+				{
+					for (size_type i = n; i < m_Size; i++)
+						_alloc.destroy(&m_data[i]);
+				}
+				else if (n > m_Capacity)
+				{
+					tmp = m_Size;
+					reserve(n);
+					for (size_type i = tmp; i < n; i++)
+					{
+						if (val)
+							_alloc.construct(&m_data[i], val);
+						else
+							_alloc.construct(&m_data[i], 0);
+					}
+				}
+				m_Size = n;
+			}
+
+			void push_back(const value_type &value)
+			{
+				if (m_Size == m_Capacity)
+					reserve(m_Capacity * 2);
 				_alloc.construct(&m_data[m_Size], value);
 				m_Size++;
 			}
@@ -253,8 +275,8 @@ namespace ft {
 			void insert(T item)
 			{
 				if (m_Size >= m_Capacity)
-					allocate_memory(m_Capacity * 2);
-				m_data[m_Size++] = item;
+					_alloc.allocate(m_Capacity * 2);
+				_alloc.construct(&m_data[m_Size++], item);
 			}
 
 			bool empty() const
