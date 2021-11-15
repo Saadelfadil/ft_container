@@ -266,6 +266,8 @@ namespace ft {
 
 			void push_back(const value_type &value)
 			{
+				// if (m_Size == 0)
+				// 	reserve(1);
 				if (m_Size == m_Capacity)
 					reserve(m_Capacity * 2);
 				_alloc.construct(&m_data[m_Size], value);
