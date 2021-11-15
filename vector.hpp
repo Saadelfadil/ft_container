@@ -168,49 +168,14 @@ namespace ft {
 			typedef VectorIterator<value_type const> const_iterator;
 			// typedef ReverseIterator<iterator> reverse_iterator;
 			// typedef ReverseIterator<const_iterator> const_reverse_iterator;
-		private:
-			std::allocator<T> myallo;
-			// void ReAlloc(size_t newCapacity)
-			// {
-			//     T* newBlock = new T[newCapacity];
-			//     if (newCapacity < m_Size)
-			//         m_Size = newCapacity;
-			//     for (size_t i = 0; i < m_Size; i++)
-			//         newBlock[i] = m_data[i];
-			//     delete [] m_data;
-			//     m_data = newBlock;
-			//     m_Capacity = newCapacity;
-			// }
-			
-			T* allocate_memory( std::size_t n)
-			{
-				T* newBlock = myallo.allocate(n);
-				if (n < m_Size)
-					m_Size = n;
-				for (size_t i = 0; i < m_Size; i++)
-					newBlock[i] = m_data[i];
-				// delete [] m_data;
-				m_data = newBlock;
-				m_Capacity = n;
-				return m_data;
-			}
-
-			void deallocate_memory(T* p, std::size_t n )
-			{
-				myallo.deallocate(p, n);
-			}
-
-			void destroy_memory(T* p)
-			{
-				for (size_t i = 0; i < m_Size; i++)
-					p->~T();
-			}
 
 		private:
 			value_type *m_data;
 			size_type m_Size;
 			size_type m_Capacity;
 			allocator_type _alloc;
+			Allocator my_allocator;
+		
 		public:
 			explicit Vector (const allocator_type& alloc = allocator_type()) : m_data(nullptr), m_Size(0), m_Capacity(0), _alloc(alloc)
 			{
@@ -250,28 +215,11 @@ namespace ft {
 			virtual ~Vector()
 			{
 				for (size_type i = 0; i < m_Size; i++)
-					Allocator.destroy(&m_data[i], m_Size);
-				// this->m_data[i].value_type::~value_type();
+					my_allocator.destroy(&m_data[i]);
 				if (m_data)
-					Allocator.deallocate(m_data);
+					my_allocator.deallocate(m_data, m_Size);
 				this->size = 0;
-				// Allocator.deallocate(m_data, m_Size);
-					
-				// destroy_memory(m_data);
-				// deallocate_memory(m_data, m_Capacity);
 			}
-			
-			// Vector(size_t size, size_t capacity) : m_Size(size), m_Capacity(capacity)
-			// {
-			// 	// ReAlloc(2);
-			// 	allocate_memory(2);
-			// }
-			// Vector() : m_data(nullptr), m_Size(0), m_Capacity(0)
-			// {
-			// 	// ReAlloc(2);
-			// 	allocate_memory(2);
-			// }
-
 
 			Vector&operator=(Vector const &obj)
 			{
@@ -279,14 +227,26 @@ namespace ft {
 				return *this;
 			}
 
-
+			void reserve (size_type n);
+			{
+			    value_type *newBlock = _alloc.allocate(n);
+			    for (size_t i = 0; i < m_Size; i++)
+			        _alloc.construct(&newBlock[i], m_data[i]);
+			    for (size_type i = 0; i < m_Size; i++)
+					_alloc.destroy(&m_data[i]);
+				if (m_data)
+					_alloc.deallocate(m_data, m_Size);
+			    m_data = newBlock;
+			    m_Capacity = n;
+			}
+			
 			void push_back(const T&value)
 			{
 				if (m_Size == 0)
-					allocate_memory(1);
+					_alloc.allocate(1);
 				if (m_Size >= m_Capacity)
-					allocate_memory(m_Capacity * 2);
-				m_data[m_Size] = value;
+					_alloc.allocate(m_Capacity * 2);
+				_alloc.construct(&m_data[m_Size], value);
 				m_Size++;
 			}
 
@@ -297,7 +257,7 @@ namespace ft {
 				m_data[m_Size++] = item;
 			}
 
-			size_t empty() const
+			bool empty() const
 			{
 				return m_Size == 0;
 			}
@@ -307,9 +267,14 @@ namespace ft {
 				return (this->m_Size);
 			}
 
-			// size_t max_size() const
+			size_t max_size() const
+			{
+				return (_alloc.max_size());
+			}
+
+			// void reserve( size_type new_cap )
 			// {
-			// 	return (Allocator.max_size());
+
 			// }
 
 			size_t capacity() const
