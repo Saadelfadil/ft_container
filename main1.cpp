@@ -1,49 +1,26 @@
 #include <iostream>
 #include "vector.hpp"
+#include <iostream>
 #include <vector>
+
 int main ()
 {
-  {
-    ft::Vector<int> myvector;
+  ft::Vector<int> first;
+  ft::Vector<int> second;
+  ft::Vector<int> third;
 
-    // set some initial content:
-    for (int i=1;i<10;i++)
-      myvector.push_back(i);
-    for (int i=0;i<myvector.size();i++)
-      std::cout << ' ' << myvector[i];
-    std::cout << '\n';
-    std::cout << myvector.capacity() << "\n";
-    myvector.resize(5);
-    myvector.resize(8,100);
-    myvector.resize(12);
-    myvector.resize(20, 12);
+  first.assign (7,100);             // 7 ints with a value of 100
 
-    std::cout << "myvector contains:";
-    for (int i=0;i<myvector.size();i++)
-      std::cout << ' ' << myvector[i];
-    std::cout << '\n';
-  }
-  std::cout << "------------\n";
-  {
-    std::vector<int> myvector;
+  ft::Vector<int>::iterator it;
+  it=first.begin()+1;
 
-    // set some initial content:
-    for (int i=1;i<10;i++)
-      myvector.push_back(i);
-    for (int i=0;i<myvector.size();i++)
-      std::cout << ' ' << myvector[i];
-    std::cout << '\n';
-    std::cout << myvector.capacity() << "\n";
-    myvector.resize(5);
-    myvector.resize(8,100);
-    myvector.resize(12);
-    myvector.resize(20, 12);
+  second.assign (it,first.end()-1); // the 5 central values of first
 
-    std::cout << "myvector contains:";
-    for (int i=0;i<myvector.size();i++)
-      std::cout << ' ' << myvector[i];
-    std::cout << '\n';
-  }
+  int myints[] = {1776,7,4};
+  third.assign (myints,myints+3);   // assigning from array.
 
+  std::cout << "Size of first: " << int (first.size()) << '\n';
+  std::cout << "Size of second: " << int (second.size()) << '\n';
+  std::cout << "Size of third: " << int (third.size()) << '\n';
   return 0;
 }

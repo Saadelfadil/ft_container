@@ -276,6 +276,29 @@ namespace ft {
 				m_Size++;
 			}
 
+			template <class InputIterator>
+			void assign (InputIterator first, InputIterator last)
+			{
+				size_type len = last - first;
+				m_data = _alloc.allocate(len);
+				size_type i = 0;
+				while (first != last)
+				{
+					_alloc.construct(&m_data[i], *first);
+					first++;
+					i++;
+				}
+				m_Capacity = m_Size = i;
+			}
+
+			void assign (size_type n, const value_type& val)
+			{
+				m_data = _alloc.allocate(n);
+				for (size_type i = 0; i < n; i++)
+			        _alloc.construct(&m_data[i], val);
+				m_Capacity = m_Size = n;
+			}
+
 			void insert(T item)
 			{
 				if (m_Size >= m_Capacity)
@@ -298,11 +321,6 @@ namespace ft {
 				return (_alloc.max_size());
 			}
 
-			// void reserve( size_type new_cap )
-			// {
-
-			// }
-
 			size_t capacity() const
 			{
 				return (this->m_Capacity);
@@ -316,11 +334,6 @@ namespace ft {
 					m_data[m_Size].~T();
 				}
 			}
-			
-			// void swap()
-			// {
-				
-			// }
 
 			void clear()
 			{
@@ -328,11 +341,6 @@ namespace ft {
 					m_data[i].~T();
 				m_Size = 0;
 			}
-
-			// T&  operator=(Vector<T> const &obj)
-			// {
-			// 	*this = obj;
-			// }
 
 			bool operator==(Vector<T> const &obj) const
 			{
