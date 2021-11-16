@@ -163,9 +163,8 @@ namespace ft {
 			typedef std::ptrdiff_t difference_type;
 			typedef VectorIterator<value_type> iterator;
 			typedef Allocator allocator_type;
-			typedef size_t size_type;
-			// typedef typename VectorIterator<value_type> iterator;
 			typedef VectorIterator<value_type const> const_iterator;
+			typedef size_t size_type;
 			// typedef ReverseIterator<iterator> reverse_iterator;
 			// typedef ReverseIterator<const_iterator> const_reverse_iterator;
 
@@ -234,8 +233,8 @@ namespace ft {
 			        _alloc.construct(&newBlock[i], m_data[i]);
 			    for (size_type i = 0; i < m_Size; i++)
 					_alloc.destroy(&m_data[i]);
-				// if (m_data)
-				// 	_alloc.deallocate(m_data, m_Size);
+				if (m_data)
+					_alloc.deallocate(m_data, m_Size);
 			    m_data = newBlock;
 			    m_Capacity = n;
 			}
@@ -249,27 +248,30 @@ namespace ft {
 					for (size_type i = n; i < m_Size; i++)
 						_alloc.destroy(&m_data[i]);
 				}
+				else if (n > m_Size && n < m_Capacity)
+				{
+					for (size_type i = m_Size; i < n; i++)
+						m_data[i] = val;
+				}
 				else if (n > m_Capacity)
 				{
 					tmp = m_Size;
 					reserve(n);
 					for (size_type i = tmp; i < n; i++)
-					{
-						if (val)
-							_alloc.construct(&m_data[i], val);
-						else
-							_alloc.construct(&m_data[i], 0);
-					}
+						_alloc.construct(&m_data[i], val);
 				}
 				m_Size = n;
 			}
 
 			void push_back(const value_type &value)
 			{
-				// if (m_Size == 0)
-				// 	reserve(1);
 				if (m_Size == m_Capacity)
-					reserve(m_Capacity * 2);
+				{
+					if (m_Capacity == 0)
+						reserve(1);
+					else
+						reserve(m_Capacity * 2);
+				}
 				_alloc.construct(&m_data[m_Size], value);
 				m_Size++;
 			}
