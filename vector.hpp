@@ -342,14 +342,48 @@ namespace ft {
 				return true;
 			}
 
-			const T&  operator[](size_t index) const
+			const value_type&  operator[](size_type index) const
 			{
 				return (m_data[index]);
 			}
 			
-			T&  operator[](size_t index)
+			value_type&  operator[](size_type index)
 			{
 				return (m_data[index]);
+			}
+
+			reference at (size_type n)
+			{
+				if (n >= this->m_Size)
+					throw std::out_of_range("Vector index out of range");
+				return (this->m_data[n]);
+			}
+
+			const_reference at (size_type n) const
+			{
+				if (n >= this->m_Size)
+					throw std::out_of_range("Vector index out of range");
+				return (this->m_data[n]);
+			}
+
+			reference front()
+			{
+				return (this->m_data[0]);
+			}
+
+			const_reference front() const
+			{
+				return (this->m_data[0]);
+			}
+
+			reference back()
+			{
+				return (this->m_data[m_Size - 1]);
+			}
+
+			const_reference back() const
+			{
+				return (this->m_data[m_Size - 1]);
 			}
 
 			iterator begin()
@@ -357,15 +391,15 @@ namespace ft {
 				return (iterator(m_data));
 			}
 
-			// iterator rbegin()
-			// {
-			// 	return (iterator(m_data + m_Size - 1));
-			// }
-
 			iterator end()
 			{
 				return (iterator(m_data + m_Size));
 			}
+
+			// iterator rbegin()
+			// {
+			// 	return (iterator(m_data + m_Size - 1));
+			// }
 
 			// iterator rend()
 			// {
