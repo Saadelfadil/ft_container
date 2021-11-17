@@ -176,6 +176,16 @@ namespace ft {
 			Allocator my_allocator;
 		
 		public:
+
+			// template<bool>
+			// struct EnableIf {};
+			
+			// template<>
+			// struct EnableIf<true>
+			// {
+			// 	typedef type = void;
+			// };
+
 			explicit Vector (const allocator_type& alloc = allocator_type()) : m_data(nullptr), m_Size(0), m_Capacity(0), _alloc(alloc)
 			{
 			}
@@ -192,7 +202,7 @@ namespace ft {
 			}
 
 			template <class iterator>
-			Vector (iterator first, iterator last, const allocator_type& alloc = allocator_type())
+			Vector (iterator first, iterator last, const allocator_type& alloc = allocator_type(), typename std::enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
 			{
 				size_type len = last - first;
 				m_data = _alloc.allocate(len);
@@ -276,11 +286,13 @@ namespace ft {
 				m_Size++;
 			}
 
-			template <class InputIterator>
-			void assign (InputIterator first, InputIterator last)
+			template <class iterator>
+			void assign (iterator first, iterator last,typename std::enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
 			{
 				size_type len = last - first;
-				m_data = _alloc.allocate(len);
+				// m_data = _alloc.allocate(len);
+				if (len > this->m_Capacity)
+					reserve(len);
 				size_type i = 0;
 				while (first != last)
 				{
