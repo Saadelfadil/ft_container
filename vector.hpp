@@ -17,6 +17,27 @@
 
 namespace ft {
 	
+	template <typename> struct is_integral{static const bool type = false;};
+	template <> struct is_integral<bool>{static const bool type = true;};
+	template <> struct is_integral<char>{static const char type = true;};
+	template <> struct is_integral<char16_t>{static const char16_t type = true;};
+	template <> struct is_integral<char32_t>{static const char32_t type = true;};
+	template <> struct is_integral<wchar_t>{static const wchar_t type = true;};
+	template <> struct is_integral<signed char>{static const signed char type = true;};
+	template <> struct is_integral<short int>{static const short int type = true;};
+	template <> struct is_integral<int>{static const int type = true;};
+	template <> struct is_integral<long int>{static const long int type = true;};
+	template <> struct is_integral<long long int>{static const long long int type = true;};
+	template <> struct is_integral<unsigned char>{static const unsigned char type = true;};
+	template <> struct is_integral<unsigned short int>{static const unsigned short int type = true;};
+	template <> struct is_integral<unsigned int>{static const unsigned int type = true;};
+	template <> struct is_integral<unsigned long int>{static const unsigned long int type = true;};
+	template <> struct is_integral<unsigned long long int>{static const unsigned long long int type = true;};
+
+
+	template<bool Cond, class T = void> struct enable_if {};
+	template<class T> struct enable_if<true, T> { typedef T type; };
+
 	template <typename T>
 	class VectorIterator : public ft::iterator<std::random_access_iterator_tag, T>
 	{
@@ -176,15 +197,6 @@ namespace ft {
 			Allocator my_allocator;
 		
 		public:
-
-			// template<bool>
-			// struct EnableIf {};
-			
-			// template<>
-			// struct EnableIf<true>
-			// {
-			// 	typedef type = void;
-			// };
 
 			explicit Vector (const allocator_type& alloc = allocator_type()) : m_data(nullptr), m_Size(0), m_Capacity(0), _alloc(alloc)
 			{
@@ -350,9 +362,17 @@ namespace ft {
 			void clear()
 			{
 				for (size_t i = 0; i < m_Size; i++)
-					m_data[i].~T();
+					_alloc.destroy(m_data[i]);
 				m_Size = 0;
 			}
+
+			// void swap (Vector &x)
+			// {
+			// 	clear();
+			// 	reserve(x.size());
+			// 	for (size_type i = 0; i < x.size(); i++)
+			//         _alloc.construct(&m_data[i], x[i]);
+			// }
 
 			bool operator==(Vector<T> const &obj) const
 			{
