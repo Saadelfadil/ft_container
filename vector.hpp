@@ -53,22 +53,21 @@ namespace ft {
 		public:
 			VectorIterator() {}
 			VectorIterator(pointer ptr) : p(ptr) {}
-			// VectorIterator(pointer const &obj) : p(obj) {}
 			virtual ~VectorIterator() {}
 
-			VectorIterator &operator=(VectorIterator<T> const &obj)
+			VectorIterator &operator=(VectorIterator<value_type> const &obj)
 			{
 				this->p = obj.p;
 				return (*this);
 			}
 
-			VectorIterator &operator+=(int value) const
+			VectorIterator &operator+=(int value)
 			{
 				this->p += value;
 				return (*this);
 			}
 
-			VectorIterator &operator-=(int value) const
+			VectorIterator &operator-=(int value)
 			{
 				this->p -= value;
 				return (*this);
@@ -299,12 +298,13 @@ namespace ft {
 			}
 
 			template <class iterator>
-			void assign (iterator first, iterator last,typename std::enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
+			void assign (iterator first, iterator last,typename enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
 			{
 				size_type len = last - first;
-				// m_data = _alloc.allocate(len);
 				if (len > this->m_Capacity)
 					reserve(len);
+				else
+					m_data = _alloc.allocate(len);
 				size_type i = 0;
 				while (first != last)
 				{
@@ -317,7 +317,10 @@ namespace ft {
 
 			void assign (size_type n, const value_type& val)
 			{
-				m_data = _alloc.allocate(n);
+				if (n > this->m_Capacity)
+					reserve(n);
+				else
+					m_data = _alloc.allocate(n);
 				for (size_type i = 0; i < n; i++)
 			        _alloc.construct(&m_data[i], val);
 				m_Capacity = m_Size = n;
