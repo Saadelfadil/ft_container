@@ -5,22 +5,51 @@
 
 int main ()
 {
-  std::vector<int> first;
-  std::vector<int> second;
-  std::vector<int> third;
+  {
+    ft::Vector<int> myvector (3,100);
+  ft::Vector<int>::iterator it;
 
-  first.assign (7,100);             // 7 ints with a value of 100
+  it = myvector.begin();
+  it = myvector.insert ( it , 200 );
 
+  // myvector.insert (it,2,300);
+
+  // "it" no longer valid, get a new one:
+  // it = myvector.begin();
+
+  // ft::Vector<int> anothervector (2,400);
+  // myvector.insert (it+2,anothervector.begin(),anothervector.end());
+
+  // int myarray [] = { 501,502,503 };
+  // myvector.insert (myvector.begin(), myarray, myarray+3);
+
+  std::cout << "myvector contains:";
+  for (it=myvector.begin(); it<myvector.end(); it++)
+    std::cout << ' ' << *it;
+  }
+  std::cout << std::endl << "---- Original Vector ----" << std::endl << std::endl;
+
+  {std::vector<int> myvector (3,100);
   std::vector<int>::iterator it;
-  it=first.begin()+1;
 
-  second.assign (it,first.end()-1); // the 5 central values of first
+  it = myvector.begin();
+  it = myvector.insert ( it , 200 );
 
-  int myints[] = {1776,7,4};
-  third.assign (myints,myints+3);   // assigning from array.
+  // myvector.insert (it,2,300);
 
-  std::cout << "Size of first: " << int (first.size()) << '\n';
-  std::cout << "Size of second: " << int (second.size()) << '\n';
-  std::cout << "Size of third: " << int (third.size()) << '\n';
+  // "it" no longer valid, get a new one:
+  // it = myvector.begin();
+
+  // std::vector<int> anothervector (2,400);
+  // myvector.insert (it+2,anothervector.begin(),anothervector.end());
+
+  // int myarray [] = { 501,502,503 };
+  // myvector.insert (myvector.begin(), myarray, myarray+3);
+
+  std::cout << "myvector contains:";
+  for (it=myvector.begin(); it<myvector.end(); it++)
+    std::cout << ' ' << *it;
+  std::cout << '\n';}
+
   return 0;
 }

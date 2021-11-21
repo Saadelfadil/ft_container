@@ -326,11 +326,23 @@ namespace ft {
 				m_Capacity = m_Size = n;
 			}
 
-			void insert(T item)
+			iterator insert (iterator position, const value_type& val)
 			{
-				if (m_Size >= m_Capacity)
-					_alloc.allocate(m_Capacity * 2);
-				_alloc.construct(&m_data[m_Size++], item);
+				value_type index = position - begin();
+                if (this->m_Size == 0)
+					reserve(1);
+                else if (this->m_Size + 1 > this->m_Capacity)
+					reserve(this->m_Capacity * 2);
+                for (value_type i = this->m_Size - 1; i > index; i--)
+					_alloc.construct(&m_data[i + 1], m_data[i]);
+                _alloc.construct(&m_data[index], val);
+                this->m_Size++;
+                return (iterator(this->m_data + index));
+			}
+
+			void insert (iterator position, size_type n, const value_type& val)
+			{
+				
 			}
 
 			bool empty() const
