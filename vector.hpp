@@ -54,7 +54,6 @@ namespace ft {
 			VectorIterator() {}
 			VectorIterator(pointer ptr) : p(ptr) {}
 			virtual ~VectorIterator() {}
-
 			VectorIterator &operator=(VectorIterator<value_type> const &obj)
 			{
 				this->p = obj.p;
@@ -327,7 +326,7 @@ namespace ft {
 			}
 
 			template <class iterator>
-			void insert (iterator position, iterator first, iterator last, typename enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
+			void insert (iterator position, iterator first, iterator last)
 			{
 				difference_type index = position - begin();
 				difference_type len = last - first;
