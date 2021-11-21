@@ -298,9 +298,9 @@ namespace ft {
 			}
 
 			template <class iterator>
-			void assign (iterator first, iterator last,typename enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
+			void assign (iterator first, iterator last, typename enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
 			{
-				size_type len = last - first;
+				difference_type len = last - first;
 				if (len > this->m_Capacity)
 					reserve(len);
 				else
@@ -326,14 +326,38 @@ namespace ft {
 				m_Capacity = m_Size = n;
 			}
 
+			template <class iterator>
+			void insert (iterator position, iterator first, iterator last, typename enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
+			{
+				difference_type index = position - begin();
+				difference_type len = last - first;
+				if (this->m_Size == 0)
+					reserve(len);
+				else if (this->m_Size + len > m_Capacity)
+				{
+					if (len > m_Size)
+						reserve(m_Size + len);
+					else
+						reserve(m_Capacity * 2);
+				}
+				for (difference_type i = m_Size - 1; i >= index; i--)
+					_alloc.construct(&m_data[i + len], m_data[i]);
+				for (size_type i = 0; i < len; i++)
+				{
+					_alloc.construct(&m_data[index++], *first);
+					first++;
+				}
+				this->m_Size += len;
+			}
+			
 			iterator insert (iterator position, const value_type& val)
 			{
-				value_type index = position - begin();
+				difference_type index = position - begin();
                 if (this->m_Size == 0)
 					reserve(1);
                 else if (this->m_Size + 1 > this->m_Capacity)
 					reserve(this->m_Capacity * 2);
-                for (value_type i = this->m_Size - 1; i > index; i--)
+                for (difference_type i = this->m_Size - 1; i >= index; i--)
 					_alloc.construct(&m_data[i + 1], m_data[i]);
                 _alloc.construct(&m_data[index], val);
                 this->m_Size++;
@@ -342,8 +366,23 @@ namespace ft {
 
 			void insert (iterator position, size_type n, const value_type& val)
 			{
-				
+				difference_type index = position - begin();
+                if (this->m_Size == 0)
+					reserve(n);
+				else if (this->m_Size + n > this->m_Capacity)
+				{
+					if (this->m_Size < n)
+						reserve(this->m_Size + n);
+					else
+						reserve(this->m_Capacity * 2);
+				}
+				for (difference_type i = this->m_Size - 1; i >= index; i--)
+					_alloc.construct(&m_data[i + n], m_data[i]);
+				for (size_type i = 0; i < n; i++)
+					_alloc.construct(&m_data[index++], val);
+				this->m_Size += n;
 			}
+
 
 			bool empty() const
 			{
