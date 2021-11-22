@@ -348,6 +348,7 @@ namespace ft {
 				}
 				this->m_Size += len;
 			}
+
 			iterator insert (iterator position, const value_type& val)
 			{
 				difference_type index = position - begin();
@@ -380,7 +381,6 @@ namespace ft {
 					_alloc.construct(&m_data[index++], val);
 				this->m_Size += n;
 			}
-
 
 			bool empty() const
 			{
