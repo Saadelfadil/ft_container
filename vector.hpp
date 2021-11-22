@@ -382,6 +382,28 @@ namespace ft {
 				this->m_Size += n;
 			}
 
+			iterator erase(iterator position)
+			{
+				difference_type index = position - begin();
+				_alloc.destroy(&m_data[index]);
+                for (difference_type i = index; i < m_Size; i++)
+					_alloc.construct(&m_data[i], m_data[i + 1]);
+                this->m_Size--;
+                return (iterator(this->m_data + index));
+			}
+
+			// NOT YET DONE
+			iterator erase (iterator first, iterator last)
+			{
+				difference_type len = last - first;
+                for (difference_type i = 0; i < len; i++)
+					_alloc.destroy(&m_data[i]);
+				for (difference_type i = 0; i < len; i++)
+					_alloc.construct(&m_data[i], m_data[len + i]);
+                // this->m_Size -= len;
+                return (iterator(this->m_data + len));
+			}
+
 			bool empty() const
 			{
 				return m_Size == 0;
@@ -404,11 +426,10 @@ namespace ft {
 
 			void pop_back()
 			{
-				if (m_Size > 0)
-				{
-					m_Size--;
-					m_data[m_Size].~T();
-				}
+				if (m_Size == 0 || m_Capacity == 0)
+					return;
+				_alloc.destroy(&m_data[m_Size]);
+				m_Size--;
 			}
 
 			void clear()
