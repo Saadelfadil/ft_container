@@ -348,7 +348,6 @@ namespace ft {
 				}
 				this->m_Size += len;
 			}
-			
 			iterator insert (iterator position, const value_type& val)
 			{
 				difference_type index = position - begin();
