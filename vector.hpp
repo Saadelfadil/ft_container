@@ -325,8 +325,8 @@ namespace ft {
 				m_Capacity = m_Size = n;
 			}
 
-			template <class iterator>
-			void insert (iterator position, iterator first, iterator last)
+			template <class InputIterator>
+			void insert (iterator position, InputIterator first, InputIterator last, typename enable_if<!std::is_integral<InputIterator>::value, InputIterator >::type* dummy = 0)
 			{
 				difference_type index = position - begin();
 				difference_type len = last - first;
