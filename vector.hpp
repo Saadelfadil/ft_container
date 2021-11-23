@@ -439,13 +439,19 @@ namespace ft {
 				m_Size = 0;
 			}
 
-			// void swap (Vector &x)
-			// {
-			// 	clear();
-			// 	reserve(x.size());
-			// 	for (size_type i = 0; i < x.size(); i++)
-			//         _alloc.construct(&m_data[i], x[i]);
-			// }
+			void swap (Vector &x)
+			{
+				value_type  	*tmp_data = x.m_data;
+                size_type       tmp_cap = x.m_Capacity;
+                size_type       tmp_size = x.m_Size;
+
+                x.m_data = this->m_data;
+                this->m_data = tmp_data;
+				x.m_Size = this->m_Size;
+				this->m_Size = tmp_size;
+                x.m_Capacity = this->m_Capacity;
+                this->m_Capacity = tmp_cap;
+			}
 
 			bool operator==(Vector<T> const &obj) const
 			{
