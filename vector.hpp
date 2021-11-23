@@ -392,16 +392,16 @@ namespace ft {
                 return (iterator(this->m_data + index));
 			}
 
-			// NOT YET DONE
 			iterator erase (iterator first, iterator last)
 			{
+				difference_type index = first - begin();
 				difference_type len = last - first;
-                for (difference_type i = 0; i < len; i++)
-					_alloc.destroy(&m_data[i]);
-				for (difference_type i = 0; i < len; i++)
-					_alloc.construct(&m_data[i], m_data[len + i]);
-                // this->m_Size -= len;
-                return (iterator(this->m_data + len));
+                for (size_type i = index; i < len; i++)
+                    _alloc.destroy(&this->m_data[i]);
+                this->m_Size -= len;
+                for (size_type i = index; i < this->m_Size; i++)
+					_alloc.construct(&m_data[i], m_data[len++]);
+                return (iterator(this->m_data + index));
 			}
 
 			bool empty() const
