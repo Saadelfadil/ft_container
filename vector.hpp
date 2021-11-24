@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/13 01:14:37 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/24 15:29:44 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include "iterator_traits.hpp"
+#include "reverse_iterator.hpp"
 
 namespace ft {
 	
@@ -39,7 +40,7 @@ namespace ft {
 	template<class T> struct enable_if<true, T> { typedef T type; };
 
 	template <typename T>
-	class VectorIterator : public ft::iterator<std::random_access_iterator_tag, T>
+	class VectorIterator
 	{
 		public:
 			typedef T value_type;
@@ -180,12 +181,12 @@ namespace ft {
 			typedef value_type& reference;
 			typedef value_type const & const_reference;
 			typedef std::ptrdiff_t difference_type;
-			typedef VectorIterator<value_type> iterator;
 			typedef Allocator allocator_type;
+			typedef VectorIterator<value_type> iterator;
 			typedef VectorIterator<value_type const> const_iterator;
+			typedef reverse_iterator< const_iterator> const_reverse_iterator;
+			typedef reverse_iterator<iterator> reverse_iterator;
 			typedef size_t size_type;
-			// typedef ReverseIterator<iterator> reverse_iterator;
-			// typedef ReverseIterator<const_iterator> const_reverse_iterator;
 
 		private:
 			value_type *m_data;
@@ -509,21 +510,34 @@ namespace ft {
 			{
 				return (iterator(m_data));
 			}
+			
+			const_iterator begin()
+			{
+				return (iterator(m_data));
+			}
 
 			iterator end()
 			{
 				return (iterator(m_data + m_Size));
 			}
+			
+			const_iterator end()
+			{
+				return (iterator(m_data + m_Size));
+			}
+			
+            const_reverse_iterator    rbegin() const { return const_reverse_iterator(end()); }
+            const_reverse_iterator    rend() const { return const_reverse_iterator(begin()); }
+			
+			const_reverse_iterator rbegin()
+			{
+				return (const_reverse_iterator(end()));
+			}
 
-			// iterator rbegin()
-			// {
-			// 	return (iterator(m_data + m_Size - 1));
-			// }
-
-			// iterator rend()
-			// {
-			// 	return (iterator(m_data - 1));
-			// }
+			reverse_iterator rend()
+			{
+				return (const_reverse_iterator(begin()));
+			}
 
 	};
 
