@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/24 15:29:44 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/25 17:20:42 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string>
 #include "iterator_traits.hpp"
 #include "reverse_iterator.hpp"
+#include "iterator.hpp"
 
 namespace ft {
 	
@@ -39,137 +40,7 @@ namespace ft {
 	template<bool Cond, class T = void> struct enable_if {};
 	template<class T> struct enable_if<true, T> { typedef T type; };
 
-	template <typename T>
-	class VectorIterator
-	{
-		public:
-			typedef T value_type;
-			typedef value_type* pointer;
-			typedef value_type const * const_pointer;
-			typedef value_type& reference;
-			typedef value_type const & const_reference;
-			typedef std::ptrdiff_t difference_type;
-		protected:
-			pointer p;
-		public:
-			VectorIterator() {}
-			VectorIterator(pointer ptr) : p(ptr) {}
-			virtual ~VectorIterator() {}
-			VectorIterator &operator=(VectorIterator<value_type> const &obj)
-			{
-				this->p = obj.p;
-				return (*this);
-			}
-
-			VectorIterator &operator+=(int value)
-			{
-				this->p += value;
-				return (*this);
-			}
-
-			VectorIterator &operator-=(int value)
-			{
-				this->p -= value;
-				return (*this);
-			}
-
-			VectorIterator &operator+(int value) const
-			{
-				VectorIterator it(*this);
-				return (it += value);
-			}
-
-			VectorIterator &operator-(int value) const
-			{
-				VectorIterator it(*this);
-				return (it -= value);
-			}
-
-			VectorIterator operator++()
-			{
-				p++;
-				return *this;
-			}
-
-			VectorIterator operator++(int)
-			{
-				VectorIterator it(*this);
-				++(*this);
-				return it;
-			}
-
-			VectorIterator operator--()
-			{
-				p--;
-				return *this;
-			}
-
-			VectorIterator operator--(int)
-			{
-				VectorIterator it(*this);
-				--(*this);
-				return it;
-			}
-
-			reference operator[](int index)
-			{
-				return *(p + index);
-			}
-
-			const_reference operator[](int index) const
-			{
-				return *(p + index);
-			}
-
-			pointer operator->()
-			{
-				return p;
-			}
-
-			const_pointer operator->() const
-			{
-				return p;
-			}
-
-			reference operator*()
-			{
-				return *p;
-			}
-			
-			const_pointer operator*() const
-			{
-				return *p;
-			}
-
-			difference_type operator-(VectorIterator const &obj) const
-			{
-				return (this->p - obj.p);
-			}
-
-			bool operator==(VectorIterator const &obj) const {
-				return (this->p == obj.p);
-			}
-
-			bool operator!=(VectorIterator const &obj) const {
-				return (this->p != obj.p);
-			}
-
-			bool operator<(VectorIterator const &obj) const {
-				return (this->p < obj.p);
-			}
-
-			bool operator<=(VectorIterator const &obj) const {
-				return (this->p <= obj.p);
-			}
-
-			bool operator>(VectorIterator const &obj) const {
-				return (this->p > obj.p);
-			}
-
-			bool operator>=(VectorIterator const &obj) const {
-				return (this->p >= obj.p);
-			}
-	};
+	
 
 	template <typename T, class Allocator = std::allocator<T> >
 	class Vector
@@ -511,7 +382,7 @@ namespace ft {
 				return (iterator(m_data));
 			}
 			
-			const_iterator begin()
+			const_iterator begin() const
 			{
 				return (iterator(m_data));
 			}
@@ -521,7 +392,7 @@ namespace ft {
 				return (iterator(m_data + m_Size));
 			}
 			
-			const_iterator end()
+			const_iterator end() const
 			{
 				return (iterator(m_data + m_Size));
 			}
@@ -539,6 +410,26 @@ namespace ft {
 				return (const_reverse_iterator(begin()));
 			}
 
+			pointer getData() const
+			{
+				return (this->m_data);
+			}
 	};
+
+	template <class T, class Alloc>
+  		void swap (Vector<T,Alloc>& x, Vector<T,Alloc>& y) { x.swap(y); }
+
+	template <class T, class Alloc>
+		bool operator== (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return lhs == rhs; }
+	template <class T, class Alloc>
+		bool operator!= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator==(lhs, rhs); }
+	template <class T, class Alloc>
+		bool operator<  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return rhs < lhs; }
+	template <class T, class Alloc>
+		bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator<=(lhs, rhs); }
+	template <class T, class Alloc>
+		bool operator>  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator>(rhs, lhs); }
+	template <class T, class Alloc>
+		bool operator>= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator<(lhs, rhs); }
 
 }
