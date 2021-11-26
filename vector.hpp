@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/25 17:20:42 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/26 12:38:03 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,12 @@ namespace ft {
 				m_Size = n;
 			}
 
-			template <class iterator>
-			Vector (iterator first, iterator last, const allocator_type& alloc = allocator_type(), typename std::enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
+			template <class InputIterator>
+			Vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), typename std::enable_if<!std::is_integral<InputIterator>::value, InputIterator>::type = InputIterator()) : _alloc(alloc)
 			{
 				size_type len = last - first;
 				m_data = _alloc.allocate(len);
-				size_type i = 0;
+				difference_type i = 0;
 				while (first != last)
 				{
 					_alloc.construct(&m_data[i], *first);
@@ -100,7 +100,7 @@ namespace ft {
 			
 			Vector (const Vector &obj)
 			{
-				this->p = obj.p;
+				this->m_data = obj.m_data;
 			}
 
 			virtual ~Vector()
@@ -114,7 +114,7 @@ namespace ft {
 
 			Vector&operator=(Vector const &obj)
 			{
-				this->p = obj.p;
+				this->m_data = obj.m_data;
 				return *this;
 			}
 
@@ -168,10 +168,10 @@ namespace ft {
 				m_Size++;
 			}
 
-			template <class iterator>
-			void assign (iterator first, iterator last, typename enable_if<!std::is_integral<iterator>::value, iterator >::type* dummy = 0)
+			template <class InputIterator>
+			void assign (InputIterator first, InputIterator last, typename std::enable_if<!std::is_integral<InputIterator>::value, InputIterator >::type = InputIterator())
 			{
-				difference_type len = last - first;
+				size_type len = last - first;
 				if (len > this->m_Capacity)
 					reserve(len);
 				else
@@ -198,10 +198,10 @@ namespace ft {
 			}
 
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last, typename enable_if<!std::is_integral<InputIterator>::value, InputIterator >::type* dummy = 0)
+			void insert (iterator position, InputIterator first, InputIterator last, typename std::enable_if<!std::is_integral<InputIterator>::value, InputIterator >::type = InputIterator())
 			{
 				difference_type index = position - begin();
-				difference_type len = last - first;
+				size_type len = last - first;
 				if (this->m_Size == 0)
 					reserve(len);
 				else if (this->m_Size + len > m_Capacity)
@@ -258,7 +258,7 @@ namespace ft {
 			{
 				difference_type index = position - begin();
 				_alloc.destroy(&m_data[index]);
-                for (difference_type i = index; i < m_Size; i++)
+                for (size_type i = index; i < m_Size; i++)
 					_alloc.construct(&m_data[i], m_data[i + 1]);
                 this->m_Size--;
                 return (iterator(this->m_data + index));
@@ -267,7 +267,7 @@ namespace ft {
 			iterator erase (iterator first, iterator last)
 			{
 				difference_type index = first - begin();
-				difference_type len = last - first;
+				size_type len = last - first;
                 for (size_type i = index; i < len; i++)
                     _alloc.destroy(&this->m_data[i]);
                 this->m_Size -= len;
@@ -307,7 +307,7 @@ namespace ft {
 			void clear()
 			{
 				for (size_t i = 0; i < m_Size; i++)
-					_alloc.destroy(m_data[i]);
+					_alloc.destroy(&m_data[i]);
 				m_Size = 0;
 			}
 
@@ -328,7 +328,7 @@ namespace ft {
 			bool operator==(Vector<T> const &obj) const
 			{
 				for (std::size_t i = 0; i < m_Size; i++)
-					if (obj.array[i] != this->m_data[i])
+					if (obj.m_data[i] != this->m_data[i])
 						return false;
 				return true;
 			}
@@ -397,22 +397,29 @@ namespace ft {
 				return (iterator(m_data + m_Size));
 			}
 			
+
+			
             const_reverse_iterator    rbegin() const { return const_reverse_iterator(end()); }
             const_reverse_iterator    rend() const { return const_reverse_iterator(begin()); }
 			
-			const_reverse_iterator rbegin()
+			reverse_iterator rbegin()
 			{
-				return (const_reverse_iterator(end()));
+				return (reverse_iterator(iterator(end())));
 			}
 
 			reverse_iterator rend()
 			{
-				return (const_reverse_iterator(begin()));
+				return (reverse_iterator(iterator(begin())));
 			}
 
 			pointer getData() const
 			{
 				return (this->m_data);
+			}
+			
+			allocator_type get_allocator() const
+			{
+				return (this->_alloc);
 			}
 	};
 

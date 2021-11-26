@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:43:04 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/24 12:54:00 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/26 12:59:48 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,108 +28,57 @@ namespace ft {
 			typedef typename  Iterator_traits<Iterator>::pointer const *const_pointer;
 			typedef typename  Iterator_traits<Iterator>::reference reference;
 			typedef typename  Iterator_traits<Iterator>::reference const &const_reference;
+			
 		protected:
 			iterator_type _iterator;
 		public:
 
 		reverse_iterator() : _iterator(0) {};
 
-		explicit reverse_iterator (iterator_type it)
+		explicit reverse_iterator (iterator_type const &it)
 		{
 			iterator_type tmp = it;
 			--tmp;
-			_iterator = tmp;
+			this->_iterator = tmp;
 		}
 		
 		template <class Iter>
 		reverse_iterator (const reverse_iterator<Iter>& rev_it) : _iterator(rev_it.base()) {};
-		
+
 		virtual ~reverse_iterator();
 
-		iterator_type base() const
-		{
-			return (this->_iterator);
-		}
+		iterator_type base() const {return (this->_iterator);}
 
-		reference operator*()
-		{
-			return *_iterator;
-		}
+		reference operator*() {return *this->_iterator;}
 		
-		const_pointer operator*() const
-		{
-			return *_iterator;
-		}
+		const_pointer operator*() const  {return *this->_iterator;}
 
-		reverse_iterator &operator+(int value) const
-		{
-			reverse_iterator it(*this);
-			return (it += value);
-		}
+		reverse_iterator operator+(int value) const {reverse_iterator it(*this); return (it += value);}
 
-		reverse_iterator operator++()
-		{
-			_iterator++;
-			return *this;
-		}
+		reverse_iterator operator-(int value) const {reverse_iterator it(*this); return (it -= value);}
+		
+		reverse_iterator &operator++() {this->_iterator++; return *this;}
 
-		reverse_iterator operator++(int)
-		{
-			reverse_iterator it(*this);
-			++(*this);
-			return it;
-		}
+		reverse_iterator operator++(int) {reverse_iterator it(*this); ++(*this); return it;}
 
-		reverse_iterator &operator+=(int value)
-		{
-			this->_iterator += value;
-			return (*this);
-		}
+		reverse_iterator &operator--() {this->_iterator--; return *this;}
 
-		reverse_iterator &operator-(int value) const
-		{
-			reverse_iterator it(*this);
-			return (it -= value);
-		}
+		reverse_iterator operator--(int) {reverse_iterator it(*this); --(*this); return it;}
+		
+		reverse_iterator &operator+=(int value) {this->_iterator += value; return (*this);}
+		
+		reverse_iterator &operator-=(int value)	{ this->_iterator -= value; return (*this);}
 
-		reverse_iterator operator--()
-		{
-			_iterator--;
-			return *this;
-		}
+		pointer operator->() {return &*_iterator;}
 
-		reverse_iterator operator--(int)
-		{
-			reverse_iterator it(*this);
-			--(*this);
-			return it;
-		}
+		const_pointer operator->() const {return &*_iterator;}
 
-		reverse_iterator &operator-=(int value)
-		{
-			this->_iterator -= value;
-			return (*this);
-		}
+		reference operator[](int index)	{return *(this->_iterator + index);}
 
-		pointer operator->()
-		{
-			return _iterator;
-		}
+		const_reference operator[](int index) const	{return *(this->_iterator + index);}
 
-		const_pointer operator->() const
-		{
-			return _iterator;
-		}
-
-		reference operator[](int index)
-		{
-			return *(_iterator + index);
-		}
-
-		const_reference operator[](int index) const
-		{
-			return *(_iterator + index);
-		}
+	// operator reverse_iterator<const iterator_type> () const { return reverse_iterator<const iterator_type>(_iter) ; }
+		
 	};
 	
 	template < class T >
@@ -152,5 +101,5 @@ namespace ft {
 
 	template <class Iterator>
 		typename reverse_iterator<Iterator>::difference_type operator- ( const reverse_iterator<Iterator>& lhs,  const reverse_iterator<Iterator>& rhs)
-		{return reverse_iterator<Iterator> (rhs.base() - lhs.base()); }
+		{return (rhs.base() - lhs.base()); }
 }
