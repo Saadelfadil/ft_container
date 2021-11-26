@@ -6,12 +6,11 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 14:36:37 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/25 17:24:19 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/26 15:33:27 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.hpp"
-#include "iterator_traits.hpp"
+#pragma once
 
 namespace ft {
 	
@@ -144,6 +143,7 @@ namespace ft {
 				return (this->p > obj.p);
 			}
 
+			
 			bool operator>=(VectorIterator const &obj) const {
 				return (this->p >= obj.p);
 			}
@@ -165,4 +165,5 @@ namespace ft {
 	template <class T>
 		VectorIterator<T> operator+ ( typename VectorIterator<T>::difference_type n, const VectorIterator<T>& rev_it)
 		{ return VectorIterator<T> (rev_it + n);}
+	
 }

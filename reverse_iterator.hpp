@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:43:04 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/26 12:59:48 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/26 13:32:15 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <iostream>
 #include <string>
 #include "iterator_traits.hpp"
+#include "iterator.hpp"
 
 namespace ft {
 	
@@ -32,7 +33,7 @@ namespace ft {
 		protected:
 			iterator_type _iterator;
 		public:
-
+		
 		reverse_iterator() : _iterator(0) {};
 
 		explicit reverse_iterator (iterator_type const &it)
@@ -40,8 +41,10 @@ namespace ft {
 			iterator_type tmp = it;
 			--tmp;
 			this->_iterator = tmp;
-		}
+		};
 		
+		reverse_iterator( const reverse_iterator& rhs ) : _iterator(--rhs.base()) {};
+        reverse_iterator& operator= ( const reverse_iterator& rhs ) { _iterator = rhs._iterator; return (*this); };
 		template <class Iter>
 		reverse_iterator (const reverse_iterator<Iter>& rev_it) : _iterator(rev_it.base()) {};
 
