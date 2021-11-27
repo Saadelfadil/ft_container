@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:43:04 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/27 16:01:47 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/27 16:53:02 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ namespace ft {
 		template <class Iter>
 		reverse_iterator (const reverse_iterator<Iter>& rev_it) : _iterator(rev_it.base()) {};
 
-		virtual ~reverse_iterator();
+		virtual ~reverse_iterator(){};
 
 		iterator_type base() const {return (this->_iterator);}
 
