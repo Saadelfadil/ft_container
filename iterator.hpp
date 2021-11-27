@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 14:36:37 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/26 15:39:30 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/27 16:40:45 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ namespace ft {
 	{
 		public:
 			typedef T value_type;
-			typedef VectorIterator<value_type const> const_iterator;
-			operator const_iterator() {
-				return const_iterator();
-			}
+			typedef VectorIterator<const value_type> const_iterator;
 			typedef value_type* pointer;
 			typedef std::random_access_iterator_tag	iterator_category;
 			typedef value_type const * const_pointer;
@@ -118,6 +115,10 @@ namespace ft {
 				return *p;
 			}
 
+			operator const_iterator() const{
+				return const_iterator(this->p);
+			}
+			
 			difference_type operator-(VectorIterator const &obj) const
 			{
 				return (this->p - obj.p);

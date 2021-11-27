@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/26 13:48:52 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/27 16:31:04 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ namespace ft {
 			typedef std::ptrdiff_t difference_type;
 			typedef Allocator allocator_type;
 			typedef VectorIterator<value_type> iterator;
-			typedef VectorIterator<value_type const> const_iterator;
+			typedef VectorIterator<const value_type> const_iterator;
 			typedef reverse_iterator< const_iterator> const_reverse_iterator;
 			typedef reverse_iterator<iterator> reverse_iterator;
 			typedef size_t size_type;
@@ -395,8 +395,6 @@ namespace ft {
 			{
 				return (iterator(m_data + m_Size));
 			}
-			
-
 			
             const_reverse_iterator    rbegin() const { return const_reverse_iterator(end()); }
             const_reverse_iterator    rend() const { return const_reverse_iterator(begin()); }
