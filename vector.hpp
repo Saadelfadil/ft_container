@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/27 16:31:04 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/28 23:40:02 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,10 @@ namespace ft {
 			
 			Vector (const Vector &obj)
 			{
-				this->m_data = obj.m_data;
+				this->m_data = nullptr;
+				this->m_Size = 0;
+				this->m_Capacity = 0;
+				*this = obj;
 			}
 
 			virtual ~Vector()
@@ -111,10 +114,14 @@ namespace ft {
 				this->m_Size = 0;
 			}
 
-			Vector&operator=(Vector const &obj)
+			Vector &operator=(Vector const &obj)
 			{
-				this->m_data = obj.m_data;
-				return *this;
+				reserve(obj.m_Capacity);
+                for(size_type i = 0; i < obj.m_Size; i++)
+                    my_allocator.construct(&m_data[i], obj.m_data[i]);
+                m_Size = obj.m_Size;
+                m_Capacity = obj.m_Capacity;
+                return (*this);
 			}
 
 			void reserve (size_type n)
