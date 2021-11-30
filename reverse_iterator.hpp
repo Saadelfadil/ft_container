@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:43:04 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/28 23:30:19 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/30 16:09:36 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,11 @@ namespace ft {
 		};
 		iterator_type base() const {return (this->_iterator + 1);}
 		
-        reverse_iterator& operator= ( const reverse_iterator& rhs ) { _iterator = rhs._iterator; return (*this); };
+        reverse_iterator& operator= ( const reverse_iterator& rhs )
+		{++
+			_iterator = rhs._iterator;
+			return (*this);
+		};
 		
 		template <class Iter>
 		reverse_iterator (const reverse_iterator<Iter>& rev_it) : _iterator(--rev_it.base()) {};
@@ -98,7 +102,8 @@ namespace ft {
 		bool operator>=  (const reverse_iterator<T>& lhs, const reverse_iterator<T>& rhs) { return lhs.base() <= rhs.base(); }
 	
 	template <class Iterator>
-		reverse_iterator<Iterator> operator+ ( typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& rev_it) { return reverse_iterator<Iterator> (rev_it.base() - n);	}
+		reverse_iterator<Iterator> operator+ ( typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& rev_it)
+		{ return (rev_it + n);	}
 		
 	template <class Iterator>
 		typename reverse_iterator<Iterator>::difference_type operator- ( const reverse_iterator<Iterator>& lhs,  const reverse_iterator<Iterator>& rhs)

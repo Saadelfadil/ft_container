@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/28 23:40:02 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/30 15:14:50 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,11 +114,11 @@ namespace ft {
 				this->m_Size = 0;
 			}
 
-			Vector &operator=(Vector const &obj)
+			Vector &operator=(const Vector  &obj)
 			{
 				reserve(obj.m_Capacity);
                 for(size_type i = 0; i < obj.m_Size; i++)
-                    my_allocator.construct(&m_data[i], obj.m_data[i]);
+                    _alloc.construct(&m_data[i], obj.m_data[i]);
                 m_Size = obj.m_Size;
                 m_Capacity = obj.m_Capacity;
                 return (*this);
@@ -435,11 +435,11 @@ namespace ft {
 	template <class T, class Alloc>
 		bool operator!= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator==(lhs, rhs); }
 	template <class T, class Alloc>
-		bool operator<  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return rhs < lhs; }
+		bool operator<  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return rhs > lhs; }
 	template <class T, class Alloc>
-		bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator<=(lhs, rhs); }
+		bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator<(rhs, lhs); }
 	template <class T, class Alloc>
-		bool operator>  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator>(rhs, lhs); }
+		bool operator>  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return rhs < lhs; }
 	template <class T, class Alloc>
 		bool operator>= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator<(lhs, rhs); }
 

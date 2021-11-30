@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 14:36:37 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/27 16:40:45 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/11/30 15:52:15 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,11 @@ namespace ft {
 			bool operator>=(VectorIterator const &obj) const {
 				return (this->p >= obj.p);
 			}
+
+			pointer getP() const
+			{
+				return this->p;
+			}
 	};
 
 	template < class T >
@@ -165,6 +170,6 @@ namespace ft {
 
 	template <class T>
 		VectorIterator<T> operator+ ( typename VectorIterator<T>::difference_type n, const VectorIterator<T>& rev_it)
-		{ return (rev_it + n);}
+		{ return VectorIterator<T>(rev_it.getP() + n);}
 	
 }
