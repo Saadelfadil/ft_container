@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 14:36:37 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/30 15:52:15 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/06 17:24:57 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ namespace ft {
 				return (*this);
 			}
 
-			VectorIterator &operator+(int value) const
+			VectorIterator operator+(int value) const
 			{
 				VectorIterator it(*this);
 				return (it += value);
 			}
 
-			VectorIterator &operator-(int value) const
+			VectorIterator operator-(int value) const
 			{
 				VectorIterator it(*this);
 				return (it -= value);

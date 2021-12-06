@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:43:04 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/01 14:22:10 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/06 17:06:25 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,25 @@ namespace ft {
 			iterator_type _iterator;
 		public:
 		
-		reverse_iterator() : _iterator(Iterator()) {};
+		reverse_iterator() : _iterator(iterator_type()) {};
 
 		explicit reverse_iterator (iterator_type it) { this->_iterator = --it; };
 		
 		iterator_type base() const { return (this->_iterator + 1); }
 		
-        reverse_iterator& operator= ( const reverse_iterator& rhs )
-		{
-			_iterator = rhs._iterator;
-			return (*this);
-		};
+        // reverse_iterator& operator= ( const reverse_iterator& rhs )
+		// {
+		// 	_iterator = rhs._iterator;
+		// 	return (*this);
+		// };
 		
 		template <class Iter>
-		reverse_iterator (const reverse_iterator<Iter>& rev_it) : _iterator(--rev_it.base()) {};
+		reverse_iterator (const reverse_iterator<Iter>& rev_it)  {
+			iterator_type it = rev_it.base();
+			it = it - 1;
+			_iterator = it;
+			// _iterator(rev_it.base() - 1)
+		};
 
 		virtual ~reverse_iterator(){};
 
@@ -82,8 +87,9 @@ namespace ft {
 		const_reference operator[](int index) const	{return *(this->_iterator + index);}
 
 		operator reverse_iterator<const iterator_type>() const {
+				std::cout << "here -> " << _iterator.getP() << std::endl;
                 return (reverse_iterator<const iterator_type>(_iterator));
-            }		
+            }
 	};
 	
 	template < class T >
