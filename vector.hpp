@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/11/30 15:14:50 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/07 19:58:50 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,17 +124,22 @@ namespace ft {
                 return (*this);
 			}
 
-			void reserve (size_type n)
-			{
-			    value_type *newBlock = _alloc.allocate(n);
-			    for (size_t i = 0; i < m_Size; i++)
-			        _alloc.construct(&newBlock[i], m_data[i]);
-			    for (size_type i = 0; i < m_Size; i++)
-					_alloc.destroy(&m_data[i]);
-				if (m_data)
-					_alloc.deallocate(m_data, m_Size);
-			    m_data = newBlock;
-			    m_Capacity = n;
+		
+			    void		reserve(size_type n) {
+				if (n > m_Capacity)
+				{
+					value_type *tmp = _alloc.allocate(n);
+					for (size_type i = 0; i < m_Size ; i++)
+					{
+						_alloc.construct(&tmp[i], m_data[i]);
+						_alloc.destroy(&m_data[i]);
+					}
+					//check if 0 do not deallocate
+					// if (m_Capacity != 0)
+					_alloc.deallocate(m_data, m_Capacity);
+					m_data = tmp;
+					m_Capacity = n;
+				}
 			}
 			
 			void resize (size_type n, value_type val = value_type())
@@ -427,20 +432,24 @@ namespace ft {
 			}
 	};
 
+
+	template <class T, class Alloc>
+		bool operator== (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { 
+			if (lhs.size() != rhs.size())
+            	return (lhs.size() == rhs.size());
+        	return (std::equal(lhs.begin(), lhs.end(), rhs.begin()));
+			}
+	template <class T, class Alloc>
+		bool operator!= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !(lhs==rhs); }
+	template <class T, class Alloc>
+		bool operator<  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
+	template <class T, class Alloc>
+		bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !(rhs < lhs); }
+	template <class T, class Alloc>
+		bool operator>  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return (rhs < lhs); }
+	template <class T, class Alloc>
+		bool operator>= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !(lhs < rhs); }
+
 	template <class T, class Alloc>
   		void swap (Vector<T,Alloc>& x, Vector<T,Alloc>& y) { x.swap(y); }
-
-	template <class T, class Alloc>
-		bool operator== (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return lhs == rhs; }
-	template <class T, class Alloc>
-		bool operator!= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator==(lhs, rhs); }
-	template <class T, class Alloc>
-		bool operator<  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return rhs > lhs; }
-	template <class T, class Alloc>
-		bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator<(rhs, lhs); }
-	template <class T, class Alloc>
-		bool operator>  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return rhs < lhs; }
-	template <class T, class Alloc>
-		bool operator>= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !operator<(lhs, rhs); }
-
 }
