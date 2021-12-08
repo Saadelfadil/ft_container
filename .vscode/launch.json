@@ -8,7 +8,7 @@
             "name": "clang++ - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}/./a.out",
+            "program": "/Users/sel-fadi/Desktop/ft_container/ft_containers_tests/vector.out",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

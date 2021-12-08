@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/07 19:58:50 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/08 10:16:50 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,19 +125,36 @@ namespace ft {
 			}
 
 		
-			    void		reserve(size_type n) {
+			// void		reserve(size_type n)
+			// {
+			// 	if (n > m_Capacity)
+			// 	{
+			// 		value_type *tmp = _alloc.allocate(n);
+			// 		for (size_type i = 0; i < m_Size ; i++)
+			// 		{
+			// 			_alloc.construct(&tmp[i], m_data[i]);
+			// 			_alloc.destroy(&m_data[i]);
+			// 		}
+			// 		//check if 0 do not deallocate
+			// 		// if (m_Capacity != 0)
+			// 		_alloc.deallocate(m_data, m_Capacity);
+			// 		m_data = tmp;
+			// 		m_Capacity = n;
+			// 	}
+			// }
+
+			void reserve (size_type n)
+			{
 				if (n > m_Capacity)
 				{
-					value_type *tmp = _alloc.allocate(n);
-					for (size_type i = 0; i < m_Size ; i++)
-					{
-						_alloc.construct(&tmp[i], m_data[i]);
+					value_type *newBlock = _alloc.allocate(n);
+					for (size_t i = 0; i < m_Size; i++)
+						_alloc.construct(&newBlock[i], m_data[i]);
+					for (size_type i = 0; i < m_Size; i++)
 						_alloc.destroy(&m_data[i]);
-					}
-					//check if 0 do not deallocate
-					// if (m_Capacity != 0)
-					_alloc.deallocate(m_data, m_Capacity);
-					m_data = tmp;
+					if (m_data)
+						_alloc.deallocate(m_data, m_Size);
+					m_data = newBlock;
 					m_Capacity = n;
 				}
 			}
@@ -201,11 +218,9 @@ namespace ft {
 			{
 				if (n > this->m_Capacity)
 					reserve(n);
-				else
-					m_data = _alloc.allocate(n);
 				for (size_type i = 0; i < n; i++)
 			        _alloc.construct(&m_data[i], val);
-				m_Capacity = m_Size = n;
+				m_Size = n;
 			}
 
 			template <class InputIterator>
@@ -336,14 +351,6 @@ namespace ft {
                 this->m_Capacity = tmp_cap;
 			}
 
-			bool operator==(Vector<T> const &obj) const
-			{
-				for (std::size_t i = 0; i < m_Size; i++)
-					if (obj.m_data[i] != this->m_data[i])
-						return false;
-				return true;
-			}
-
 			const value_type&  operator[](size_type index) const
 			{
 				return (m_data[index]);
@@ -433,16 +440,36 @@ namespace ft {
 	};
 
 
+	template <class InputIterator1, class InputIterator2>
+	bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
+	{
+		while (first1!=last1) {
+			if (!(*first1 == *first2))   // or: if (!pred(*first1,*first2)), for version 2
+			return false;
+			++first1; ++first2;
+		}
+		return true;
+	}
+
+	template <class InputIterator1, class InputIterator2>
+	bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
+									InputIterator2 first2, InputIterator2 last2)
+	{
+		while (first1!=last1)
+		{
+			if (first2==last2 || *first2<*first1) return false;
+			else if (*first1<*first2) return true;
+			++first1; ++first2;
+		}
+		return (first2!=last2);
+	}
+
 	template <class T, class Alloc>
-		bool operator== (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { 
-			if (lhs.size() != rhs.size())
-            	return (lhs.size() == rhs.size());
-        	return (std::equal(lhs.begin(), lhs.end(), rhs.begin()));
-			}
+		bool operator== (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return ((lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));}
 	template <class T, class Alloc>
-		bool operator!= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !(lhs==rhs); }
+		bool operator!= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !(lhs == rhs); }
 	template <class T, class Alloc>
-		bool operator<  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return std::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
+		bool operator<  (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
 	template <class T, class Alloc>
 		bool operator<= (const Vector<T,Alloc>& lhs, const Vector<T,Alloc>& rhs) { return !(rhs < lhs); }
 	template <class T, class Alloc>
