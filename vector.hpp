@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/08 10:16:50 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/08 10:20:17 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,25 +123,6 @@ namespace ft {
                 m_Capacity = obj.m_Capacity;
                 return (*this);
 			}
-
-		
-			// void		reserve(size_type n)
-			// {
-			// 	if (n > m_Capacity)
-			// 	{
-			// 		value_type *tmp = _alloc.allocate(n);
-			// 		for (size_type i = 0; i < m_Size ; i++)
-			// 		{
-			// 			_alloc.construct(&tmp[i], m_data[i]);
-			// 			_alloc.destroy(&m_data[i]);
-			// 		}
-			// 		//check if 0 do not deallocate
-			// 		// if (m_Capacity != 0)
-			// 		_alloc.deallocate(m_data, m_Capacity);
-			// 		m_data = tmp;
-			// 		m_Capacity = n;
-			// 	}
-			// }
 
 			void reserve (size_type n)
 			{
