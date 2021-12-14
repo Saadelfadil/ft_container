@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/14 23:27:47 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/14 23:30:00 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,21 @@ namespace ft {
 			{
 				this->root = nullptr;
 			}
+
+			void fixViolation(RedBlack *root, RedBlack *newNode)
+			{
+				
+			}
+			
 			void insertion(value_type *val)
 			{
 				RedBlack *newNode = new RedBlack(val);
 
+				// Do a normal BST insert
 				root = insertionBST(root, newNode);
-				// newNode->parent = nullptr;
-				// newNode->data = val->first;
-				// newNode->right = nullptr;
-				// newNode->left = nullptr;
-				// newNode->color = RED;
+				
+				// fix Red Black Tree violations
+				fixViolation(root, newNode);
 			}
 
 			RedBlack *insertionBST(RedBlack *root , RedBlack *newNode)
