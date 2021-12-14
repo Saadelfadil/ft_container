@@ -6,47 +6,79 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/14 20:22:28 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/14 23:27:47 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include <utility>
+#include "pair.hpp"
 
-enum Color {RED, BLACK};
+namespace ft {
 
-struct RedBlack
-{
-	int data;
-	RedBlack *parent;    
-	RedBlack *right;    
-	RedBlack *left;
-	bool color;
-};
-typedef RedBlack *RedBlackNode;
+	enum Color {RED, BLACK};
+	typedef std::pair<class key, class value> value_type;
 
+	typedef struct RedBlack
+	{
+		value_type *data;
+		RedBlack *parent;    
+		RedBlack *right;    
+		RedBlack *left;
+		bool color;
 
-class RedBlackTree
-{
-	private:
-  		RedBlackNode root;
-	public:
-		RedBlackTree()
+		RedBlack(value_type *data)
 		{
-			this->root = nullptr;
+			this->data = data;
+			left = right = parent = NULL;
+			this->color = RED;
 		}
-		void insertion(RedBlack key)
-		{
-			RedBlackNode myTree;
-			RedBlackNode y;
-			RedBlackNode x;
+		
+	}		RedBlack;
+	// typedef RedBlack *RedBlackNode;
 
-			myTree->parent = nullptr;
-			myTree->data = key;
-			myTree->right = nullptr;
-			myTree->left = nullptr;
-			myTree->color = 1;
+	class RedBlackTree
+	{
+		private:
+			RedBlack *root;
+		public:
+			RedBlackTree()
+			{
+				this->root = nullptr;
+			}
+			void insertion(value_type *val)
+			{
+				RedBlack *newNode = new RedBlack(val);
 
-			y = nullptr;
-			x = this->root;
-		}
-};
+				root = insertionBST(root, newNode);
+				// newNode->parent = nullptr;
+				// newNode->data = val->first;
+				// newNode->right = nullptr;
+				// newNode->left = nullptr;
+				// newNode->color = RED;
+			}
+
+			RedBlack *insertionBST(RedBlack *root , RedBlack *newNode)
+			{
+				/* If the tree is empty, return a new node */
+				if (root == nullptr)
+					return newNode;
+				/* Otherwise, recur down the tree */
+				if (newNode->data->first < root->data->first)
+				{
+					root->left  = insertionBST(root->left, newNode);
+					root->left->parent = root;
+				}
+				else if (newNode->data->first > root->data->first)
+				{
+					root->right = insertionBST(root->right, newNode);
+					root->right->parent = root;
+				}
+			
+				/* return the (unchanged) node pointer */
+				return root;
+			}
+	};
+
+
+}
