@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/16 19:33:12 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/17 10:25:19 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,18 @@
 namespace ft {
 
 	enum Color {RED, BLACK};
-	typedef std::pair<class key, class value> value_type;
+
+	template < class value_pair,                                     // map::key_type
+           class Compare = std::less<typename value_pair::first_type>,                     // map::key_compare
+           class Alloc = std::allocator<value_pair >    // map::allocator_type
+           >
+	class RedBlackTree
+	{
+		public:
+		typedef typename value_pair::first_type key;
+		typedef typename value_pair::second_type value;
+
+		typedef std::pair<key, value> value_type;
 
 	typedef struct RedBlack
 	{
@@ -35,12 +46,10 @@ namespace ft {
 		}
 		
 	}		RedBlack;
-
-	class RedBlackTree
-	{
 		private:
 			RedBlack *root;
 		public:
+
 			RedBlackTree()
 			{
 				this->root = nullptr;
@@ -193,26 +202,27 @@ namespace ft {
 				return root;
 			}
 	};
+}
 
-// 	int main() {
-// 		std::pair<int, int> value_type;
+	int main() {
+		std::pair<int, int> value_type;
 
-// 		ft::RedBlack RedBlack(std::pair<int, int> value_type);
-// 		RedBlackTree redblack;
-// 		redblack.insertion(55);
-// 		redblack.insertion(40);
-// 		redblack.insertion(65);
-// 		redblack.insertion(60);
-// 		redblack.insertion(75);
-// 		redblack.insertion(57);
-// 		redblack.insertion(56);
-// 		redblack.insertion(64);
-
-// 		redblack.printTree();
-// 		// cout << endl
-// 		//    << "After deleting" << endl;
-// 		// bst.deleteNode(40);
-// 		// bst.printTree();
-// 		}
-// }
+		// ft::RedBlackTree<std::pair<int, int> >::RedBlack RedBlack(std::pair<int, int> value_type);
+		ft::RedBlackTree<std::pair<int, int> > redblack;
+		std::pair<int, int> f = std::make_pair(55, 1);
+		redblack.insertion(&f);
+		// redblack.insertion(std::make_pair(40, 1));
+		// redblack.insertion(std::make_pair(65, 1));
+		// redblack.insertion(std::make_pair(60, 1));
+		// redblack.insertion(std::make_pair(75, 1));
+		// redblack.insertion(std::make_pair(57, 1));
+		// redblack.insertion(std::make_pair(56, 1));
+		// redblack.insertion(std::make_pair(64, 1));
+		
+		// redblack.printTree();
+		// cout << endl
+		//    << "After deleting" << endl;
+		// bst.deleteNode(40);
+		// bst.printTree();
+		}
 
