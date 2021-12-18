@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/11 16:14:48 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/14 19:29:53 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/18 20:20:24 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ class RedBlackTree {
     }
   }
 
+  // search in my red black tree.
   NodePtr searchTreeHelper(NodePtr node, int key)
   {
     if (node == TNULL || key == node->data)
@@ -82,7 +83,8 @@ class RedBlackTree {
   // For balancing the tree after deletion
   void deleteFix(NodePtr x) {
     NodePtr s;
-    while (x != root && x->color == 0) {
+    while (x != root && x->color == 0)
+    {
       if (x == x->parent->left) {
         s = x->parent->right;
         if (s->color == 1) {
@@ -109,7 +111,8 @@ class RedBlackTree {
           leftRotate(x->parent);
           x = root;
         }
-      } else {
+      }
+      else {
         s = x->parent->left;
         if (s->color == 1) {
           s->color = 0;
@@ -290,6 +293,8 @@ class RedBlackTree {
     return searchTreeHelper(this->root, k);
   }
 
+  // deletion
+  
   NodePtr minimum(NodePtr node) {
     while (node->left != TNULL) {
       node = node->left;
@@ -330,7 +335,10 @@ class RedBlackTree {
 
     return y;
   }
+  // deletion |
 
+
+  
   void leftRotate(NodePtr x) {
     NodePtr y = x->right;
     x->right = y->left;
@@ -438,6 +446,6 @@ int main() {
   bst.printTree();
   // cout << endl
   //    << "After deleting" << endl;
-  // bst.deleteNode(40);
+  bst.deleteNode(40);
   // bst.printTree();
 }
