@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/17 10:25:19 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/18 16:00:54 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 namespace ft {
 
-	enum Color {RED, BLACK};
+	enum Color {BLACK, RED};
 
 	template < class value_pair,                                     // map::key_type
            class Compare = std::less<typename value_pair::first_type>,                     // map::key_compare
@@ -46,6 +46,8 @@ namespace ft {
 		}
 		
 	}		RedBlack;
+
+	
 		private:
 			RedBlack *root;
 		public:
@@ -61,8 +63,8 @@ namespace ft {
 			
 				node->right = node_right->left;
 			
-				if (node->right != NULL)
-					node->right->parent = node;
+				if (node->left != NULL)
+					node->left->parent = node;
 			
 				node_right->parent = node->parent;
 			
@@ -83,8 +85,8 @@ namespace ft {
 			
 				node->left = node_left->right;
 			
-				if (node->left != NULL)
-					node->left->parent = node;
+				if (node->right != NULL)
+					node->right->parent = node;
 			
 				node_left->parent = node->parent;
 			
@@ -141,7 +143,8 @@ namespace ft {
 					else
 					{
 						 RedBlack *uncle_newNode = grand_parent_newNode->left;
- 
+						
+						
 						/*  Case : 1 The uncle of newNode is also red Only Recoloring required */
 						if ((uncle_newNode != NULL) && (uncle_newNode->color == RED))
 						{
@@ -184,7 +187,7 @@ namespace ft {
 			RedBlack *insertionBST(RedBlack *root , RedBlack *newNode)
 			{
 				/* If the tree is empty, return a new node */
-				if (root == nullptr)
+				if (root == NULL)
 					return newNode;
 				/* Otherwise, recur down the tree */
 				if (newNode->data->first < root->data->first)
@@ -201,6 +204,105 @@ namespace ft {
 				/* return the (unchanged) node pointer */
 				return root;
 			}
+
+			//  void printHelper(RedBlack *root, std::string indent, bool last) {
+			// 	if (root != NULL) {
+			// 	std::cout << indent;
+			// 	if (last) {
+			// 		std::cout << "R----";
+			// 		indent += "   ";
+			// 	} else {
+			// 		std::cout << "L----";
+			// 		indent += "|  ";
+			// 	}
+
+			// 	std::string sColor = root->color ? "RED" : "BLACK";
+			// 	std::cout << root->data->first << "(" << sColor << ")" << std::endl;
+			// 	printHelper(root->left, indent, false);
+			// 	printHelper(root->right, indent, true);
+			// 	}
+			// }
+
+			//  void printTree() {
+			// 	if (root) {
+			// 	printHelper(this->root, "", true);
+			// 	}
+			// }
+
+
+		// 	void print_helper(const std::string &prefix, const RedBlack *node, bool isLeft)
+        // {
+        //     if (node != NULL)
+        //     {
+        //         std::cout << prefix;
+
+        //         std::cout << (isLeft ? "├──" : "└──");
+
+        //         // print the value of the node
+        //         std::cout << node->data->first << " ";
+
+        //         if (node == this->root)
+        //             std::cout << "(Root)" << std::endl;
+        //         else
+        //             std::cout << (isLeft ? "(R)" : "(L)") << ((node->color == 1) ? "(Red)" : "(Black)") << std::endl;
+        //         // enter the next tree level - left and right branch
+        //         print_helper(prefix + (isLeft ? "│   " : "    "), node->right, true);
+        //         print_helper(prefix + (isLeft ? "│   " : "    "), node->left, false);
+        //     }
+        // }
+
+		public:
+			void    print() { if (this->root) this->printHelper(this->root, nullptr, false); }
+			// void printTree()
+			// {
+			// 	printTreeHelper(root, 0);
+			// }
+
+		private:
+                    /* ---------- | Recursive print of a "RBT" | ---------- */
+            struct Trunk {
+                Trunk *prev;
+                std::string str;
+                Trunk( Trunk *prev, std::string str ) { this->prev = prev; this->str = str; }
+            };
+            void showTrunks(Trunk *p) {
+                if (p == nullptr) { return ; }
+                showTrunks(p->prev);
+                std::cout << p->str;
+            }
+            void printHelper( RedBlack* root, Trunk *prev, bool isLeft ) {
+                if (root == nullptr) { return; }
+                std::string prev_str = "    ";
+                Trunk *trunk = new Trunk(prev, prev_str);
+                printHelper(root->right, trunk, true);
+                if (!prev) { trunk->str = "——— "; }
+                else if (isLeft) { trunk->str = " .——— "; prev_str = "   |"; }
+                else { trunk->str = " `——— "; prev->str = prev_str; }
+                showTrunks(trunk);
+                std::string sColor = root->color ? "R" : "B";
+                std::cout << root->data->first << "(" << sColor <<  ")" << std::endl;
+                if (prev) { prev->str = prev_str; }
+                trunk->str = "   |";
+                printHelper(root->left, trunk, false);
+            }
+			// void printTreeHelper( RedBlack* root, int space)
+			// {
+			// 	int i;
+			// 	if(root != NULL)
+			// 	{
+			// 		space = space + 10;
+			// 		printTreeHelper(root->right, space);
+			// 		std::cout << '\n';
+			// 		for ( i = 10; i < space; i++)
+			// 		{
+			// 			std::cout << ' ';
+			// 		}
+			// 		std::string colors[2] = { "B", "R"};
+			// 		std::cout << root->data->first << "(" << colors[root->color] << ")";
+			// 		std::cout << '\n';
+			// 		printTreeHelper(root->left, space);
+			// 	}
+			// }
 	};
 }
 
@@ -210,7 +312,23 @@ namespace ft {
 		// ft::RedBlackTree<std::pair<int, int> >::RedBlack RedBlack(std::pair<int, int> value_type);
 		ft::RedBlackTree<std::pair<int, int> > redblack;
 		std::pair<int, int> f = std::make_pair(55, 1);
+		std::pair<int, int> f1 = std::make_pair(40, 2);
+		std::pair<int, int> f2 = std::make_pair(65, 3);
+		std::pair<int, int> f3 = std::make_pair(60, 4);
+		std::pair<int, int> f4 = std::make_pair(75, 5);
+		std::pair<int, int> f5 = std::make_pair(57, 6);
+		std::pair<int, int> f6 = std::make_pair(56, 7);
+		std::pair<int, int> f7 = std::make_pair(64, 8);
+		// std::pair<int, int> f8 = std::make_pair(12, 9);
 		redblack.insertion(&f);
+		redblack.insertion(&f1);
+		redblack.insertion(&f2);
+		redblack.insertion(&f3);
+		redblack.insertion(&f4);
+		redblack.insertion(&f5);
+		redblack.insertion(&f6);
+		redblack.insertion(&f7);
+		// redblack.insertion(&f8);
 		// redblack.insertion(std::make_pair(40, 1));
 		// redblack.insertion(std::make_pair(65, 1));
 		// redblack.insertion(std::make_pair(60, 1));
@@ -219,7 +337,7 @@ namespace ft {
 		// redblack.insertion(std::make_pair(56, 1));
 		// redblack.insertion(std::make_pair(64, 1));
 		
-		// redblack.printTree();
+		redblack.print();
 		// cout << endl
 		//    << "After deleting" << endl;
 		// bst.deleteNode(40);
