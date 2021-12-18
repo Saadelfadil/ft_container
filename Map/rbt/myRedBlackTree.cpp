@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/18 16:00:54 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/18 16:39:26 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ namespace ft {
 				node->parent = node_left;
 			}
 
-			void fixViolation(RedBlack *root, RedBlack *newNode)
+			void fixViolation(RedBlack *&root, RedBlack *&newNode)
 			{
 				RedBlack *parent_newNode = NULL;
 				RedBlack *grand_parent_newNode = NULL;
@@ -205,58 +205,8 @@ namespace ft {
 				return root;
 			}
 
-			//  void printHelper(RedBlack *root, std::string indent, bool last) {
-			// 	if (root != NULL) {
-			// 	std::cout << indent;
-			// 	if (last) {
-			// 		std::cout << "R----";
-			// 		indent += "   ";
-			// 	} else {
-			// 		std::cout << "L----";
-			// 		indent += "|  ";
-			// 	}
-
-			// 	std::string sColor = root->color ? "RED" : "BLACK";
-			// 	std::cout << root->data->first << "(" << sColor << ")" << std::endl;
-			// 	printHelper(root->left, indent, false);
-			// 	printHelper(root->right, indent, true);
-			// 	}
-			// }
-
-			//  void printTree() {
-			// 	if (root) {
-			// 	printHelper(this->root, "", true);
-			// 	}
-			// }
-
-
-		// 	void print_helper(const std::string &prefix, const RedBlack *node, bool isLeft)
-        // {
-        //     if (node != NULL)
-        //     {
-        //         std::cout << prefix;
-
-        //         std::cout << (isLeft ? "├──" : "└──");
-
-        //         // print the value of the node
-        //         std::cout << node->data->first << " ";
-
-        //         if (node == this->root)
-        //             std::cout << "(Root)" << std::endl;
-        //         else
-        //             std::cout << (isLeft ? "(R)" : "(L)") << ((node->color == 1) ? "(Red)" : "(Black)") << std::endl;
-        //         // enter the next tree level - left and right branch
-        //         print_helper(prefix + (isLeft ? "│   " : "    "), node->right, true);
-        //         print_helper(prefix + (isLeft ? "│   " : "    "), node->left, false);
-        //     }
-        // }
-
 		public:
 			void    print() { if (this->root) this->printHelper(this->root, nullptr, false); }
-			// void printTree()
-			// {
-			// 	printTreeHelper(root, 0);
-			// }
 
 		private:
                     /* ---------- | Recursive print of a "RBT" | ---------- */
@@ -285,31 +235,10 @@ namespace ft {
                 trunk->str = "   |";
                 printHelper(root->left, trunk, false);
             }
-			// void printTreeHelper( RedBlack* root, int space)
-			// {
-			// 	int i;
-			// 	if(root != NULL)
-			// 	{
-			// 		space = space + 10;
-			// 		printTreeHelper(root->right, space);
-			// 		std::cout << '\n';
-			// 		for ( i = 10; i < space; i++)
-			// 		{
-			// 			std::cout << ' ';
-			// 		}
-			// 		std::string colors[2] = { "B", "R"};
-			// 		std::cout << root->data->first << "(" << colors[root->color] << ")";
-			// 		std::cout << '\n';
-			// 		printTreeHelper(root->left, space);
-			// 	}
-			// }
 	};
 }
 
 	int main() {
-		std::pair<int, int> value_type;
-
-		// ft::RedBlackTree<std::pair<int, int> >::RedBlack RedBlack(std::pair<int, int> value_type);
 		ft::RedBlackTree<std::pair<int, int> > redblack;
 		std::pair<int, int> f = std::make_pair(55, 1);
 		std::pair<int, int> f1 = std::make_pair(40, 2);
@@ -319,7 +248,7 @@ namespace ft {
 		std::pair<int, int> f5 = std::make_pair(57, 6);
 		std::pair<int, int> f6 = std::make_pair(56, 7);
 		std::pair<int, int> f7 = std::make_pair(64, 8);
-		// std::pair<int, int> f8 = std::make_pair(12, 9);
+		std::pair<int, int> f8 = std::make_pair(12, 9);
 		redblack.insertion(&f);
 		redblack.insertion(&f1);
 		redblack.insertion(&f2);
@@ -328,14 +257,7 @@ namespace ft {
 		redblack.insertion(&f5);
 		redblack.insertion(&f6);
 		redblack.insertion(&f7);
-		// redblack.insertion(&f8);
-		// redblack.insertion(std::make_pair(40, 1));
-		// redblack.insertion(std::make_pair(65, 1));
-		// redblack.insertion(std::make_pair(60, 1));
-		// redblack.insertion(std::make_pair(75, 1));
-		// redblack.insertion(std::make_pair(57, 1));
-		// redblack.insertion(std::make_pair(56, 1));
-		// redblack.insertion(std::make_pair(64, 1));
+		redblack.insertion(&f8);
 		
 		redblack.print();
 		// cout << endl
