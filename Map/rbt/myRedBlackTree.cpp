@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/20 20:32:53 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/20 23:17:10 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,7 @@ namespace ft {
 				return (node->left != NULL && node->left->color == RED) ||
 					(node->right != NULL && node->right->color == RED);
 			}
+			
 			// 7 - deletion
 			// returns pointer to sibling
 			RedBlack *sibling(RedBlack *nodeTarget)
@@ -344,7 +345,7 @@ namespace ft {
 			}
 			// 5 - deletion
 			// find node that replaces a deleted node in BST
-			RedBlack *BSTreplace(RedBlack *targetNode)
+			RedBlack *BSTreplace(RedBlack *&targetNode)
 			{
 				// when node have 2 children
 				if (targetNode->left != NULL && targetNode->right != NULL)
@@ -370,7 +371,7 @@ namespace ft {
 			}
 			// 3 - deletion
 			// deletes the given node
-			void deleteNode(RedBlack *targetNode)
+			void deleteNode(RedBlack *&targetNode)
 			{
 				RedBlack *nodeReplaceTarget = BSTreplace(targetNode);
 			
@@ -408,6 +409,8 @@ namespace ft {
 						else
 							parentTarget->right = NULL;
 					}
+					targetNode->parent->left = NULL;
+					targetNode = NULL;
 					delete targetNode;
 					return;
 				}
@@ -484,7 +487,7 @@ namespace ft {
 			}
 			
 		public:
-			void    print() { if (this->root) this->printHelper(this->root, nullptr, false); }
+			void    print() { if (this->root) this->printHelper(this->root, nullptr, false); std::cout << std::endl;}
 
 		private:
                     /* ---------- | Recursive print of a "RBT" | ---------- */
@@ -545,6 +548,7 @@ namespace ft {
 		// cout << endl
 		//    << "After deleting" << endl;
 		redblack.deleteByVal(&f8);
+		redblack.deleteByVal(&f7);
 
 		redblack.print();
 
