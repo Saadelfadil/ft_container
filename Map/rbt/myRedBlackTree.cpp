@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/18 21:02:25 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/20 13:01:01 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,12 +205,44 @@ namespace ft {
 				fixViolation(root, newNode);
 			}
 
+			// 9 - deletion
+			// find node that do not have a left child
+			// in the subtree of the given node
+			RedBlack *successor(RedBlack *x)
+			{
+				RedBlack *temp = x;
+			
+				while (temp->left != NULL)
+					temp = temp->left;
+			
+				return temp;
+			}
 			// 8 - deletion
 			// check if node is left child of parent
- 			bool isOnLeft()
+ 			bool isOnLeft(RedBlack *node)
 			{
-				RedBlack *node;
-				 return (this == node->parent->left);
+				RedBlack *tmp = node->parent;
+				if (tmp)
+					return (node == tmp->left);
+				return false;
+			}
+			 // moves node down and moves given node in its place
+			// void moveDown(RedBlack *nParent) {
+			// 	if (parent != NULL) {
+			// 	if (isOnLeft()) {
+			// 		parent->left = nParent;
+			// 	} else {
+			// 		parent->right = nParent;
+			// 	}
+			// 	}
+			// 	nParent->parent = parent;
+			// 	parent = nParent;
+			// }
+			
+			bool hasRedChild(RedBlack *node)
+			{
+				return (node->left != NULL && node->left->color == RED) ||
+					(node->right != NULL && node->right->color == RED);
 			}
 			// 7 - deletion
 			// returns pointer to sibling
@@ -220,7 +252,7 @@ namespace ft {
 				// sibling null if no parent
 				if (node->parent == NULL)
 					return NULL;
-				if (isOnLeft())
+				if (isOnLeft(node))
 					return node->parent->right;
 				return node->parent->left;
 			}
@@ -229,9 +261,10 @@ namespace ft {
 			{
 				if (x == root)
 				// Reached root
-				return;
+					return;
 			
-				RedBlack *sibling = x->sibling(), *parent = x->parent;
+				RedBlack *sibling;
+				RedBlack *parent = x->parent;
 				if (sibling == NULL)
 				{
 					// No sibiling, double black pushed up
@@ -244,56 +277,56 @@ namespace ft {
 						// Sibling red
 						parent->color = RED;
 						sibling->color = BLACK;
-						if (sibling->isOnLeft())
+						if (isOnLeft(sibling))
 						{
 							// left case
-							rightRotate(parent);
+							rotateRight(root, parent);
 						}
 						else
 						{
 							// right case
-							leftRotate(parent);
+							rotateLeft(root, parent);
 						}
 						fixDoubleBlack(x);
 					}
 					else
 					{
 						// Sibling black
-						if (sibling->hasRedChild())
+						if (hasRedChild(sibling))
 						{
 							// at least 1 red children
 							if (sibling->left != NULL and sibling->left->color == RED)
 							{
-								if (sibling->isOnLeft())
+								if (isOnLeft(sibling))
 								{
 									// left left
 									sibling->left->color = sibling->color;
 									sibling->color = parent->color;
-									rightRotate(parent);
+									rotateRight(root, parent);
 								}
 								else
 								{
 									// right left
 									sibling->left->color = parent->color;
-									rightRotate(sibling);
-									leftRotate(parent);
+									rotateRight(root, sibling);
+									rotateLeft(root, parent);
 								}
 							}
 							else
 							{
-								if (sibling->isOnLeft())
+								if (isOnLeft(sibling))
 								{
 									// left right
 									sibling->right->color = parent->color;
-									leftRotate(sibling);
-									rightRotate(parent);
+									rotateLeft(root, sibling);
+									rotateRight(root, parent);
 								}
 								else
 								{
 									// right right
 									sibling->right->color = sibling->color;
 									sibling->color = parent->color;
-									leftRotate(parent);
+									rotateLeft(root, parent);
 								}
 							}
 							parent->color = BLACK;
@@ -312,20 +345,21 @@ namespace ft {
 			}
 			// 5 - deletion
 			// find node that replaces a deleted node in BST
-			RedBlack *BSTreplace(RedBlack *x) {
+			RedBlack *BSTreplace(RedBlack *x)
+			{
 				// when node have 2 children
-				if (x->left != NULL and x->right != NULL)
-				return successor(x->right);
+				if (x->left != NULL && x->right != NULL)
+					return successor(x->right);
 			
 				// when leaf
-				if (x->left == NULL and x->right == NULL)
-				return NULL;
+				if (x->left == NULL && x->right == NULL)
+					return NULL;
 			
 				// when single child
 				if (x->left != NULL)
-				return x->left;
+					return x->left;
 				else
-				return x->right;
+					return x->right;
 			}
 			// 4 - deletion
 			void swapValues(RedBlack *u, RedBlack *v)
@@ -342,7 +376,7 @@ namespace ft {
 				RedBlack *u = BSTreplace(v);
 			
 				// True when u and v are both black
-				bool uvBlack = ((u == NULL or u->color == BLACK) and (v->color == BLACK));
+				bool uvBlack = ((u == NULL || u->color == BLACK) && (v->color == BLACK));
 				RedBlack *parent = v->parent;
 			
 				if (u == NULL) 
@@ -364,12 +398,12 @@ namespace ft {
 						else
 						{
 							// u or v is red
-							if (v->sibling() != NULL)
+							if (sibling() != NULL)
 								// sibling is not null, make it red"
-								v->sibling()->color = RED;
+								sibling()->color = RED;
 						}
 						// delete v from the tree
-						if (v->isOnLeft())
+						if (isOnLeft(u))
 							parent->left = NULL;
 						else
 							parent->right = NULL;
@@ -384,14 +418,14 @@ namespace ft {
 					if (v == root)
 					{
 						// v is root, assign the value of u to v, and delete u
-						v->val = u->val;
+						v->data->first = u->data->first;
 						v->left = v->right = NULL;
 						delete u;
 					}
 					else
 					{
 						// Detach v from tree and move u up
-						if (v->isOnLeft())
+						if (isOnLeft(u))
 							parent->left = u;
 						else
 							parent->right = u;
@@ -419,26 +453,16 @@ namespace ft {
 			RedBlack *search(value_type *val)
 			{
 				RedBlack *tmp = root;
-				while (tmp != NULL)
+				while (1)
 				{
-					if (val < tmp->data->first)
-					{
-						if (tmp->left == NULL)
-						break;
-						else
+					if (tmp == NULL)
+						return NULL;
+					if (val->first == tmp->data->first)
+						return tmp;
+					if (val->first < tmp->data->first)
 						tmp = tmp->left;
-					}
-					else if (val == tmp->data->first)
-					{
-						break;
-					}
 					else
-					{
-						if (tmp->right == NULL)
-						break;
-						else
 						tmp = tmp->right;
-					}
 				}
 				return tmp;
 			}
@@ -450,17 +474,240 @@ namespace ft {
 				if (root == NULL)
 					return;
 			
-				RedBlack *v = search(val->first);
-			
-				if (v->data->first != val->first)
+				RedBlack *v = search(val);
+				if (v == NULL)
 				{
-					std::cout << "No node found to delete with value:" << val->first << std::endl;
-					return;
+					std::cout << "not found\n";
+					return ;
 				}
 				deleteNode(v);
 			}
+			
 
+			/* --------- another deletion test ----------- */
 
+			// void rotateLeft(RedBlack *&x) {
+			// 	RedBlack *y = x->right;
+			// 	x->right = y->left;
+			// 	if (y->left != NULL) {
+			// 	y->left->parent = x;
+			// 	}
+			// 	y->parent = x->parent;
+			// 	if (x->parent == nullptr) {
+			// 	this->root = y;
+			// 	} else if (x == x->parent->left) {
+			// 	x->parent->left = y;
+			// 	} else {
+			// 	x->parent->right = y;
+			// 	}
+			// 	y->left = x;
+			// 	x->parent = y;
+			// }
+
+			// void rotateRight(RedBlack *&x) {
+			// 	RedBlack *y = x->left;
+			// 	x->left = y->right;
+			// 	if (y->right != NULL) {
+			// 	y->right->parent = x;
+			// 	}
+			// 	y->parent = x->parent;
+			// 	if (x->parent == nullptr) {
+			// 	this->root = y;
+			// 	} else if (x == x->parent->right) {
+			// 	x->parent->right = y;
+			// 	} else {
+			// 	x->parent->left = y;
+			// 	}
+			// 	y->right = x;
+			// 	x->parent = y;
+			// }
+			// // For balancing the tree after deletion
+			// void deleteFix(RedBlack *&x)
+			// {
+			// 	RedBlack *s;
+			// 	while (x != root && x->color == 0)
+			// 	{
+			// 		if (x == x->parent->left)
+			// 		{
+			// 			s = x->parent->right;
+			// 			if (s->color == 1)
+			// 			{
+			// 				s->color = 0;
+			// 				x->parent->color = 1;
+			// 				rotateLeft(x->parent);
+			// 				s = x->parent->right;
+			// 			}
+
+			// 			if (s->left->color == 0 && s->right->color == 0)
+			// 			{
+			// 				s->color = 1;
+			// 				x = x->parent;
+			// 			}
+			// 			else
+			// 			{
+			// 				if (s->right->color == 0)
+			// 				{
+			// 					s->left->color = 0;
+			// 					s->color = 1;
+			// 					rotateRight(s);
+			// 					s = x->parent->right;
+			// 				}
+
+			// 				s->color = x->parent->color;
+			// 				x->parent->color = 0;
+			// 				s->right->color = 0;
+			// 				rotateLeft(x->parent);
+			// 				x = root;
+			// 			}
+			// 		}
+			// 		else
+			// 		{
+			// 			s = x->parent->left;
+			// 			if (s->color == 1)
+			// 			{
+			// 				s->color = 0;
+			// 				x->parent->color = 1;
+			// 				rotateRight(x->parent);
+			// 				s = x->parent->left;
+			// 			}
+
+			// 			if (s->right->color == 0 && s->right->color == 0)
+			// 			{
+			// 			s->color = 1;
+			// 			x = x->parent;
+			// 			}
+			// 			else
+			// 			{
+			// 				if (s->left->color == 0)
+			// 				{
+			// 					s->right->color = 0;
+			// 					s->color = 1;
+			// 					rotateLeft(s);
+			// 					s = x->parent->left;
+			// 				}
+
+			// 				s->color = x->parent->color;
+			// 				x->parent->color = 0;
+			// 				s->left->color = 0;
+			// 				rightRotate(x->parent);
+			// 				x = root;
+			// 			}
+			// 		}
+			// 	}
+			// 	x->color = 0;
+			// }
+  
+			// RedBlack *minimum(RedBlack *node)
+			// {
+			// 	while (node->left != NULL)
+			// 		node = node->left;
+			// 	return node;
+			// }
+
+			// RedBlack *maximum(RedBlack *node)
+			// {
+			// 	while (node->right != NULL)
+			// 		node = node->right;
+			// 	return node;
+			// }
+
+			// RedBlack successor(RedBlack *x)
+			// {
+			// 	if (x->right != NULL)
+			// 		return minimum(x->right);
+
+			// 	RedBlack y = x->parent;
+			// 	while (y != NULL && x == y->right)
+			// 	{
+			// 		x = y;
+			// 		y = y->parent;
+			// 	}
+			// 	return y;
+			// }
+
+			// RedBlack predecessor(RedBlack *x)
+			// {
+			// 	if (x->left != NULL)
+			// 		return maximum(x->left);
+
+			// 	RedBlack *y = x->parent;
+			// 	while (y != NULL && x == y->left)
+			// 	{
+			// 		x = y;
+			// 		y = y->parent;
+			// 	}
+			// 	return y;
+			// }
+			
+			// void rbTransplant(RedBlack *u, RedBlack *v)
+			// {
+			// 	if (u->parent == NULL)
+			// 		root = v;
+			// 	else if (u == u->parent->left)
+			// 		u->parent->left = v;
+			// 	else
+			// 		u->parent->right = v;
+			// 	v->parent = u->parent;
+			// }
+			
+			// void deleteNodeHelper(RedBlack *&node, value_type *key)
+			// {
+			// 	RedBlack *z = NULL;
+			// 	RedBlack *x, *y;
+			// 	while (node != NULL)
+			// 	{
+			// 		if (node->data->first == key->first)
+			// 			z = node;
+			// 		if (node->data->first <= key->first)
+			// 			node = node->right;
+			// 		else
+			// 			node = node->left;
+			// 	}
+			// 	if (z == NULL)
+			// 	{
+			// 		std::cout << "Key not found in the tree" << std::endl;
+			// 		return;
+			// 	}
+			// 	y = z;
+			// 	int y_original_color = y->color;
+			// 	if (z->left == NULL)
+			// 	{
+			// 		x = z->right;
+			// 		rbTransplant(z, z->right);
+			// 	}
+			// 	else if (z->right == NULL)
+			// 	{
+			// 		x = z->left;
+			// 		rbTransplant(z, z->left);
+			// 	}
+			// 	else
+			// 	{
+			// 		y = minimum(z->right);
+			// 		y_original_color = y->color;
+			// 		x = y->right;
+			// 		if (y->parent == z)
+			// 			x->parent = y;
+			// 		else
+			// 		{
+			// 			rbTransplant(y, y->right);
+			// 			y->right = z->right;
+			// 			y->right->parent = y;
+			// 		}
+
+			// 		rbTransplant(z, y);
+			// 		y->left = z->left;
+			// 		y->left->parent = y;
+			// 		y->color = z->color;
+			// 	}
+			// 	delete z;
+			// 	if (y_original_color == 0)
+			// 		deleteFix(x);
+			// }
+			
+			// void deleteNode(value_type *data)
+			// {
+			// 	deleteNodeHelper(this->root, data);
+			// }
 
 			
 		public:
@@ -473,11 +720,13 @@ namespace ft {
                 std::string str;
                 Trunk( Trunk *prev, std::string str ) { this->prev = prev; this->str = str; }
             };
+			
             void showTrunks(Trunk *p) {
                 if (p == nullptr) { return ; }
                 showTrunks(p->prev);
                 std::cout << p->str;
             }
+
             void printHelper( RedBlack* root, Trunk *prev, bool isLeft ) {
                 if (root == nullptr) { return; }
                 std::string prev_str = "    ";
@@ -508,6 +757,7 @@ namespace ft {
 		std::pair<int, int> f6 = std::make_pair(56, 7);
 		std::pair<int, int> f7 = std::make_pair(64, 8);
 		std::pair<int, int> f8 = std::make_pair(12, 9);
+		std::pair<int, int> f9 = std::make_pair(37, 10);
 		redblack.insertion(&f);
 		redblack.insertion(&f1);
 		redblack.insertion(&f2);
@@ -521,7 +771,7 @@ namespace ft {
 		redblack.print();
 		// cout << endl
 		//    << "After deleting" << endl;
-		redblack.deleteByVal(&f6);
+		redblack.deleteByVal(&f8);
 
 		redblack.print();
 
