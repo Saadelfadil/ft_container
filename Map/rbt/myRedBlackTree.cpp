@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/22 13:38:05 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/22 15:04:05 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ namespace ft {
 			
 				node->right = node_right->left;
 			
-				if (node->left != NULL)
-					node->left->parent = node;
+				if (node_right->left != NULL)
+					node_right->left->parent = node;
 			
 				node_right->parent = node->parent;
 			
@@ -173,25 +173,29 @@ namespace ft {
 				root->color = BLACK;
 			}
 			
-			RedBlack *insertionBST(RedBlack *root , RedBlack *newNode)
+			RedBlack *insertionBST(RedBlack *src , RedBlack *newNode)
 			{
+				if (newNode->data->first == 56 && src != NULL){
+					std::cout << ">>" << src->data->first << "\n";
+					print();	
+				}
 				/* If the tree is empty, return a new node */
-				if (root == NULL)
+				if (src == NULL)
 					return newNode;
 				/* Otherwise, recur down the tree */
-				if (newNode->data->first < root->data->first)
+				if (newNode->data->first < src->data->first)
 				{
-					root->left  = insertionBST(root->left, newNode);
-					root->left->parent = root;
+					src->left  = insertionBST(src->left, newNode);
+					src->left->parent = src;
 				}
-				else if (newNode->data->first > root->data->first)
+				else if (newNode->data->first > src->data->first)
 				{
-					root->right = insertionBST(root->right, newNode);
-					root->right->parent = root;
+					src->right = insertionBST(src->right, newNode);
+					src->right->parent = src;
 				}
 			
 				/* return the (unchanged) node pointer */
-				return root;
+				return src;
 			}
 			
 			void insertion(value_type *val)
@@ -203,7 +207,10 @@ namespace ft {
 				// Do a normal BST insert
 				root = insertionBST(root, newNode);
 				
+				if (val->first == 56)
+					std::cout << "Data Node -> " << newNode->data->first << " Parent Node -> "<< newNode->parent->data->first  <<  std::endl;
 				fixViolation(root, newNode);
+				
 				// if (i)
 				// {
 				// 	if (root != newNode)
