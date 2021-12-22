@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/20 23:17:10 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/22 13:38:05 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,13 +196,23 @@ namespace ft {
 			
 			void insertion(value_type *val)
 			{
+				static int i = 0;
+				std::cout << "data to add :: " << val->first << "\n";
 				RedBlack *newNode = new RedBlack(val);
 
 				// Do a normal BST insert
 				root = insertionBST(root, newNode);
 				
-				// fix Red Black Tree violations
 				fixViolation(root, newNode);
+				// if (i)
+				// {
+				// 	if (root != newNode)
+				// 		std::cout << "Data Node -> " << newNode->data->first << " Parent Node -> " << newNode->parent->data->first <<  std::endl;
+				// 	else
+				// 		std::cout  << "Data Node -> " << newNode->data->first <<  std::endl;
+				// }
+				// fix Red Black Tree violations
+				i++;
 			}
 
 			// 9 - deletion
@@ -257,27 +267,27 @@ namespace ft {
 				return node->parent->left;
 			}
 			// 6 - deletion -----------------------------------------------
-			void fixDoubleBlack(RedBlack *x)
+			void fixDoubleBlack(RedBlack *targetNode)
 			{
-				if (x == root)
+				if (targetNode == root)
 				// Reached root
 					return;
 			
-				RedBlack *sibling;
-				RedBlack *parent = x->parent;
-				if (sibling == NULL)
+				RedBlack *sib = sibling(targetNode);
+				RedBlack *parent = targetNode->parent;
+				if (sib == NULL)
 				{
 					// No sibiling, double black pushed up
 					fixDoubleBlack(parent);
 				}
 				else
 				{
-					if (sibling->color == RED)
+					if (sib->color == RED)
 					{
-						// Sibling red
+						// sib red
 						parent->color = RED;
-						sibling->color = BLACK;
-						if (isOnLeft(sibling))
+						sib->color = BLACK;
+						if (isOnLeft(sib))
 						{
 							// left case
 							rotateRight(root, parent);
@@ -287,45 +297,45 @@ namespace ft {
 							// right case
 							rotateLeft(root, parent);
 						}
-						fixDoubleBlack(x);
+						fixDoubleBlack(targetNode);
 					}
 					else
 					{
 						// Sibling black
-						if (hasRedChild(sibling))
+						if (hasRedChild(sib))
 						{
 							// at least 1 red children
-							if (sibling->left != NULL and sibling->left->color == RED)
+							if (sib->left != NULL && sib->left->color == RED)
 							{
-								if (isOnLeft(sibling))
+								if (isOnLeft(sib))
 								{
 									// left left
-									sibling->left->color = sibling->color;
-									sibling->color = parent->color;
+									sib->left->color = sib->color;
+									sib->color = parent->color;
 									rotateRight(root, parent);
 								}
 								else
 								{
 									// right left
-									sibling->left->color = parent->color;
-									rotateRight(root, sibling);
+									sib->left->color = parent->color;
+									rotateRight(root, sib);
 									rotateLeft(root, parent);
 								}
 							}
 							else
 							{
-								if (isOnLeft(sibling))
+								if (isOnLeft(sib))
 								{
 									// left right
-									sibling->right->color = parent->color;
-									rotateLeft(root, sibling);
+									sib->right->color = parent->color;
+									rotateLeft(root, sib);
 									rotateRight(root, parent);
 								}
 								else
 								{
 									// right right
-									sibling->right->color = sibling->color;
-									sibling->color = parent->color;
+									sib->right->color = sib->color;
+									sib->color = parent->color;
 									rotateLeft(root, parent);
 								}
 							}
@@ -334,7 +344,7 @@ namespace ft {
 						else
 						{
 							// 2 black children
-							sibling->color = RED;
+							sib->color = RED;
 							if (parent->color == BLACK)
 								fixDoubleBlack(parent);
 							else
@@ -373,7 +383,9 @@ namespace ft {
 			// deletes the given node
 			void deleteNode(RedBlack *&targetNode)
 			{
+				std::cout << targetNode->parent->data->first <<  std::endl;
 				RedBlack *nodeReplaceTarget = BSTreplace(targetNode);
+				std::cout << targetNode->parent->data->first <<  std::endl;
 			
 				// True when u and v are both black
 				bool rtBlack = ((nodeReplaceTarget == NULL || nodeReplaceTarget->color == BLACK) && (targetNode->color == BLACK));
@@ -541,17 +553,19 @@ namespace ft {
 		redblack.insertion(&f4);
 		redblack.insertion(&f5);
 		redblack.insertion(&f6);
+		// redblack.print();
 		redblack.insertion(&f7);
 		redblack.insertion(&f8);
 		
 		redblack.print();
 		// cout << endl
 		//    << "After deleting" << endl;
-		redblack.deleteByVal(&f8);
+		redblack.deleteByVal(&f6);
 		redblack.deleteByVal(&f7);
+		// redblack.deleteByVal(&f8);
 
 		redblack.print();
-
+// 
 		// bst.printTree();
 		}
 
