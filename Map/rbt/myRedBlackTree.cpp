@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/22 15:04:05 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/22 20:49:18 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ namespace ft {
 			
 				node->right = node_right->left;
 			
-				if (node_right->left != NULL)
-					node_right->left->parent = node;
+				if (node->right != NULL)
+					node->right->parent = node;
 			
 				node_right->parent = node->parent;
 			
@@ -85,8 +85,8 @@ namespace ft {
 			
 				node->left = node_left->right;
 			
-				if (node->right != NULL)
-					node->right->parent = node;
+				if (node->left != NULL)
+					node->left->parent = node;
 			
 				node_left->parent = node->parent;
 			
@@ -390,9 +390,9 @@ namespace ft {
 			// deletes the given node
 			void deleteNode(RedBlack *&targetNode)
 			{
-				std::cout << targetNode->parent->data->first <<  std::endl;
+				std::cout << "1 -> " << targetNode->parent->data->first <<  std::endl;
 				RedBlack *nodeReplaceTarget = BSTreplace(targetNode);
-				std::cout << targetNode->parent->data->first <<  std::endl;
+				std::cout << "2 -> " << targetNode->parent->data->first <<  std::endl;
 			
 				// True when u and v are both black
 				bool rtBlack = ((nodeReplaceTarget == NULL || nodeReplaceTarget->color == BLACK) && (targetNode->color == BLACK));
@@ -552,7 +552,7 @@ namespace ft {
 		std::pair<int, int> f6 = std::make_pair(56, 7);
 		std::pair<int, int> f7 = std::make_pair(64, 8);
 		std::pair<int, int> f8 = std::make_pair(12, 9);
-		std::pair<int, int> f9 = std::make_pair(37, 10);
+		// std::pair<int, int> f9 = std::make_pair(37, 10);
 		redblack.insertion(&f);
 		redblack.insertion(&f1);
 		redblack.insertion(&f2);
@@ -560,17 +560,17 @@ namespace ft {
 		redblack.insertion(&f4);
 		redblack.insertion(&f5);
 		redblack.insertion(&f6);
-		// redblack.print();
 		redblack.insertion(&f7);
 		redblack.insertion(&f8);
 		
+		std::cout << "-------- My Red Black Tree Before Deletion ----------" << std::endl;
 		redblack.print();
 		// cout << endl
 		//    << "After deleting" << endl;
+		redblack.deleteByVal(&f8);
 		redblack.deleteByVal(&f6);
-		redblack.deleteByVal(&f7);
-		// redblack.deleteByVal(&f8);
-
+		// redblack.deleteByVal(&f7);
+		std::cout << "-------- My Red Black Tree Before After Deletion ----------" << std::endl;
 		redblack.print();
 // 
 		// bst.printTree();
