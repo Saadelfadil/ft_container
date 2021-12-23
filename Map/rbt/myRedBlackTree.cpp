@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/22 20:49:18 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/23 11:52:52 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,10 +175,6 @@ namespace ft {
 			
 			RedBlack *insertionBST(RedBlack *src , RedBlack *newNode)
 			{
-				if (newNode->data->first == 56 && src != NULL){
-					std::cout << ">>" << src->data->first << "\n";
-					print();	
-				}
 				/* If the tree is empty, return a new node */
 				if (src == NULL)
 					return newNode;
@@ -200,26 +196,13 @@ namespace ft {
 			
 			void insertion(value_type *val)
 			{
-				static int i = 0;
-				std::cout << "data to add :: " << val->first << "\n";
 				RedBlack *newNode = new RedBlack(val);
 
 				// Do a normal BST insert
 				root = insertionBST(root, newNode);
 				
-				if (val->first == 56)
-					std::cout << "Data Node -> " << newNode->data->first << " Parent Node -> "<< newNode->parent->data->first  <<  std::endl;
-				fixViolation(root, newNode);
-				
-				// if (i)
-				// {
-				// 	if (root != newNode)
-				// 		std::cout << "Data Node -> " << newNode->data->first << " Parent Node -> " << newNode->parent->data->first <<  std::endl;
-				// 	else
-				// 		std::cout  << "Data Node -> " << newNode->data->first <<  std::endl;
-				// }
 				// fix Red Black Tree violations
-				i++;
+				fixViolation(root, newNode);
 			}
 
 			// 9 - deletion
@@ -390,9 +373,7 @@ namespace ft {
 			// deletes the given node
 			void deleteNode(RedBlack *&targetNode)
 			{
-				std::cout << "1 -> " << targetNode->parent->data->first <<  std::endl;
 				RedBlack *nodeReplaceTarget = BSTreplace(targetNode);
-				std::cout << "2 -> " << targetNode->parent->data->first <<  std::endl;
 			
 				// True when u and v are both black
 				bool rtBlack = ((nodeReplaceTarget == NULL || nodeReplaceTarget->color == BLACK) && (targetNode->color == BLACK));
@@ -423,13 +404,11 @@ namespace ft {
 								tmp->color = RED;
 						}
 						// delete targetNode from the tree
-						if (isOnLeft(nodeReplaceTarget))
+						if (isOnLeft(targetNode))
 							parentTarget->left = NULL;
 						else
 							parentTarget->right = NULL;
 					}
-					targetNode->parent->left = NULL;
-					targetNode = NULL;
 					delete targetNode;
 					return;
 				}
@@ -447,7 +426,7 @@ namespace ft {
 					else
 					{
 						// Detach targetNode from tree and motargetNodee u up
-						if (isOnLeft(nodeReplaceTarget))
+						if (isOnLeft(targetNode))
 							parentTarget->left = nodeReplaceTarget;
 						else
 							parentTarget->right = nodeReplaceTarget;
@@ -552,7 +531,6 @@ namespace ft {
 		std::pair<int, int> f6 = std::make_pair(56, 7);
 		std::pair<int, int> f7 = std::make_pair(64, 8);
 		std::pair<int, int> f8 = std::make_pair(12, 9);
-		// std::pair<int, int> f9 = std::make_pair(37, 10);
 		redblack.insertion(&f);
 		redblack.insertion(&f1);
 		redblack.insertion(&f2);
@@ -563,16 +541,20 @@ namespace ft {
 		redblack.insertion(&f7);
 		redblack.insertion(&f8);
 		
-		std::cout << "-------- My Red Black Tree Before Deletion ----------" << std::endl;
+		std::cout << std::endl
+		   << "After Insertion" << std::endl;
 		redblack.print();
-		// cout << endl
-		//    << "After deleting" << endl;
+		
+		std::cout << std::endl
+		   << "After deleting" << std::endl;
+		
 		redblack.deleteByVal(&f8);
 		redblack.deleteByVal(&f6);
-		// redblack.deleteByVal(&f7);
-		std::cout << "-------- My Red Black Tree Before After Deletion ----------" << std::endl;
+		redblack.deleteByVal(&f7);
+		redblack.deleteByVal(&f4);
+		redblack.deleteByVal(&f);
+		redblack.deleteByVal(&f2);
+		redblack.deleteByVal(&f5);
 		redblack.print();
-// 
-		// bst.printTree();
 		}
 
