@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/23 11:52:52 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/24 13:40:34 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,41 @@
 
 namespace ft {
 
-	enum Color {BLACK, RED};
 
-	template < class value_pair,                                     // map::key_type
-           class Compare = std::less<typename value_pair::first_type>,                     // map::key_compare
-           class Alloc = std::allocator<value_pair >    // map::allocator_type
+	template < class T,                                     // map::key_type
+           class Compare = std::less<typename T::first_type>,                     // map::key_compare
+           class Alloc = std::allocator<T>    // map::allocator_type
            >
 	class RedBlackTree
 	{
 		public:
-		typedef typename value_pair::first_type key;
-		typedef typename value_pair::second_type value;
+			typedef typename T::first_type key;
+			typedef typename T::second_type value;
+			typedef std::pair<key, value> value_type;
+			typedef Compare     key_compare;
+            typedef Alloc       allocator_type;
+            typedef ptrdiff_t   difference_type;
+            typedef size_t      size_type;
 
-		typedef std::pair<key, value> value_type;
+			
+			enum Color {BLACK, RED};
+			typedef struct RedBlack
+			{
+				value_type *data;
+				RedBlack *parent;    
+				RedBlack *right;    
+				RedBlack *left;
+				bool color;
 
-	typedef struct RedBlack
-	{
-		value_type *data;
-		RedBlack *parent;    
-		RedBlack *right;    
-		RedBlack *left;
-		bool color;
+				RedBlack(value_type *data)
+				{
+					this->data = data;
+					left = right = parent = NULL;
+					this->color = RED;
+				}
+				
+			}		RedBlack;
 
-		RedBlack(value_type *data)
-		{
-			this->data = data;
-			left = right = parent = NULL;
-			this->color = RED;
-		}
-		
-	}		RedBlack;
-
-	
 		private:
 			RedBlack *root;
 		public:
@@ -142,7 +145,7 @@ namespace ft {
 					/* Case : B  Parent of newNode is right child of Grand-parent of newNode */
 					else
 					{
-						 RedBlack *uncle_newNode = grand_parent_newNode->left;
+						RedBlack *uncle_newNode = grand_parent_newNode->left;
 						
 						
 						/*  Case : 1 The uncle of newNode is also red Only Recoloring required */
@@ -205,7 +208,6 @@ namespace ft {
 				fixViolation(root, newNode);
 			}
 
-			// 9 - deletion
 			// find node that do not have a left child
 			// in the subtree of the given node
 			RedBlack *successor(RedBlack *x)
@@ -217,26 +219,14 @@ namespace ft {
 			
 				return temp;
 			}
-			// 8 - deletion
+			
 			// check if node is left child of parent
- 			bool isOnLeft(RedBlack *node)
+			bool isOnLeft(RedBlack *node)
 			{
 				if (node == NULL)
 					return false;
 				return (node == node->parent->left);
 			}
-			 // moves node down and moves given node in its place
-			// void moveDown(RedBlack *nParent) {
-			// 	if (parent != NULL) {
-			// 	if (isOnLeft()) {
-			// 		parent->left = nParent;
-			// 	} else {
-			// 		parent->right = nParent;
-			// 	}
-			// 	}
-			// 	nParent->parent = parent;
-			// 	parent = nParent;
-			// }
 			
 			bool hasRedChild(RedBlack *node)
 			{
@@ -244,7 +234,6 @@ namespace ft {
 					(node->right != NULL && node->right->color == RED);
 			}
 			
-			// 7 - deletion
 			// returns pointer to sibling
 			RedBlack *sibling(RedBlack *nodeTarget)
 			{
@@ -256,7 +245,7 @@ namespace ft {
 					return node->parent->right;
 				return node->parent->left;
 			}
-			// 6 - deletion -----------------------------------------------
+			
 			void fixDoubleBlack(RedBlack *targetNode)
 			{
 				if (targetNode == root)
@@ -343,7 +332,7 @@ namespace ft {
 					}
 				}
 			}
-			// 5 - deletion
+
 			// find node that replaces a deleted node in BST
 			RedBlack *BSTreplace(RedBlack *&targetNode)
 			{
@@ -361,7 +350,7 @@ namespace ft {
 				else
 					return targetNode->right;
 			}
-			// 4 - deletion
+			
 			void swapValues(RedBlack *u, RedBlack *v)
 			{
 				int tmp;
@@ -369,7 +358,7 @@ namespace ft {
 				u->data->first = v->data->first;
 				v->data->first = tmp;
 			}
-			// 3 - deletion
+			
 			// deletes the given node
 			void deleteNode(RedBlack *&targetNode)
 			{
@@ -447,7 +436,6 @@ namespace ft {
 			}
 
 			
-			// 2 - deletion
 			// searches for given value
 			// if found returns the node (used for delete)
 			// else returns the last node while traversing (used in insert)
@@ -468,7 +456,6 @@ namespace ft {
 				return tmp;
 			}
 			
-			// 1 - deletion
 			void deleteByVal(value_type *val)
 			{
 				// Tree is empty
@@ -488,34 +475,34 @@ namespace ft {
 			void    print() { if (this->root) this->printHelper(this->root, nullptr, false); std::cout << std::endl;}
 
 		private:
-                    /* ---------- | Recursive print of a "RBT" | ---------- */
-            struct Trunk {
-                Trunk *prev;
-                std::string str;
-                Trunk( Trunk *prev, std::string str ) { this->prev = prev; this->str = str; }
-            };
+					/* ---------- | Recursive print of a "RBT" | ---------- */
+			struct Trunk {
+				Trunk *prev;
+				std::string str;
+				Trunk( Trunk *prev, std::string str ) { this->prev = prev; this->str = str; }
+			};
 			
-            void showTrunks(Trunk *p) {
-                if (p == nullptr) { return ; }
-                showTrunks(p->prev);
-                std::cout << p->str;
-            }
+			void showTrunks(Trunk *p) {
+				if (p == nullptr) { return ; }
+				showTrunks(p->prev);
+				std::cout << p->str;
+			}
 
-            void printHelper( RedBlack* root, Trunk *prev, bool isLeft ) {
-                if (root == nullptr) { return; }
-                std::string prev_str = "    ";
-                Trunk *trunk = new Trunk(prev, prev_str);
-                printHelper(root->right, trunk, true);
-                if (!prev) { trunk->str = "——— "; }
-                else if (isLeft) { trunk->str = " .——— "; prev_str = "   |"; }
-                else { trunk->str = " `——— "; prev->str = prev_str; }
-                showTrunks(trunk);
-                std::string sColor = root->color ? "R" : "B";
-                std::cout << root->data->first << "(" << sColor <<  ")" << std::endl;
-                if (prev) { prev->str = prev_str; }
-                trunk->str = "   |";
-                printHelper(root->left, trunk, false);
-            }
+			void printHelper( RedBlack* root, Trunk *prev, bool isLeft ) {
+				if (root == nullptr) { return; }
+				std::string prev_str = "    ";
+				Trunk *trunk = new Trunk(prev, prev_str);
+				printHelper(root->right, trunk, true);
+				if (!prev) { trunk->str = "——— "; }
+				else if (isLeft) { trunk->str = " .——— "; prev_str = "   |"; }
+				else { trunk->str = " `——— "; prev->str = prev_str; }
+				showTrunks(trunk);
+				std::string sColor = root->color ? "R" : "B";
+				std::cout << root->data->first << "(" << sColor <<  ")" << std::endl;
+				if (prev) { prev->str = prev_str; }
+				trunk->str = "   |";
+				printHelper(root->left, trunk, false);
+			}
 	};
 }
 
