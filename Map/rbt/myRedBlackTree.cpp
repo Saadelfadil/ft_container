@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/03 15:45:40 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/03 18:11:29 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -484,9 +484,21 @@ namespace ft {
 				deleteNode(targetNode);
 			}
 			
+			iterator begin() { return iterator(successor(this->root), this); }
+			const_iterator begin() const { return const_iterator(successor(this->root),this); }
+			iterator end() { return iterator(NULL, this); }
+			const_iterator end() const { return const_iterator(NULL, this); }
+
+			reverse_iterator rbegin() { return reverse_iterator(iterator(NULL,this)); };
+			const_reverse_iterator rbegin() const { return const_reverse_iterator(iterator(NULL,this)); };
+			reverse_iterator rend() { return reverse_iterator(iterator(successor(this->root),this)); };
+			const_reverse_iterator rend() const { return const_reverse_iterator(iterator(successor(this->root),this)); };
+
+			bool empty() const{ return this->root == NULL; };
+			size_type size() const{ return this->_size; };
+			size_type max_size() const { return this->_alloc.max_size(); }
 		public:
 			void    print() { if (this->root) this->printHelper(this->root, nullptr, false); std::cout << std::endl;}
-
 		private:
 					/* ---------- | Recursive print of a "RBT" | ---------- */
 			struct Trunk {

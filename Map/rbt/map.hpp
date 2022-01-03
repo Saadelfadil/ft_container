@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/03 12:39:35 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/03 18:11:37 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ namespace ft  {
 			RedBlackTree<std::pair< const Key, T>, Compare, Alloc> _rbt;
 			Compare _cmp;
 			Alloc _alloc;
+			size_type _size;
 		public:
 			typedef Key			key_type;
 			typedef T			mapped_type;
@@ -75,14 +76,25 @@ namespace ft  {
 			// insert
 			pair<iterator,bool> insert (const value_type& val)
 			{
-				return this->_rbt.insert(val);
+				RedBlackNode *tmp = this->_rbt.search(val);
+				bool found = false;
+				if (tmp == NULL)
+				{
+					found = true;
+					this->_rbt.insert(val);
+					tmp = this->_rbt.search(val);
+					_size++;
+				}
+				return ft::make_pair(iterator(tmp, &this->_rbt), found);
 			}
+			
 			iterator insert (iterator position, const value_type& val)
 			{
-				return this->_rbt.insert(position, val);
+				_size++;
+				return (this->insert(val)).first;
 			}
 			template <class InputIterator>
-  				void insert (InputIterator first, InputIterator last) { return this->_rbt.insert(first, last); }
+  				void insert (InputIterator first, InputIterator last) { _size++; return this->_rbt.insert(first, last); }
 				
 			// erase
 			void erase (iterator position) { this->_rbt.erase(position);}
