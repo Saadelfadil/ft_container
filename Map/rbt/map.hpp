@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/24 15:12:13 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/03 12:39:35 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,100 @@ namespace ft  {
             const_reverse_iterator rbegin() const { return this->_rbt.rbegin(); }
             reverse_iterator rend() { return this->_rbt.rend(); }
             const_reverse_iterator rend() const { return this->_rbt.rend(); }
+
+			bool empty() const { return this->_rbt.empty(); }
+            size_type size() const { return this->_rbt.size(); }
+            size_type max_size() const { return this->_rbt.max_size(); }
+
+			mapped_type& operator[] (const key_type& k);
+			
+			// insert
+			pair<iterator,bool> insert (const value_type& val)
+			{
+				return this->_rbt.insert(val);
+			}
+			iterator insert (iterator position, const value_type& val)
+			{
+				return this->_rbt.insert(position, val);
+			}
+			template <class InputIterator>
+  				void insert (InputIterator first, InputIterator last) { return this->_rbt.insert(first, last); }
+				
+			// erase
+			void erase (iterator position) { this->_rbt.erase(position);}
+			
+			size_type erase (const key_type& k)
+			{
+				return thiss->_rbt.erase(k);
+			}
+			void erase (iterator first, iterator last)
+			{
+				
+			}
+			
+			void swap (map& x)
+			{
+				this->_rbt.swap(x._rbt);
+			}
+			
+			void clear() { this->_rbt.clear(); }
+
+
+			key_compare key_comp() const
+			{
+				
+			}
+			value_compare value_comp() const
+			{
+				
+			}
+
+
+			iterator find (const key_type& k)
+			{
+				
+			}
+			const_iterator find (const key_type& k) const
+			{
+				
+			}
+
+			size_type count (const key_type& k) const
+			{
+				
+			}
+
+			terator lower_bound (const key_type& k)
+			{
+				
+			}
+			const_iterator lower_bound (const key_type& k) const
+			{
+				
+			}
+
+			iterator upper_bound (const key_type& k)
+			{
+				
+			}
+			const_iterator upper_bound (const key_type& k) const
+			{
+				
+			}
+
+			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+			{
+				
+			}
+			pair<iterator,iterator>             equal_range (const key_type& k)
+			{
+				
+			}
+
+
+			allocator_type get_allocator() const
+			{
+				
+			}
 	};
 }

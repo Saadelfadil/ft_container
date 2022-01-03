@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/24 13:40:34 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/03 15:45:40 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,26 @@
 
 namespace ft {
 
+	enum Color {BLACK, RED};
+	template < class value_type, class Alloc>
+	struct RedBlackNode
+	{
+		Alloc	_alloc;
+		value_type *data;
+		RedBlackNode *parent;    
+		RedBlackNode *right;    
+		RedBlackNode *left;
+		bool color;
 
+		RedBlackNode(value_type val)
+		{
+			this->data = _alloc.allocate(1);
+			_alloc.construct(this->data, val);
+			left = right = parent = NULL;
+			this->color = RED;
+		}
+		
+	};
 	template < class T,                                     // map::key_type
            class Compare = std::less<typename T::first_type>,                     // map::key_compare
            class Alloc = std::allocator<T>    // map::allocator_type
@@ -26,30 +45,17 @@ namespace ft {
 		public:
 			typedef typename T::first_type key;
 			typedef typename T::second_type value;
-			typedef std::pair<key, value> value_type;
+			typedef ft::pair<key, value> value_type;
 			typedef Compare     key_compare;
             typedef Alloc       allocator_type;
             typedef ptrdiff_t   difference_type;
             typedef size_t      size_type;
+			typedef	RedBlackNode<value_type, Alloc>	RedBlack;
+			typename Alloc::template rebind<RedBlackNode<value_type, Alloc> >::other _allocRebind;
+			// rebindAllocator _allocRebind;
 
-			
-			enum Color {BLACK, RED};
-			typedef struct RedBlack
-			{
-				value_type *data;
-				RedBlack *parent;    
-				RedBlack *right;    
-				RedBlack *left;
-				bool color;
-
-				RedBlack(value_type *data)
-				{
-					this->data = data;
-					left = right = parent = NULL;
-					this->color = RED;
-				}
-				
-			}		RedBlack;
+		private:
+			allocator_type _alloc;
 
 		private:
 			RedBlack *root;
@@ -197,9 +203,10 @@ namespace ft {
 				return src;
 			}
 			
-			void insertion(value_type *val)
+			void insertion(value_type val)
 			{
-				RedBlack *newNode = new RedBlack(val);
+				RedBlack *newNode = _allocRebind.allocate(1);
+				_allocRebind.construct(newNode, val);
 
 				// Do a normal BST insert
 				root = insertionBST(root, newNode);
@@ -398,7 +405,9 @@ namespace ft {
 						else
 							parentTarget->right = NULL;
 					}
-					delete targetNode;
+					_allocRebind.destroy(targetNode);
+					_allocRebind.deallocate(targetNode, 1);
+					// delete targetNode;
 					return;
 				}
 			
@@ -410,7 +419,9 @@ namespace ft {
 						// targetNode is root, assign the value of u to targetNode, and delete u
 						targetNode->data->first = nodeReplaceTarget->data->first;
 						targetNode->left = targetNode->right = NULL;
-						delete nodeReplaceTarget;
+						_allocRebind.destroy(nodeReplaceTarget);
+						_allocRebind.deallocate(nodeReplaceTarget, 1);
+						// delete nodeReplaceTarget;
 					}
 					else
 					{
@@ -419,7 +430,9 @@ namespace ft {
 							parentTarget->left = nodeReplaceTarget;
 						else
 							parentTarget->right = nodeReplaceTarget;
-						delete targetNode;
+						_allocRebind.destroy(targetNode);
+						_allocRebind.deallocate(targetNode, 1);
+						// delete targetNode;
 						nodeReplaceTarget->parent = parentTarget;
 						if (rtBlack)
 							// u and v both black, fix double black at u
@@ -439,16 +452,16 @@ namespace ft {
 			// searches for given value
 			// if found returns the node (used for delete)
 			// else returns the last node while traversing (used in insert)
-			RedBlack *search(value_type *val)
+			RedBlack *search(value_type val)
 			{
 				RedBlack *tmp = root;
 				while (1)
 				{
 					if (tmp == NULL)
 						return NULL;
-					if (val->first == tmp->data->first)
+					if (val.first == tmp->data->first)
 						return tmp;
-					if (val->first < tmp->data->first)
+					if (val.first < tmp->data->first)
 						tmp = tmp->left;
 					else
 						tmp = tmp->right;
@@ -456,7 +469,7 @@ namespace ft {
 				return tmp;
 			}
 			
-			void deleteByVal(value_type *val)
+			void deleteByVal(value_type val)
 			{
 				// Tree is empty
 				if (root == NULL)
@@ -508,25 +521,25 @@ namespace ft {
 
 	int main()
 	 {
-		ft::RedBlackTree<std::pair<int, int> > redblack;
-		std::pair<int, int> f  = std::make_pair(55, 1);
-		std::pair<int, int> f1 = std::make_pair(40, 2);
-		std::pair<int, int> f2 = std::make_pair(65, 3);
-		std::pair<int, int> f3 = std::make_pair(60, 4);
-		std::pair<int, int> f4 = std::make_pair(75, 5);
-		std::pair<int, int> f5 = std::make_pair(57, 6);
-		std::pair<int, int> f6 = std::make_pair(56, 7);
-		std::pair<int, int> f7 = std::make_pair(64, 8);
-		std::pair<int, int> f8 = std::make_pair(12, 9);
-		redblack.insertion(&f);
-		redblack.insertion(&f1);
-		redblack.insertion(&f2);
-		redblack.insertion(&f3);
-		redblack.insertion(&f4);
-		redblack.insertion(&f5);
-		redblack.insertion(&f6);
-		redblack.insertion(&f7);
-		redblack.insertion(&f8);
+		ft::RedBlackTree<ft::pair<int, int> > redblack;
+		ft::pair<int, int> f  = ft::make_pair(55, 1);
+		ft::pair<int, int> f1 = ft::make_pair(40, 2);
+		ft::pair<int, int> f2 = ft::make_pair(65, 3);
+		ft::pair<int, int> f3 = ft::make_pair(60, 4);
+		ft::pair<int, int> f4 = ft::make_pair(75, 5);
+		ft::pair<int, int> f5 = ft::make_pair(57, 6);
+		ft::pair<int, int> f6 = ft::make_pair(56, 7);
+		ft::pair<int, int> f7 = ft::make_pair(64, 8);
+		ft::pair<int, int> f8 = ft::make_pair(12, 9);
+		redblack.insertion(f);
+		redblack.insertion(f1);
+		redblack.insertion(f2);
+		redblack.insertion(f3);
+		redblack.insertion(f4);
+		redblack.insertion(f5);
+		redblack.insertion(f6);
+		redblack.insertion(f7);
+		redblack.insertion(f8);
 		
 		std::cout << std::endl
 		   << "After Insertion" << std::endl;
@@ -535,13 +548,13 @@ namespace ft {
 		std::cout << std::endl
 		   << "After deleting" << std::endl;
 		
-		redblack.deleteByVal(&f8);
-		redblack.deleteByVal(&f6);
-		redblack.deleteByVal(&f7);
-		redblack.deleteByVal(&f4);
-		redblack.deleteByVal(&f);
-		redblack.deleteByVal(&f2);
-		redblack.deleteByVal(&f5);
+		redblack.deleteByVal(f8);
+		redblack.deleteByVal(f6);
+		redblack.deleteByVal(f7);
+		redblack.deleteByVal(f4);
+		redblack.deleteByVal(f);
+		redblack.deleteByVal(f2);
+		redblack.deleteByVal(f5);
 		redblack.print();
 		}
 
