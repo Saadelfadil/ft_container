@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/03 18:11:29 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/03 19:43:50 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -494,9 +494,12 @@ namespace ft {
 			reverse_iterator rend() { return reverse_iterator(iterator(successor(this->root),this)); };
 			const_reverse_iterator rend() const { return const_reverse_iterator(iterator(successor(this->root),this)); };
 
-			bool empty() const{ return this->root == NULL; };
-			size_type size() const{ return this->_size; };
+			bool empty() const { return this->root == NULL; };
+			size_type size() const { return this->_size; };
 			size_type max_size() const { return this->_alloc.max_size(); }
+
+			
+			
 		public:
 			void    print() { if (this->root) this->printHelper(this->root, nullptr, false); std::cout << std::endl;}
 		private:

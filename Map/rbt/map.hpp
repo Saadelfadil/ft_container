@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/03 18:11:37 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/03 20:42:26 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@ namespace ft  {
             size_type size() const { return this->_rbt.size(); }
             size_type max_size() const { return this->_rbt.max_size(); }
 
-			mapped_type& operator[] (const key_type& k);
+			mapped_type& operator[] (const key_type& k)
+			{
+				
+			}
 			
 			// insert
 			pair<iterator,bool> insert (const value_type& val)
@@ -83,14 +86,14 @@ namespace ft  {
 					found = true;
 					this->_rbt.insert(val);
 					tmp = this->_rbt.search(val);
-					_size++;
+					this->_size++;
 				}
 				return ft::make_pair(iterator(tmp, &this->_rbt), found);
 			}
 			
 			iterator insert (iterator position, const value_type& val)
 			{
-				_size++;
+				this->_size++;
 				return (this->insert(val)).first;
 			}
 			template <class InputIterator>
