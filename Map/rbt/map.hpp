@@ -6,13 +6,14 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/23 16:47:56 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/24 15:12:13 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include "myRedBlackTree.cpp"
 #include "pair.hpp"
+#include "mapIterator.hpp"
 
 namespace ft  {
 	

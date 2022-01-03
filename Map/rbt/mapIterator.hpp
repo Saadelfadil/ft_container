@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 17:29:15 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/24 14:13:33 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2021/12/24 15:08:05 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,9 @@ namespace ft
                 Node *p;
                 if (_node == nullptr)
                 {
-                    // ++ from end(). get the root of the _rbt
                     _node = _rbt->root;
-                    
-                    // error! ++ requested for an empty _rbt
                     if (_node == nullptr)
-                        throw "mmmmkkk";
-                    
-                    // move to the smallest value in the _rbt,
-                    // which is the first node inorder
+                        return *this;
                     while (_node->left != nullptr) {
                         _node = _node->left;
                     }
@@ -67,6 +61,38 @@ namespace ft
                     {
                         p = _node->parent;
                         while (p != nullptr && _node == p->right) {
+                            _node = p;
+                            p = p->parent;
+                        }
+                        _node = p;
+                    }
+                return *this;
+            }
+            
+            MapIterator operator-- ()
+            {
+                Node *p;
+                if (_node == nullptr)
+                {
+                    _node = _rbt->root;
+                    if (_node == nullptr)
+                        return *this;
+                    while (_node->right != nullptr) {
+                        _node = _node->right;
+                    }
+                }
+                else
+                    if (_node->left != nullptr)
+                    {
+                        _node = _node->left;
+                        while (_node->right != nullptr) {
+                            _node = _node->right;
+                        }
+                    }
+                    else
+                    {
+                        p = _node->parent;
+                        while (p != nullptr && _node == p->left) {
                             _node = p;
                             p = p->parent;
                         }
