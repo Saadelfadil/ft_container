@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/03 19:43:50 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/04 13:33:26 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -469,7 +469,7 @@ namespace ft {
 				return tmp;
 			}
 			
-			void deleteByVal(value_type val)
+			size_type deleteByVal(value_type val)
 			{
 				// Tree is empty
 				if (root == NULL)
@@ -477,11 +477,9 @@ namespace ft {
 			
 				RedBlack *targetNode = search(val);
 				if (targetNode == NULL)
-				{
-					std::cout << "not found\n";
-					return ;
-				}
+					return 0;
 				deleteNode(targetNode);
+				return 1;
 			}
 			
 			iterator begin() { return iterator(successor(this->root), this); }
@@ -497,8 +495,11 @@ namespace ft {
 			bool empty() const { return this->root == NULL; };
 			size_type size() const { return this->_size; };
 			size_type max_size() const { return this->_alloc.max_size(); }
-
 			
+			mapped_type& operator[] (const key_type& k)
+			{
+				return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
+			}
 			
 		public:
 			void    print() { if (this->root) this->printHelper(this->root, nullptr, false); std::cout << std::endl;}

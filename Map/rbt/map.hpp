@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/03 20:42:26 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/04 13:51:23 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "myRedBlackTree.cpp"
 #include "pair.hpp"
 #include "mapIterator.hpp"
+#include "../vector/vector.hpp"
 
 namespace ft  {
 	
@@ -71,10 +72,7 @@ namespace ft  {
             size_type size() const { return this->_rbt.size(); }
             size_type max_size() const { return this->_rbt.max_size(); }
 
-			mapped_type& operator[] (const key_type& k)
-			{
-				
-			}
+			mapped_type& operator[] (const key_type& k) { return (*((this->insert(make_pair(k,mapped_type()))).first)).second; }
 			
 			// insert
 			pair<iterator,bool> insert (const value_type& val)
@@ -97,18 +95,37 @@ namespace ft  {
 				return (this->insert(val)).first;
 			}
 			template <class InputIterator>
-  				void insert (InputIterator first, InputIterator last) { _size++; return this->_rbt.insert(first, last); }
+  				void insert (InputIterator first, InputIterator last)
+				{
+					_size++;
+					while (first != last)
+					{
+						this->insert(*first);
+						++first;
+					}
+				}
 				
 			// erase
-			void erase (iterator position) { this->_rbt.erase(position);}
+			void erase (iterator position) { this->_rbt.deleteByVal(position->first);}
 			
 			size_type erase (const key_type& k)
 			{
-				return thiss->_rbt.erase(k);
+				this->_size--;
+				return this->_rbt.deleteByVal(k);
 			}
 			void erase (iterator first, iterator last)
 			{
+				ft::Vector<key_t> tmp;
 				
+				while (first != last)
+				{
+					tmp.push_back(first->first);
+					++first;
+				}
+				for (size_type i = 0; i < tmp.size(); i++)
+				{
+					this->_rbt.deleteByVal(tmp[i]);
+				}
 			}
 			
 			void swap (map& x)
