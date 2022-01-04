@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/04 13:51:23 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/04 15:21:57 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ namespace ft  {
 			void swap (map& x)
 			{
 				this->_rbt.swap(x._rbt);
+				this->_rbt.swap(this->_size, x._size);
 			}
 			
 			void clear() { this->_rbt.clear(); }
@@ -138,7 +139,7 @@ namespace ft  {
 
 			key_compare key_comp() const
 			{
-				
+				return this->_cmp;
 			}
 			value_compare value_comp() const
 			{

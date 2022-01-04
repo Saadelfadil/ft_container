@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/04 13:33:26 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/04 15:15:46 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -499,6 +499,25 @@ namespace ft {
 			mapped_type& operator[] (const key_type& k)
 			{
 				return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
+			}
+
+			void swap( RedBlackTree& other )
+			{
+				this->swap(this->root, other.root);
+			}
+
+			template<class T>
+			void swap(T& a,T& b)
+			{
+				T tmp = a;
+				a = b;
+				b = tmp;
+			}
+			
+			void clear()
+			{
+				if (this->size() > 0)
+					this->erase(this->begin(), this->end());
 			}
 			
 		public:
