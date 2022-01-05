@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/04 15:21:57 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/05 13:30:16 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,19 @@ namespace ft  {
 	 template < class Key,                                     // map::key_type
 			class T,                                       // map::mapped_type
 			class Compare = std::less<Key>,                     // map::key_compare
-			class Alloc = std::allocator<std::pair<const Key,T> >    // map::allocator_type
+			class Alloc = std::allocator<ft::pair<const Key,T> >    // map::allocator_type
 			>
 	class map
 	{
 		private:
-			RedBlackTree<std::pair< const Key, T>, Compare, Alloc> _rbt;
+			RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> _rbt;
 			Compare _cmp;
 			Alloc _alloc;
 			size_type _size;
 		public:
 			typedef Key			key_type;
 			typedef T			mapped_type;
-			typedef std::pair<const key_type,mapped_type> value_type;
+			typedef ft::pair<const key_type,mapped_type> value_type;
 			typedef Compare		key_compare;
 			typedef Alloc		allocator_type;
 			typedef typename    allocator_type::reference           reference;
@@ -46,6 +46,22 @@ namespace ft  {
 			typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::const_reverse_iterator const_reverse_iterator;
 			typedef	ptrdiff_t	difference_type;
 			typedef	size_t		size_type;
+
+			template <class Key, class T, class Compare, class Alloc>
+			class value_compare : public std::binary_function<value_type,value_type,bool>
+			{   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
+				protected:
+					Compare comp;
+					value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+				public:
+					typedef bool result_type;
+					typedef value_type first_argument_type;
+					typedef value_type second_argument_type;
+					bool operator() (const value_type& x, const value_type& y) const
+					{
+						return comp(x.first, y.first);
+					}
+			}
 		
             explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(), _cmp(comp), _alloc(alloc) {}
             
@@ -143,7 +159,7 @@ namespace ft  {
 			}
 			value_compare value_comp() const
 			{
-				
+				return value_compare(_cmp);
 			}
 
 

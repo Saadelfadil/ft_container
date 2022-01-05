@@ -6,13 +6,14 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/04 15:15:46 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/04 15:46:21 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <utility>
 #include "pair.hpp"
+#include "mapIterator.hpp"
 
 namespace ft {
 
@@ -45,7 +46,7 @@ namespace ft {
 		public:
 			typedef typename T::first_type key;
 			typedef typename T::second_type value;
-			typedef ft::pair<key, value> value_type;
+			typedef pair<key, value> value_type;
 			typedef Compare     key_compare;
             typedef Alloc       allocator_type;
             typedef ptrdiff_t   difference_type;
