@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/06 17:56:50 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/06 20:52:54 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "myRedBlackTree.cpp"
 #include "pair.hpp"
 #include "mapIterator.hpp"
-#include "../vector/vector.hpp"
+#include "../../Vector/vector.hpp"
 
 namespace ft  {
 	
@@ -23,66 +23,65 @@ namespace ft  {
 			class Compare = std::less<Key>,                     // map::key_compare
 			class Alloc = std::allocator<ft::pair<const Key,T> >    // map::allocator_type
 			>
-	class map
+	class Map
 	{
 		private:
 			RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> _rbt;
-			Compare _cmp;
-			Alloc _alloc;
-			size_type _size;
+			
 		public:
 			typedef Key			key_type;
 			typedef T			mapped_type;
 			typedef ft::pair<const key_type,mapped_type> value_type;
 			typedef Compare		key_compare;
 			typedef Alloc		allocator_type;
+			typedef	ft::RedBlackNode<value_type, Alloc>	RedBlackNode;
 			typedef typename    allocator_type::reference           reference;
 			typedef typename    allocator_type::const_reference     const_reference;
 			typedef typename    allocator_type::pointer             pointer;
 			typedef typename    allocator_type::const_pointer       const_pointer;
 			typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::iterator iterator;
 			typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::const_iterator const_iterator;
-			typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::reverse_iterator reverse_iterator;
-			typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::const_reverse_iterator const_reverse_iterator;
+			// typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::reverse_iterator reverse_iterator;
+			// typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::const_reverse_iterator const_reverse_iterator;
 			typedef	ptrdiff_t	difference_type;
 			typedef	size_t		size_type;
-
-			template <class Key, class T, class Compare, class Alloc>
-			class value_compare : public std::binary_function<value_type,value_type,bool>
-			{   // in C++98, it is required to inherit binary_function<value_type,value_type,bool>
-				protected:
-					Compare comp;
-					value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
-				public:
-					typedef bool result_type;
-					typedef value_type first_argument_type;
-					typedef value_type second_argument_type;
-					bool operator() (const value_type& x, const value_type& y) const
-					{
-						return comp(x.first, y.first);
-					}
-			}
-		
-            explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(), _cmp(comp), _alloc(alloc) {}
+			public:
+				class value_compare : public std::binary_function<value_type,value_type,bool>
+				{   
+					protected:
+						Compare comp;
+						value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
+					public:
+						typedef bool result_type;
+						typedef value_type first_argument_type;
+						typedef value_type second_argument_type;
+						bool operator() (const value_type& x, const value_type& y) const
+						{
+							return comp(x.first, y.first);
+						}
+				};
+			
+            explicit Map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(), _cmp(comp), _alloc(alloc) {}
             
             template <class InputIterator>
-				map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(first, last), _cmp(comp), _alloc(alloc) {}
+				Map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(first, last), _cmp(comp), _alloc(alloc) {}
             
-            map (const map& x); { *this = x; }
+            Map (const Map& x) { *this = x; }
 			
-			~map();
+			~Map();
 			
-			map& operator= (const map& x); { this->_rbt = x._rbt; return *this; }
+			Map& operator= (const Map& x) { this->_rbt = x._rbt; return *this; }
 
 			
 			iterator begin() { return this->_rbt.begin(); }
             const_iterator begin() const { return this->_rbt.begin(); }
             iterator end() { return this->_rbt.end(); }
             const_iterator end() const { return this->_rbt.end(); }
-            reverse_iterator rbegin() { return this->_rbt.rbegin(); }
-            const_reverse_iterator rbegin() const { return this->_rbt.rbegin(); }
-            reverse_iterator rend() { return this->_rbt.rend(); }
-            const_reverse_iterator rend() const { return this->_rbt.rend(); }
+			
+            // reverse_iterator rbegin() { return this->_rbt.rbegin(); }
+            // const_reverse_iterator rbegin() const { return this->_rbt.rbegin(); }
+            // reverse_iterator rend() { return this->_rbt.rend(); }
+            // const_reverse_iterator rend() const { return this->_rbt.rend(); }
 
 			bool empty() const { return this->_rbt.empty(); }
             size_type size() const { return this->_rbt.size(); }
@@ -107,6 +106,7 @@ namespace ft  {
 			
 			iterator insert (iterator position, const value_type& val)
 			{
+				(void)position;
 				this->_size++;
 				return (this->insert(val)).first;
 			}
@@ -144,7 +144,7 @@ namespace ft  {
 				}
 			}
 			
-			void swap (map& x)
+			void swap (Map& x)
 			{
 				this->_rbt.swap(x._rbt);
 				this->_rbt.swap(this->_size, x._size);
@@ -195,19 +195,23 @@ namespace ft  {
 				return this->_rbt.upper_bound(k);
 			}
 
-			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
-			{
-				
-			}
 			pair<iterator,iterator>             equal_range (const key_type& k)
 			{
-				
+				return (ft::make_pair<iterator, iterator>(lower_bound(k), upper_bound(k)));
+			}
+			pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+			{
+				return (ft::make_pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k)));
 			}
 
 
 			allocator_type get_allocator() const
 			{
-				
+				return this->_alloc;
 			}
+			private:
+				Compare _cmp;
+				Alloc _alloc;
+				size_type _size;
 	};
 }

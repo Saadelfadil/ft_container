@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/06 17:55:29 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/06 20:35:43 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,15 @@ namespace ft {
 	{
 		public:
 			typedef typename T::first_type key;
-			typedef typename T::second_type value;
-			typedef pair<key, value> value_type;
+			typedef typename T::second_type mapped_type;
+			typedef pair<key, mapped_type> value_type;
 			typedef Compare     key_compare;
             typedef Alloc       allocator_type;
             typedef ptrdiff_t   difference_type;
             typedef size_t      size_type;
 			typedef	RedBlackNode<value_type, Alloc>	RedBlack;
+			typedef ft::MapIterator<RedBlack,value_type,RedBlackTree > iterator;
+			typedef ft::MapIterator<RedBlack, const value_type,RedBlackTree > const_iterator;
 			typename Alloc::template rebind<RedBlackNode<value_type, Alloc> >::other _allocRebind;
 			// rebindAllocator _allocRebind;
 
@@ -474,7 +476,7 @@ namespace ft {
 			{
 				// Tree is empty
 				if (root == NULL)
-					return;
+					return 0;
 			
 				RedBlack *targetNode = search(val);
 				if (targetNode == NULL)
@@ -483,15 +485,16 @@ namespace ft {
 				return 1;
 			}
 			
+			// functions of map
 			iterator begin() { return iterator(successor(this->root), this); }
 			const_iterator begin() const { return const_iterator(successor(this->root),this); }
 			iterator end() { return iterator(NULL, this); }
 			const_iterator end() const { return const_iterator(NULL, this); }
 
-			reverse_iterator rbegin() { return reverse_iterator(iterator(NULL,this)); };
-			const_reverse_iterator rbegin() const { return const_reverse_iterator(iterator(NULL,this)); };
-			reverse_iterator rend() { return reverse_iterator(iterator(successor(this->root),this)); };
-			const_reverse_iterator rend() const { return const_reverse_iterator(iterator(successor(this->root),this)); };
+			// reverse_iterator rbegin() { return reverse_iterator(iterator(NULL,this)); };
+			// const_reverse_iterator rbegin() const { return const_reverse_iterator(iterator(NULL,this)); };
+			// reverse_iterator rend() { return reverse_iterator(iterator(successor(this->root),this)); };
+			// const_reverse_iterator rend() const { return const_reverse_iterator(iterator(successor(this->root),this)); };
 
 			bool empty() const { return this->root == NULL; };
 			size_type size() const { return this->_size; };
@@ -507,10 +510,10 @@ namespace ft {
 				this->swap(this->root, other.root);
 			}
 
-			template<class T>
-			void swap(T& a,T& b)
+			template<class S>
+			void swap(S& a,S& b)
 			{
-				T tmp = a;
+				S tmp = a;
 				a = b;
 				b = tmp;
 			}
@@ -560,19 +563,35 @@ namespace ft {
 			}
 			iterator lower_bound (const key& k)
 			{
-				RedBlackNode *p = NULL;
-				RedBlackNode *tmp = found(first,this->root,&p);
+				RedBlack *p = NULL;
+				RedBlack *tmp = found(k,this->root,&p);
 				if (!tmp)
 					return iterator(p,this);
 				return iterator(tmp,this);
 			}
 			const_iterator lower_bound (const key& k) const
 			{
-				RedBlackNode *p = NULL;
-				RedBlackNode *tmp = found(first,this->root,&p);
+				RedBlack *p = NULL;
+				RedBlack *tmp = found(k,this->root,&p);
 				if (!tmp)
 					return const_iterator(p,this);
 				return const_iterator(tmp,this);
+			}
+			iterator upper_bound (const key& k)
+			{
+				RedBlack *p = NULL;
+				RedBlack *tmp = found(k,this->root,&p);
+				if (!tmp)
+					return iterator(p,this);
+				return ++iterator(tmp,this);
+			}
+			const_iterator upper_bound (const key& k) const
+			{
+				RedBlack *p = NULL;
+				RedBlack *tmp = found(k,this->root,&p);
+				if (!tmp)
+					return const_iterator(p,this);
+				return ++const_iterator(tmp,this);
 			}
 			
 			RedBlack	*bound(const key& k) const

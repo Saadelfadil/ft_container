@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 17:29:15 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/04 15:47:27 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/06 20:21:19 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ namespace ft
                     _node = _rbt->root;
                     if (_node == NULL)
                         return *this;
-                    while (_node->left != NULL) {
                     
                     // error! ++ requested for an empty _rbt
                     if (_node == NULL)
@@ -55,22 +54,21 @@ namespace ft
                     
                     // move to the smallest value in the _rbt,
                     // which is the first node inorder
-                    while (_node->left != NULL) {
+                    while (_node->left != NULL)
                         _node = _node->left;
-                    }
                 }
                 else
                     if (_node->right != NULL)
                     {
                         _node = _node->right;
-                        while (_node->left != NULL) {
+                        while (_node->left != NULL)
                             _node = _node->left;
-                        }
                     }
                     else
                     {
                         p = _node->parent;
-                        while (p != NULL && _node == p->right) {
+                        while (p != NULL && _node == p->right)
+                        {
                             _node = p;
                             p = p->parent;
                         }
@@ -78,6 +76,7 @@ namespace ft
                     }
                 return *this;
             }
+            
             MapIterator operator-- ()
             {
                 Node *p;
@@ -92,22 +91,21 @@ namespace ft
                     
                     // move to the smallest value in the _rbt,
                     // which is the first node inorder
-                    while (_node->right != NULL) {
+                    while (_node->right != NULL)
                         _node = _node->right;
-                    }
                 }
                 else
                     if (_node->left != NULL)
                     {
                         _node = _node->left;
-                        while (_node->right != NULL) {
+                        while (_node->right != NULL)
                             _node = _node->right;
-                        }
                     }
                     else
                     {
                         p = _node->parent;
-                        while (p != NULL && _node == p->left) {
+                        while (p != NULL && _node == p->left)
+                        {
                             _node = p;
                             p = p->parent;
                         }
@@ -122,10 +120,9 @@ namespace ft
             Node *base() const { return this->_node;}
 
             operator const_iterator() const { return const_iterator(_node, _rbt);}
+            
+            friend bool operator== (const MapIterator& lhs, const MapIterator& rhs) { return lhs.base() == rhs.base(); }
+            friend bool operator!= (const MapIterator& lhs, const MapIterator& rhs) { return !operator==(lhs, rhs); }
     };
     
-    template < class T, class Node, class Tree>
-        bool operator== (const MapIterator<T, Node, Tree>& lhs, const MapIterator<T, Node, Tree>& rhs) { return lhs.base() == rhs.base(); }
-    template < class T, class Node, class Tree>
-        bool operator!= (const MapIterator<T, Node, Tree>& lhs, const MapIterator<T, Node, Tree>& rhs) { return !operator==(lhs, rhs); }
-}
+};
