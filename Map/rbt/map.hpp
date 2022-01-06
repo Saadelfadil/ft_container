@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/05 13:30:16 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/06 17:56:50 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,34 +165,34 @@ namespace ft  {
 
 			iterator find (const key_type& k)
 			{
-				
+				return this->_rbt.find(k);
 			}
 			const_iterator find (const key_type& k) const
 			{
-				
+				return this->_rbt.find(k);
 			}
 
 			size_type count (const key_type& k) const
 			{
-				
+				return this->_rbt.count(k);
 			}
 
-			terator lower_bound (const key_type& k)
+			iterator lower_bound (const key_type& k)
 			{
-				
+				return this->_rbt.lower_bound(k);
 			}
 			const_iterator lower_bound (const key_type& k) const
 			{
-				
+				return this->_rbt.lower_bound(k);
 			}
 
 			iterator upper_bound (const key_type& k)
 			{
-				
+				return this->_rbt.upper_bound(k);
 			}
 			const_iterator upper_bound (const key_type& k) const
 			{
-				
+				return this->_rbt.upper_bound(k);
 			}
 
 			pair<const_iterator,const_iterator> equal_range (const key_type& k) const

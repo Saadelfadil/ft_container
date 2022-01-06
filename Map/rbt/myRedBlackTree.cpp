@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/04 15:46:21 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/06 17:55:29 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -497,7 +497,7 @@ namespace ft {
 			size_type size() const { return this->_size; };
 			size_type max_size() const { return this->_alloc.max_size(); }
 			
-			mapped_type& operator[] (const key_type& k)
+			mapped_type& operator[] (const key& k)
 			{
 				return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
 			}
@@ -519,6 +519,79 @@ namespace ft {
 			{
 				if (this->size() > 0)
 					this->erase(this->begin(), this->end());
+			}
+
+			iterator find (const key& k)
+			{
+				RedBlack *tmp = search(k);
+				if (!tmp)
+					return iterator(NULL, this);
+				return iterator(tmp);
+			}
+			const const_iterator find (const key& k) const 
+			{
+				RedBlack *tmp = search(k);
+				if (!tmp)
+					return const_iterator(NULL, this);
+				return const_iterator(tmp);
+			}
+
+			size_type count (const key& k) const 
+			{
+				RedBlack *tmp = search(k);
+				if (!tmp)
+					return 0;
+				else
+					return 1;
+			}
+			RedBlack *found(key index,RedBlack *root,RedBlack **p)  const
+			{
+				if (!root)
+					return root;
+				if (_comp(index, root->p->first))
+				{   
+					*p = root;
+					return found(index,root->left,p);
+				}
+				else if (_comp(root->p->first,index))
+					return found(index,root->right,p);
+				else 
+					return root;
+			}
+			iterator lower_bound (const key& k)
+			{
+				RedBlackNode *p = NULL;
+				RedBlackNode *tmp = found(first,this->root,&p);
+				if (!tmp)
+					return iterator(p,this);
+				return iterator(tmp,this);
+			}
+			const_iterator lower_bound (const key& k) const
+			{
+				RedBlackNode *p = NULL;
+				RedBlackNode *tmp = found(first,this->root,&p);
+				if (!tmp)
+					return const_iterator(p,this);
+				return const_iterator(tmp,this);
+			}
+			
+			RedBlack	*bound(const key& k) const
+			{
+				RedBlack src = root;
+				RedBlack tmp = src;
+				while (src != NULL && src != NULL)
+				{
+					if (_cmp(k, src->data->first))
+					{
+						tmp = src;
+						src = src->left;
+					}
+					else if (_cmp(src->data->first, k))
+						src = src->right;
+					else 
+						return src;
+				}
+				return tmp;
 			}
 			
 		public:
