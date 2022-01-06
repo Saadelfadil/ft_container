@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 17:29:15 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/06 20:21:19 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/06 21:10:00 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace ft
 			typedef typename iterator_traits::reference reference;
 			typedef typename iterator_traits::difference_type difference_type;
 			typedef typename iterator_traits::iterator_category iterator_category;
-            typedef MapIterator<const T, const Node, Tree> const_iterator;
+            typedef MapIterator<const T, Node, Tree> const_iterator;
         
             MapIterator() : _node(), _rbt() {};
             MapIterator( Node *node, const Tree *rbt ) : _node(node), _rbt(rbt) {};
@@ -39,7 +39,7 @@ namespace ft
             reference operator*() const { return *this->_node->data; }
             pointer   operator->() const { return this->_node->data; }
 
-            MapIterator operator++ ()
+            MapIterator &operator++ ()
             {
                 Node *p;
                 if (_node == NULL)
@@ -77,7 +77,7 @@ namespace ft
                 return *this;
             }
             
-            MapIterator operator-- ()
+            MapIterator &operator-- ()
             {
                 Node *p;
                 if (_node == NULL)

@@ -6,12 +6,12 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/06 20:52:54 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/06 21:30:10 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
-#include "myRedBlackTree.cpp"
+#include "myRedBlackTree.hpp"
 #include "pair.hpp"
 #include "mapIterator.hpp"
 #include "../../Vector/vector.hpp"
@@ -26,7 +26,7 @@ namespace ft  {
 	class Map
 	{
 		private:
-			RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> _rbt;
+			ft::RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> _rbt;
 			
 		public:
 			typedef Key			key_type;
@@ -39,8 +39,13 @@ namespace ft  {
 			typedef typename    allocator_type::const_reference     const_reference;
 			typedef typename    allocator_type::pointer             pointer;
 			typedef typename    allocator_type::const_pointer       const_pointer;
-			typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::iterator iterator;
-			typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::const_iterator const_iterator;
+			
+			// typedef typename	ft::RedBlackTree<value_type,key_compare,allocator_type>::iterator iterator;
+			// typedef typename	ft::RedBlackTree<value_type,key_compare,allocator_type>::const_iterator const_iterator;
+			// typedef ft::MapIterator<RedBlack,value_type,RedBlackTree > iterator;
+			// typedef ft::MapIterator<RedBlack, const value_type,RedBlackTree > const_iterator;
+
+			
 			// typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::reverse_iterator reverse_iterator;
 			// typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::const_reverse_iterator const_reverse_iterator;
 			typedef	ptrdiff_t	difference_type;
@@ -214,4 +219,28 @@ namespace ft  {
 				Alloc _alloc;
 				size_type _size;
 	};
-}
+
+
+	template <class Key, class T, class Compare, class Alloc>
+		bool operator== ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
+			{ return ((lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));}
+	template <class Key, class T, class Compare, class Alloc>
+		bool operator!= ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
+		{ return !(lhs == rhs); }
+	template <class Key, class T, class Compare, class Alloc>
+		bool operator<  ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
+		{ return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
+	template <class Key, class T, class Compare, class Alloc>
+		bool operator<= ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
+		{ return !(rhs < lhs); }
+	template <class Key, class T, class Compare, class Alloc>
+		bool operator>  ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
+		{ return (rhs < lhs); }
+	template <class Key, class T, class Compare, class Alloc>
+		bool operator>= ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
+		{ return !(lhs < rhs); }
+
+	template <class Key, class T, class Compare, class Alloc>
+		void swap (Map<Key,T,Compare,Alloc>& x, Map<Key,T,Compare,Alloc>& y)
+		{ x.swap(y); }
+};
