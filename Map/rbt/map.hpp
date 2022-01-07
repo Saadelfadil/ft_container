@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 22:01:31 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/07 23:19:09 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace ft  {
 	class Map
 	{
 		private:
-			RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> _rbt;
+			ft::RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> _rbt;
 			
 		public:
 			typedef Key			key_type;
@@ -42,14 +42,13 @@ namespace ft  {
 			typedef typename    allocator_type::const_reference     const_reference;
 			typedef typename    allocator_type::pointer             pointer;
 			typedef typename    allocator_type::const_pointer       const_pointer;
+			
 			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
 			typedef ft::MapIterator<const value_type, RedBlack, rbt > const_iterator;
-
-			// typedef typename    RedBlackTree<const value_type, Compare, Alloc>::const_iterator   const_iterator;
-			// typedef typename    RedBlackTree<value_type, Compare, Alloc>::iterator   iterator;
 			
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator> const_reverse_iterator;
+			
 			typedef	ptrdiff_t	difference_type;
 			typedef	size_t		size_type;
 			public:
@@ -68,13 +67,30 @@ namespace ft  {
 						}
 				};
 			
-            explicit Map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(), _cmp(comp), _alloc(alloc) {}
+            explicit Map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _cmp(comp), _alloc(alloc), _size(0) {}
             
             template <class InputIterator>
-				Map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(first, last), _cmp(comp), _alloc(alloc) {}
+				Map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _cmp(comp), _alloc(alloc), _size(0)
+				{
+					while (first != last)
+					{
+						this->insert(*first);
+						first++;
+					}
+				}
             
             Map (const Map& x) { *this = x; }
-			Map& operator= (const Map& x) { this->_rbt = x._rbt; return *this; }
+			
+			Map& operator= (const Map& x)
+			{
+				if (this != &x)
+				{
+					this->clear();
+					this->_cmp = x.key_comp();
+					this->_rbt = x._rbt;
+				}
+				return *this;
+			}
 			
 			~Map() {};
 			
@@ -127,7 +143,10 @@ namespace ft  {
 				}
 				
 			// erase
-			void erase (iterator position) { this->_rbt.deleteByVal(position->first);}
+			void erase (iterator position)
+			{
+				this->_rbt.deleteByVal(*position);
+			}
 			
 			size_type erase (const key_type& k)
 			{

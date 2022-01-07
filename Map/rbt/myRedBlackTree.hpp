@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 20:47:16 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/07 23:18:21 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,15 @@ namespace ft {
             typedef Alloc       allocator_type;
             typedef ptrdiff_t   difference_type;
             typedef size_t      size_type;
+			
 			typedef	RedBlackNode<value_type, Alloc>	RedBlack;
 			typedef RedBlackTree<value_type, Compare, Alloc> rbt;
+			
 			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
-			typedef ft::MapIterator<value_type, RedBlack, const rbt > const_iterator;
+			typedef ft::MapIterator<const value_type, RedBlack, const rbt > const_iterator;
 			typedef ft::reverse_iterator<iterator > reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator > const_reverse_iterator;
+			
 			typename Alloc::template rebind<RedBlackNode<value_type, Alloc> >::other _allocRebind;
 			// rebindAllocator _allocRebind;
 
@@ -525,6 +528,16 @@ namespace ft {
 				a = b;
 				b = tmp;
 			}
+			
+			// void erase (iterator position)
+			// {
+			// 	this->erase(position->first);
+			// }
+
+			// size_type erase (const key_type& k)
+			// {
+			// 	return this->_rbt.deleteByVal(k);
+			// }
 			
 			void clear()
 			{
