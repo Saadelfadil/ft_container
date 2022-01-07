@@ -6,14 +6,17 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 10:50:43 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/07 19:15:25 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
 #include <iostream>
 #include <utility>
 #include "pair.hpp"
 #include "mapIterator.hpp"
+#include "../../Vector/reverse_iterator.hpp"
+
 
 namespace ft {
 
@@ -52,8 +55,10 @@ namespace ft {
             typedef ptrdiff_t   difference_type;
             typedef size_t      size_type;
 			typedef	RedBlackNode<value_type, Alloc>	RedBlack;
-			typedef ft::MapIterator<RedBlack,value_type,RedBlackTree > iterator;
+			typedef ft::MapIterator<value_type,RedBlack,RedBlackTree > iterator;
 			typedef ft::MapIterator<RedBlack, const value_type,RedBlackTree > const_iterator;
+			typedef ft::reverse_iterator<iterator > reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator > const_reverse_iterator;
 			typename Alloc::template rebind<RedBlackNode<value_type, Alloc> >::other _allocRebind;
 			// rebindAllocator _allocRebind;
 
@@ -62,6 +67,9 @@ namespace ft {
 
 		private:
 			RedBlack *root;
+
+		public:
+			RedBlack * getRoot() const { return this->root; }
 		public:
 
 			RedBlackTree()
@@ -485,24 +493,23 @@ namespace ft {
 				return 1;
 			}
 			
-			// functions of map
+			// functions of map //
 			iterator begin() { return iterator(successor(this->root), this); }
 			const_iterator begin() const { return const_iterator(successor(this->root),this); }
 			iterator end() { return iterator(NULL, this); }
 			const_iterator end() const { return const_iterator(NULL, this); }
 
-			// reverse_iterator rbegin() { return reverse_iterator(iterator(NULL,this)); };
-			// const_reverse_iterator rbegin() const { return const_reverse_iterator(iterator(NULL,this)); };
-			// reverse_iterator rend() { return reverse_iterator(iterator(successor(this->root),this)); };
-			// const_reverse_iterator rend() const { return const_reverse_iterator(iterator(successor(this->root),this)); };
+			reverse_iterator rbegin() { return reverse_iterator(iterator(NULL,this)); };
+			const_reverse_iterator rbegin() const { return const_reverse_iterator(iterator(NULL,this)); };
+			reverse_iterator rend() { return reverse_iterator(iterator(successor(this->root),this)); };
+			const_reverse_iterator rend() const { return const_reverse_iterator(iterator(successor(this->root),this)); };
 
 			bool empty() const { return this->root == NULL; };
-			size_type size() const { return this->_size; };
 			size_type max_size() const { return this->_alloc.max_size(); }
 			
 			mapped_type& operator[] (const key& k)
 			{
-				return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
+				return (*((this->insertion(make_pair(k,mapped_type()))).first)).second;
 			}
 
 			void swap( RedBlackTree& other )

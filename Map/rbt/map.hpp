@@ -6,22 +6,24 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 11:04:51 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/07 19:15:50 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
 #include <iostream>
 #include "myRedBlackTree.hpp"
 #include "pair.hpp"
 #include "mapIterator.hpp"
 #include "../../Vector/vector.hpp"
+#include "../../Vector/reverse_iterator.hpp"
 
 namespace ft  {
 	
 	 template < class Key,                                     // map::key_type
 			class T,                                       // map::mapped_type
 			class Compare = std::less<Key>,                     // map::key_compare
-			class Alloc = std::allocator<ft::pair<const Key,T> >    // map::allocator_type
+			class Alloc = std::allocator<ft::pair<const Key, T> >    // map::allocator_type
 			>
 	class Map
 	{
@@ -40,15 +42,11 @@ namespace ft  {
 			typedef typename    allocator_type::const_reference     const_reference;
 			typedef typename    allocator_type::pointer             pointer;
 			typedef typename    allocator_type::const_pointer       const_pointer;
-			
-			// typedef typename	ft::RedBlackTree<value_type,key_compare,allocator_type>::iterator iterator;
-			// typedef typename	ft::RedBlackTree<value_type,key_compare,allocator_type>::const_iterator const_iterator;
 			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
 			typedef ft::MapIterator<const value_type, RedBlack, rbt > const_iterator;
 
-			
-			// typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::reverse_iterator reverse_iterator;
-			// typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::const_reverse_iterator const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator> reverse_iterator;
+			typedef	ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef	ptrdiff_t	difference_type;
 			typedef	size_t		size_type;
 			public:
@@ -74,7 +72,7 @@ namespace ft  {
             
             Map (const Map& x) { *this = x; }
 			
-			~Map();
+			~Map() {};
 			
 			Map& operator= (const Map& x) { this->_rbt = x._rbt; return *this; }
 
@@ -84,13 +82,13 @@ namespace ft  {
             iterator end() { return this->_rbt.end(); }
             const_iterator end() const { return this->_rbt.end(); }
 			
-            // reverse_iterator rbegin() { return this->_rbt.rbegin(); }
-            // const_reverse_iterator rbegin() const { return this->_rbt.rbegin(); }
-            // reverse_iterator rend() { return this->_rbt.rend(); }
-            // const_reverse_iterator rend() const { return this->_rbt.rend(); }
+            reverse_iterator rbegin() { return this->_rbt.rbegin(); }
+            const_reverse_iterator rbegin() const { return this->_rbt.rbegin(); }
+            reverse_iterator rend() { return this->_rbt.rend(); }
+            const_reverse_iterator rend() const { return this->_rbt.rend(); }
 
 			bool empty() const { return this->_rbt.empty(); }
-            size_type size() const { return this->_rbt.size(); }
+            size_type size() const { return this->_size; }
             size_type max_size() const { return this->_rbt.max_size(); }
 
 			mapped_type& operator[] (const key_type& k) { return (*((this->insert(make_pair(k,mapped_type()))).first)).second; }
@@ -103,7 +101,7 @@ namespace ft  {
 				if (tmp == NULL)
 				{
 					found = true;
-					this->_rbt.insert(val);
+					this->_rbt.insertion(val);
 					tmp = this->_rbt.search(val);
 					this->_size++;
 				}
@@ -187,7 +185,7 @@ namespace ft  {
 			{
 				return this->_rbt.lower_bound(k);
 			}
-			const_iterator lower_bound (const key_type& k) const
+			 const_iterator lower_bound (const key_type& k) const
 			{
 				return this->_rbt.lower_bound(k);
 			}
@@ -209,7 +207,6 @@ namespace ft  {
 			{
 				return (ft::make_pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k)));
 			}
-
 
 			allocator_type get_allocator() const
 			{
