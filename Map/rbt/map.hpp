@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/06 21:30:10 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/07 11:04:51 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft  {
 	class Map
 	{
 		private:
-			ft::RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> _rbt;
+			RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> _rbt;
 			
 		public:
 			typedef Key			key_type;
@@ -34,7 +34,8 @@ namespace ft  {
 			typedef ft::pair<const key_type,mapped_type> value_type;
 			typedef Compare		key_compare;
 			typedef Alloc		allocator_type;
-			typedef	ft::RedBlackNode<value_type, Alloc>	RedBlackNode;
+			typedef	RedBlackNode<value_type, Alloc>	RedBlack;
+			typedef RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> rbt;
 			typedef typename    allocator_type::reference           reference;
 			typedef typename    allocator_type::const_reference     const_reference;
 			typedef typename    allocator_type::pointer             pointer;
@@ -42,8 +43,8 @@ namespace ft  {
 			
 			// typedef typename	ft::RedBlackTree<value_type,key_compare,allocator_type>::iterator iterator;
 			// typedef typename	ft::RedBlackTree<value_type,key_compare,allocator_type>::const_iterator const_iterator;
-			// typedef ft::MapIterator<RedBlack,value_type,RedBlackTree > iterator;
-			// typedef ft::MapIterator<RedBlack, const value_type,RedBlackTree > const_iterator;
+			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
+			typedef ft::MapIterator<const value_type, RedBlack, rbt > const_iterator;
 
 			
 			// typedef typename	RedBlackTree<value_type,key_compare,allocator_type>::reverse_iterator reverse_iterator;
@@ -97,7 +98,7 @@ namespace ft  {
 			// insert
 			pair<iterator,bool> insert (const value_type& val)
 			{
-				RedBlackNode *tmp = this->_rbt.search(val);
+				RedBlack *tmp = this->_rbt.search(val);
 				bool found = false;
 				if (tmp == NULL)
 				{

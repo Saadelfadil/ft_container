@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   myRedBlackTree.cpp                                 :+:      :+:    :+:   */
+/*   myRedBlackTree.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/06 20:35:43 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/07 10:50:43 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -647,42 +647,42 @@ namespace ft {
 	};
 }
 
-	int main()
-	 {
-		ft::RedBlackTree<ft::pair<int, int> > redblack;
-		ft::pair<int, int> f  = ft::make_pair(55, 1);
-		ft::pair<int, int> f1 = ft::make_pair(40, 2);
-		ft::pair<int, int> f2 = ft::make_pair(65, 3);
-		ft::pair<int, int> f3 = ft::make_pair(60, 4);
-		ft::pair<int, int> f4 = ft::make_pair(75, 5);
-		ft::pair<int, int> f5 = ft::make_pair(57, 6);
-		ft::pair<int, int> f6 = ft::make_pair(56, 7);
-		ft::pair<int, int> f7 = ft::make_pair(64, 8);
-		ft::pair<int, int> f8 = ft::make_pair(12, 9);
-		redblack.insertion(f);
-		redblack.insertion(f1);
-		redblack.insertion(f2);
-		redblack.insertion(f3);
-		redblack.insertion(f4);
-		redblack.insertion(f5);
-		redblack.insertion(f6);
-		redblack.insertion(f7);
-		redblack.insertion(f8);
+	// int main()
+	//  {
+	// 	ft::RedBlackTree<ft::pair<int, int> > redblack;
+	// 	ft::pair<int, int> f  = ft::make_pair(55, 1);
+	// 	ft::pair<int, int> f1 = ft::make_pair(40, 2);
+	// 	ft::pair<int, int> f2 = ft::make_pair(65, 3);
+	// 	ft::pair<int, int> f3 = ft::make_pair(60, 4);
+	// 	ft::pair<int, int> f4 = ft::make_pair(75, 5);
+	// 	ft::pair<int, int> f5 = ft::make_pair(57, 6);
+	// 	ft::pair<int, int> f6 = ft::make_pair(56, 7);
+	// 	ft::pair<int, int> f7 = ft::make_pair(64, 8);
+	// 	ft::pair<int, int> f8 = ft::make_pair(12, 9);
+	// 	redblack.insertion(f);
+	// 	redblack.insertion(f1);
+	// 	redblack.insertion(f2);
+	// 	redblack.insertion(f3);
+	// 	redblack.insertion(f4);
+	// 	redblack.insertion(f5);
+	// 	redblack.insertion(f6);
+	// 	redblack.insertion(f7);
+	// 	redblack.insertion(f8);
 		
-		std::cout << std::endl
-		   << "After Insertion" << std::endl;
-		redblack.print();
+	// 	std::cout << std::endl
+	// 	   << "After Insertion" << std::endl;
+	// 	redblack.print();
 		
-		std::cout << std::endl
-		   << "After deleting" << std::endl;
+	// 	std::cout << std::endl
+	// 	   << "After deleting" << std::endl;
 		
-		redblack.deleteByVal(f8);
-		redblack.deleteByVal(f6);
-		redblack.deleteByVal(f7);
-		redblack.deleteByVal(f4);
-		redblack.deleteByVal(f);
-		redblack.deleteByVal(f2);
-		redblack.deleteByVal(f5);
-		redblack.print();
-		}
+	// 	redblack.deleteByVal(f8);
+	// 	redblack.deleteByVal(f6);
+	// 	redblack.deleteByVal(f7);
+	// 	redblack.deleteByVal(f4);
+	// 	redblack.deleteByVal(f);
+	// 	redblack.deleteByVal(f2);
+	// 	redblack.deleteByVal(f5);
+	// 	redblack.print();
+	// 	}
 
