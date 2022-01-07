@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 17:29:15 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 19:23:24 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/07 21:58:19 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ namespace ft
 			typedef typename iterator_traits::difference_type difference_type;
 			typedef typename iterator_traits::iterator_category iterator_category;
 
-            typedef MapIterator<const T, const Node, Tree> const_iterator;
+            typedef MapIterator<const T, Node, Tree> const_iterator;
         
             MapIterator() : _node(), _rbt() {};
             MapIterator( Node *node, const Tree *rbt ) : _node(node), _rbt(rbt) {};
@@ -120,7 +120,7 @@ namespace ft
             
             Node *base() const { return this->_node;}
 
-            operator const_iterator() const { return const_iterator(_node, _rbt);}
+            operator MapIterator<const T, Node, Tree>() const { return MapIterator<const T, Node, Tree>(_node, _rbt);}
             
             friend bool operator== (const MapIterator& lhs, const MapIterator& rhs) { return lhs.base() == rhs.base(); }
             friend bool operator!= (const MapIterator& lhs, const MapIterator& rhs) { return !operator==(lhs, rhs); }

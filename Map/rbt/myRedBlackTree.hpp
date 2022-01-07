@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 19:15:25 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/07 20:47:16 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ namespace ft {
             typedef ptrdiff_t   difference_type;
             typedef size_t      size_type;
 			typedef	RedBlackNode<value_type, Alloc>	RedBlack;
-			typedef ft::MapIterator<value_type,RedBlack,RedBlackTree > iterator;
-			typedef ft::MapIterator<RedBlack, const value_type,RedBlackTree > const_iterator;
+			typedef RedBlackTree<value_type, Compare, Alloc> rbt;
+			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
+			typedef ft::MapIterator<value_type, RedBlack, const rbt > const_iterator;
 			typedef ft::reverse_iterator<iterator > reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator > const_reverse_iterator;
 			typename Alloc::template rebind<RedBlackNode<value_type, Alloc> >::other _allocRebind;

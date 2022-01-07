@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 19:15:50 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/07 22:01:31 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,9 @@ namespace ft  {
 			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
 			typedef ft::MapIterator<const value_type, RedBlack, rbt > const_iterator;
 
+			// typedef typename    RedBlackTree<const value_type, Compare, Alloc>::const_iterator   const_iterator;
+			// typedef typename    RedBlackTree<value_type, Compare, Alloc>::iterator   iterator;
+			
 			typedef ft::reverse_iterator<iterator> reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			typedef	ptrdiff_t	difference_type;
@@ -71,18 +74,16 @@ namespace ft  {
 				Map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _rbt(first, last), _cmp(comp), _alloc(alloc) {}
             
             Map (const Map& x) { *this = x; }
+			Map& operator= (const Map& x) { this->_rbt = x._rbt; return *this; }
 			
 			~Map() {};
-			
-			Map& operator= (const Map& x) { this->_rbt = x._rbt; return *this; }
-
 			
 			iterator begin() { return this->_rbt.begin(); }
             const_iterator begin() const { return this->_rbt.begin(); }
             iterator end() { return this->_rbt.end(); }
             const_iterator end() const { return this->_rbt.end(); }
 			
-            reverse_iterator rbegin() { return this->_rbt.rbegin(); }
+			reverse_iterator rbegin() { return this->_rbt.rbegin(); }
             const_reverse_iterator rbegin() const { return this->_rbt.rbegin(); }
             reverse_iterator rend() { return this->_rbt.rend(); }
             const_reverse_iterator rend() const { return this->_rbt.rend(); }
@@ -237,7 +238,7 @@ namespace ft  {
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator>= ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
 		{ return !(lhs < rhs); }
-
+	
 	template <class Key, class T, class Compare, class Alloc>
 		void swap (Map<Key,T,Compare,Alloc>& x, Map<Key,T,Compare,Alloc>& y)
 		{ x.swap(y); }
