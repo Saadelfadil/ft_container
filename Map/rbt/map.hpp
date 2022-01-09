@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 23:19:09 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/09 03:07:31 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <iostream>
+#include <vector>
 #include "myRedBlackTree.hpp"
 #include "pair.hpp"
 #include "mapIterator.hpp"
-#include "../../Vector/vector.hpp"
-#include "../../Vector/reverse_iterator.hpp"
+#include "map_reverse_iterator.hpp"
 
 namespace ft  {
 	
@@ -46,8 +46,8 @@ namespace ft  {
 			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
 			typedef ft::MapIterator<const value_type, RedBlack, rbt > const_iterator;
 			
-			typedef ft::reverse_iterator<iterator> reverse_iterator;
-			typedef	ft::reverse_iterator<const_iterator> const_reverse_iterator;
+			typedef ft::map_reverse_iterator<iterator> reverse_iterator;
+			typedef	ft::map_reverse_iterator<const_iterator> const_reverse_iterator;
 			
 			typedef	ptrdiff_t	difference_type;
 			typedef	size_t		size_type;
@@ -155,7 +155,7 @@ namespace ft  {
 			}
 			void erase (iterator first, iterator last)
 			{
-				ft::Vector<key_t> tmp;
+				std::vector<key_t> tmp;
 				
 				while (first != last)
 				{
@@ -174,7 +174,11 @@ namespace ft  {
 				this->_rbt.swap(this->_size, x._size);
 			}
 			
-			void clear() { this->_rbt.clear(); }
+			void clear()
+			{
+				if (this->size() > 0)	
+					this->erase(this->begin(), this->end());
+			}
 
 
 			key_compare key_comp() const
@@ -238,16 +242,39 @@ namespace ft  {
 				size_type _size;
 	};
 
+	template <class InputIterator1, class InputIterator2>
+	bool map_equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
+	{
+		while (first1!=last1) {
+			if (!(*first1 == *first2))   // or: if (!pred(*first1,*first2)), for version 2
+			return false;
+			++first1; ++first2;
+		}
+		return true;
+	}
 
+	template <class InputIterator1, class InputIterator2>
+	bool map_lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
+									InputIterator2 first2, InputIterator2 last2)
+	{
+		while (first1!=last1)
+		{
+			if (first2==last2 || *first2<*first1) return false;
+			else if (*first1<*first2) return true;
+			++first1; ++first2;
+		}
+		return (first2!=last2);
+	}
+	
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator== ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
-			{ return ((lhs.size() == rhs.size()) && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));}
+			{ return ((lhs.size() == rhs.size()) && ft::map_equal(lhs.begin(), lhs.end(), rhs.begin()));}
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator!= ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
 		{ return !(lhs == rhs); }
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator<  ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
-		{ return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
+		{ return ft::map_lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()); }
 	template <class Key, class T, class Compare, class Alloc>
 		bool operator<= ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
 		{ return !(rhs < lhs); }

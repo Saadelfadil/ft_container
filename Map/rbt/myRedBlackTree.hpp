@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   myRedBlackTree.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 23:18:21 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/09 03:07:22 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <utility>
 #include "pair.hpp"
 #include "mapIterator.hpp"
-#include "../../Vector/reverse_iterator.hpp"
+#include "map_reverse_iterator.hpp"
 
 
 namespace ft {
@@ -60,8 +60,9 @@ namespace ft {
 			
 			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
 			typedef ft::MapIterator<const value_type, RedBlack, const rbt > const_iterator;
-			typedef ft::reverse_iterator<iterator > reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator > const_reverse_iterator;
+			
+			typedef ft::map_reverse_iterator<iterator > reverse_iterator;
+			typedef ft::map_reverse_iterator<const_iterator > const_reverse_iterator;
 			
 			typename Alloc::template rebind<RedBlackNode<value_type, Alloc> >::other _allocRebind;
 			// rebindAllocator _allocRebind;
@@ -236,6 +237,8 @@ namespace ft {
 			{
 				RedBlack *temp = x;
 			
+				if (temp == NULL)
+					return NULL;
 				while (temp->left != NULL)
 					temp = temp->left;
 			
@@ -375,10 +378,10 @@ namespace ft {
 			
 			void swapValues(RedBlack *u, RedBlack *v)
 			{
-				int tmp;
-				tmp = u->data->first;
-				u->data->first = v->data->first;
-				v->data->first = tmp;
+				value_type *tmp;
+				tmp = u->data;
+				u->data = v->data;
+				v->data = tmp;
 			}
 			
 			// deletes the given node
@@ -432,7 +435,7 @@ namespace ft {
 					if (targetNode == root)
 					{
 						// targetNode is root, assign the value of u to targetNode, and delete u
-						targetNode->data->first = nodeReplaceTarget->data->first;
+						targetNode->data = nodeReplaceTarget->data;
 						targetNode->left = targetNode->right = NULL;
 						_allocRebind.destroy(nodeReplaceTarget);
 						_allocRebind.deallocate(nodeReplaceTarget, 1);
@@ -539,11 +542,6 @@ namespace ft {
 			// 	return this->_rbt.deleteByVal(k);
 			// }
 			
-			void clear()
-			{
-				if (this->size() > 0)
-					this->erase(this->begin(), this->end());
-			}
 
 			iterator find (const key& k)
 			{
