@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 17:29:15 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 00:42:53 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/09 16:27:11 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ namespace ft
             
             Node *base() const { return this->_node;}
 
-            operator MapIterator<const T, Node, Tree>() const { return MapIterator<const T, Node, Tree>(_node, _rbt);}
+            operator MapIterator<const T, Node, const Tree>() const { return MapIterator<const T, Node, const Tree>(_node, _rbt);}
             
             friend bool operator== (const MapIterator& lhs, const MapIterator& rhs) { return lhs.base() == rhs.base(); }
             friend bool operator!= (const MapIterator& lhs, const MapIterator& rhs) { return !operator==(lhs, rhs); }

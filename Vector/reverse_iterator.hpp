@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reverse_iterator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:43:04 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/07 15:00:32 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/09 00:37:39 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,7 @@ namespace ft {
 		};
 
 		virtual ~reverse_iterator(){};
-
 		
-
 		reference operator*() {return *this->_iterator;}
 		
 		const_pointer operator*() const  {return *this->_iterator;}

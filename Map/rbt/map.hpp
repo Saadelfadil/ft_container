@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 03:07:31 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/09 18:07:44 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ namespace ft  {
 			>
 	class Map
 	{
-		private:
-			ft::RedBlackTree<ft::pair< const Key, T>, Compare, Alloc> _rbt;
-			
+		
 		public:
 			typedef Key			key_type;
 			typedef T			mapped_type;
@@ -44,7 +42,7 @@ namespace ft  {
 			typedef typename    allocator_type::const_pointer       const_pointer;
 			
 			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
-			typedef ft::MapIterator<const value_type, RedBlack, rbt > const_iterator;
+			typedef ft::MapIterator<const value_type, RedBlack, const rbt > const_iterator;
 			
 			typedef ft::map_reverse_iterator<iterator> reverse_iterator;
 			typedef	ft::map_reverse_iterator<const_iterator> const_reverse_iterator;
@@ -83,16 +81,15 @@ namespace ft  {
 			
 			Map& operator= (const Map& x)
 			{
-				if (this != &x)
-				{
-					this->clear();
-					this->_cmp = x.key_comp();
-					this->_rbt = x._rbt;
-				}
+				this->clear();
+				this->insert(x.begin(),x.end());
+				this->_cmp = x._cmp;
+				this->_alloc = x._alloc;
+				this->_size = x._size;
 				return *this;
 			}
 			
-			~Map() {};
+			~Map() {this->clear();};
 			
 			iterator begin() { return this->_rbt.begin(); }
             const_iterator begin() const { return this->_rbt.begin(); }
@@ -146,16 +143,21 @@ namespace ft  {
 			void erase (iterator position)
 			{
 				this->_rbt.deleteByVal(*position);
+					this->_size--;
 			}
 			
 			size_type erase (const key_type& k)
 			{
-				this->_size--;
-				return this->_rbt.deleteByVal(k);
+				if (this->_rbt.deleteByVal(ft::make_pair(k, mapped_type())))
+				{
+					this->_size--;
+					return 1;
+				}
+				return 0;
 			}
 			void erase (iterator first, iterator last)
 			{
-				std::vector<key_t> tmp;
+				std::vector<key_type> tmp;
 				
 				while (first != last)
 				{
@@ -164,7 +166,7 @@ namespace ft  {
 				}
 				for (size_type i = 0; i < tmp.size(); i++)
 				{
-					this->_rbt.deleteByVal(tmp[i]);
+					this->erase(tmp[i]);
 				}
 			}
 			
@@ -237,6 +239,7 @@ namespace ft  {
 				return this->_alloc;
 			}
 			private:
+				rbt _rbt;
 				Compare _cmp;
 				Alloc _alloc;
 				size_type _size;

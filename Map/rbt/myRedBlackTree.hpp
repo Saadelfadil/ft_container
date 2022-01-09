@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 03:07:22 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/09 16:41:09 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ namespace ft {
 
 			// find node that do not have a left child
 			// in the subtree of the given node
-			RedBlack *successor(RedBlack *x)
+			RedBlack *successor(RedBlack *x) const
 			{
 				RedBlack *temp = x;
 			
@@ -532,17 +532,6 @@ namespace ft {
 				b = tmp;
 			}
 			
-			// void erase (iterator position)
-			// {
-			// 	this->erase(position->first);
-			// }
-
-			// size_type erase (const key_type& k)
-			// {
-			// 	return this->_rbt.deleteByVal(k);
-			// }
-			
-
 			iterator find (const key& k)
 			{
 				RedBlack *tmp = search(k);
