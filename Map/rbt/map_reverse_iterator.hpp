@@ -6,14 +6,14 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:43:04 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 02:12:22 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/09 19:23:37 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <iostream>
 #include <string>
-#include "../../Vector/iterator_traits.hpp"
+#include "map_iterator_traits.hpp"
 #include "mapIterator.hpp"
 
 namespace ft {
@@ -22,13 +22,13 @@ namespace ft {
 	class map_reverse_iterator {
 		public:
 			typedef Iterator iterator_type;
-			typedef typename  Iterator_traits<Iterator>::iterator_category iterator_category;
-			typedef typename  Iterator_traits<Iterator>::value_type value_type;
-			typedef typename  Iterator_traits<Iterator>::difference_type difference_type;
-			typedef typename  Iterator_traits<Iterator>::pointer pointer;
-			typedef typename  Iterator_traits<Iterator>::pointer const *const_pointer;
-			typedef typename  Iterator_traits<Iterator>::reference reference;
-			typedef typename  Iterator_traits<Iterator>::reference const &const_reference;
+			typedef typename  Iterator::iterator_category iterator_category;
+			typedef typename  Iterator::value_type value_type;
+			typedef typename  Iterator::difference_type difference_type;
+			typedef typename  Iterator::pointer pointer;
+			typedef typename  Iterator::pointer const *const_pointer;
+			typedef typename  Iterator::reference reference;
+			typedef typename  Iterator::reference const &const_reference;
 			
 		protected:
 			iterator_type _iterator;

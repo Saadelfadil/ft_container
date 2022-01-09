@@ -6,12 +6,12 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 17:29:15 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 16:27:11 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/09 19:27:09 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#include "../../Vector/iterator_traits.hpp"
+#include "map_iterator_traits.hpp"
 
 namespace ft
 {
