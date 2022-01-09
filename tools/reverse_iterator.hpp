@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:43:04 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 00:37:39 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/09 20:31:27 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <iostream>
 #include <string>
 #include "iterator_traits.hpp"
-#include "iterator.hpp"
+#include "../Vector/iterator.hpp"
+#include "../Map/mapIterator.hpp"
 
 namespace ft {
 	

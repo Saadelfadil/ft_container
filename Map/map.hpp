@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 18:07:44 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/09 20:19:07 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "myRedBlackTree.hpp"
 #include "pair.hpp"
 #include "mapIterator.hpp"
-#include "map_reverse_iterator.hpp"
+#include "../tools/reverse_iterator.hpp"
 
 namespace ft  {
 	
@@ -44,8 +44,8 @@ namespace ft  {
 			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
 			typedef ft::MapIterator<const value_type, RedBlack, const rbt > const_iterator;
 			
-			typedef ft::map_reverse_iterator<iterator> reverse_iterator;
-			typedef	ft::map_reverse_iterator<const_iterator> const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator> reverse_iterator;
+			typedef	ft::reverse_iterator<const_iterator> const_reverse_iterator;
 			
 			typedef	ptrdiff_t	difference_type;
 			typedef	size_t		size_type;

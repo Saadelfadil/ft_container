@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 16:41:09 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/09 20:19:58 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <utility>
 #include "pair.hpp"
 #include "mapIterator.hpp"
-#include "map_reverse_iterator.hpp"
+#include "../tools/reverse_iterator.hpp"
 
 
 namespace ft {
@@ -61,8 +61,8 @@ namespace ft {
 			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
 			typedef ft::MapIterator<const value_type, RedBlack, const rbt > const_iterator;
 			
-			typedef ft::map_reverse_iterator<iterator > reverse_iterator;
-			typedef ft::map_reverse_iterator<const_iterator > const_reverse_iterator;
+			typedef ft::reverse_iterator<iterator > reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator > const_reverse_iterator;
 			
 			typename Alloc::template rebind<RedBlackNode<value_type, Alloc> >::other _allocRebind;
 			// rebindAllocator _allocRebind;

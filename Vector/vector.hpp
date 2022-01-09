@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/21 14:02:44 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/09 20:32:41 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <iostream>
 #include <string>
-#include "reverse_iterator.hpp"
+#include "../tools/reverse_iterator.hpp"
 #include "iterator.hpp"
 
 namespace ft {

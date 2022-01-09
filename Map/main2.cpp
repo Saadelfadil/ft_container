@@ -5,7 +5,7 @@
 // you should include your path to this files
 
 #include "map.hpp"       // your Map path.
-#include "../../Vector/vector.hpp" // your Vector path.
+#include "../Vector/vector.hpp" // your Vector path.
 #include "pair.hpp"  // path to ft::pair.
 // #include "map-test-helper.hpp"
 #include <map>
