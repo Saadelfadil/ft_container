@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/10 23:55:22 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/11 00:04:18 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,11 @@ namespace ft {
 			typedef ft::reverse_iterator<const_iterator > const_reverse_iterator;
 			
 			typename Alloc::template rebind<RedBlackNode<value_type, Alloc> >::other _allocRebind;
-			// rebindAllocator _allocRebind;
+
 
 		private:
 			allocator_type _alloc;
 			key_compare _cmp;
-
 		private:
 			RedBlack *root;
 
@@ -531,6 +530,7 @@ namespace ft {
 				std::swap(root, src.root);
 				std::swap(_alloc, src._alloc);
 				std::swap(_cmp, src._cmp);
+				std::swap(_allocRebind, src._allocRebind);
 			}
 
 			// void swap( RedBlackTree& other )
