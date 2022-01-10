@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/10 03:39:19 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/10 17:01:14 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,13 +125,11 @@ namespace ft  {
 			iterator insert (iterator position, const value_type& val)
 			{
 				(void)position;
-				this->_size++;
 				return (this->insert(val)).first;
 			}
 			template <class InputIterator>
   				void insert (InputIterator first, InputIterator last)
 				{
-					_size++;
 					while (first != last)
 					{
 						this->insert(*first);
@@ -170,11 +168,21 @@ namespace ft  {
 				}
 			}
 			
-			void swap (Map& x)
-			{
-				this->_rbt.swap(x._rbt);
-				this->_rbt.swap(this->_size, x._size);
-			}
+			// void swap (Map& x)
+			// {
+			// 	this->_rbt.swap(x._rbt);
+			// 	std::swap(this->_size, x._size);
+			// }
+
+			// void	swap (Map& x)
+			// {
+			// 	std::swap(_size, x._size);
+			// 	std::swap(_alloc, x._alloc);
+			// 	std::swap(_cmp, x._cmp);
+			// 	this->_rbt.swap(x._rbt);
+			// }
+
+			void swap (Map& x){_rbt.swap(x._rbt);}
 			
 			void clear()
 			{
@@ -195,11 +203,13 @@ namespace ft  {
 
 			iterator find (const key_type& k)
 			{
-				return this->_rbt.find(k);
+				value_type val = ft::make_pair(k, mapped_type());
+				return this->_rbt.find(val);
 			}
 			const_iterator find (const key_type& k) const
 			{
-				return this->_rbt.find(k);
+				value_type val = ft::make_pair(k, mapped_type());
+				return this->_rbt.find(val);
 			}
 
 			size_type count (const key_type& k) const
@@ -270,6 +280,10 @@ namespace ft  {
 	}
 	
 	template <class Key, class T, class Compare, class Alloc>
+		void swap (Map<Key,T,Compare,Alloc>& x, Map<Key,T,Compare,Alloc>& y)
+		{ x.swap(y); }
+	
+	template <class Key, class T, class Compare, class Alloc>
 		bool operator== ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
 			{ return ((lhs.size() == rhs.size()) && ft::map_equal(lhs.begin(), lhs.end(), rhs.begin()));}
 	template <class Key, class T, class Compare, class Alloc>
@@ -288,7 +302,4 @@ namespace ft  {
 		bool operator>= ( const Map<Key,T,Compare,Alloc>& lhs, const Map<Key,T,Compare,Alloc>& rhs )
 		{ return !(lhs < rhs); }
 	
-	template <class Key, class T, class Compare, class Alloc>
-		void swap (Map<Key,T,Compare,Alloc>& x, Map<Key,T,Compare,Alloc>& y)
-		{ x.swap(y); }
 };
