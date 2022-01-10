@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 22:19:16 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/10 03:39:19 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ namespace ft  {
             size_type size() const { return this->_size; }
             size_type max_size() const { return this->_rbt.max_size(); }
 
-			mapped_type& operator[] (const key_type& k) { return (*((this->insert(make_pair(k,mapped_type()))).first)).second; }
+			mapped_type& operator[] (const key_type& k) { return (*((this->insert(ft::make_pair(k,mapped_type()))).first)).second; }
 			
 			// insert
 			pair<iterator,bool> insert (const value_type& val)
