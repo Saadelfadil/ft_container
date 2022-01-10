@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/10 16:58:51 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/10 23:55:22 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -526,25 +526,25 @@ namespace ft {
 			// 	std::swap(this->_alloc, other._alloc);
 			// }
 			
-			// void	swap (RedBlackTree &src )
+			void	swap (RedBlackTree &src )
+			{
+				std::swap(root, src.root);
+				std::swap(_alloc, src._alloc);
+				std::swap(_cmp, src._cmp);
+			}
+
+			// void swap( RedBlackTree& other )
 			// {
-			// 	std::swap(root, src.root);
-			// 	std::swap(_alloc, src._alloc);
-			// 	std::swap(_cmp, src._cmp);
+			// 	this->swap(this->root,other.root);
 			// }
 
-			void swap( RedBlackTree& other ){
-				this->swap(this->root,other.root);
-				this->swap(this->_size,other._size);
-			}
-
-			template<class B>
-			void swap(B& a,B& b)
-			{
-				B tmp = a;
-				a = b;
-				b = tmp;
-			}
+			// template<class B>
+			// void swap(B& a,B& b)
+			// {
+			// 	B tmp = a;
+			// 	a = b;
+			// 	b = tmp;
+			// }
 
 			// template<class S>
 			// void swap(S& a,S& b)

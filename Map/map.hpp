@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/10 17:01:14 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/10 23:54:47 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,15 +174,19 @@ namespace ft  {
 			// 	std::swap(this->_size, x._size);
 			// }
 
-			// void	swap (Map& x)
-			// {
-			// 	std::swap(_size, x._size);
-			// 	std::swap(_alloc, x._alloc);
-			// 	std::swap(_cmp, x._cmp);
-			// 	this->_rbt.swap(x._rbt);
-			// }
+			void	swap (Map& x)
+			{
+				std::swap(_size, x._size);
+				std::swap(_alloc, x._alloc);
+				std::swap(_cmp, x._cmp);
+				this->_rbt.swap(x._rbt);
+			}
 
-			void swap (Map& x){_rbt.swap(x._rbt);}
+			// void swap (Map& x)
+			// {
+			// 	this->_rbt.swap(x._rbt);
+			// 	std::swap(this->_size,x._size); 
+			// }
 			
 			void clear()
 			{
