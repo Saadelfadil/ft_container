@@ -1454,16 +1454,12 @@ void testModifiers()
 
             start = get_time();
             m1.swap(m2);
-            std::cout << "STD " << m1.size() << std::endl;
-            std::cout << "STD " << m2.size() << std::endl;
             end = get_time();
             diff = end - start;
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
             /*-----------------------------------------------------*/
             ualarm(diff * 1e3, 0);
             ft_m1.swap(ft_m2);
-            std::cout << "My " << ft_m1.size() << std::endl;
-            std::cout << "My " << ft_m2.size() << std::endl;
             ualarm(0, 0);
             /*----------------------------------------------------*/
 
@@ -1527,6 +1523,7 @@ void testModifiers()
 
         cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
 
+
         std::map<std::string, std::string, std::greater<std::string> > m1, m2;
         ft::Map<std::string, std::string, std::greater<std::string> > ft_m1, ft_m2;
 
@@ -1549,16 +1546,33 @@ void testModifiers()
         ft_m2["ε"] = "epsilon";
 
         const std::pair<std::string, std::string> &ref = *(m1.begin());
+        // std::cout << "DUO -> " << ref.first << std::endl;
+        // std::cout << "DUO -> " << ref.second << std::endl;
         const std::map<std::string, std::string, std::greater<std::string> >::iterator iter = std::next(m1.begin());
         const ft::pair<std::string, std::string> &ft_ref = *(ft_m1.begin());
+        std::cout << "DUO -> " << ft_ref.first << std::endl;
+        std::cout << "DUO -> " << ft_ref.second << std::endl;
         const ft::Map<std::string, std::string, std::greater<std::string> >::iterator ft_iter = std::next(ft_m1.begin());
-
         // std::cout << "──────── before swap ────────\n"
         //           << "m1: " << m1 << "m2: " << m2 << "ref: " << ref
         //           << "\niter: " << *iter << '\n';
 
         cond = cond && ref.first == ft_ref.first && ref.second == ft_ref.second && iter->second == ft_iter->second && iter->first == ft_iter->first && m1.size() == ft_m1.size() && m2.size() && ft_m2.size();
 
+        std::cout << std::endl;
+        std::cout << "STD SWAP -> " << ref.first << std::endl;
+        std::cout << "My SWAP -> " << ft_ref.first << std::endl;
+        std::cout << "STD SWAP -> " << ref.second << std::endl;
+        std::cout << "My SWAP -> " << ft_ref.second << std::endl;
+        // std::cout << "STD SWAP -> " << iter->second << std::endl;
+        // std::cout << "My SWAP -> " << ft_iter->second << std::endl;
+        // std::cout << "STD SWAP -> " << iter->first << std::endl;
+        // std::cout << "My SWAP -> " << ft_iter->first << std::endl;
+        // std::cout << "STD SWAP -> " << m1.size() << std::endl;
+        // std::cout << "My SWAP -> " << ft_m1.size() << std::endl;
+        // std::cout << "STD SWAP -> " << m2.size() << std::endl;
+        // std::cout << "My SWAP -> " << ft_m2.size() << std::endl;
+        std::cout << "Cond  -> " << cond << std::endl;
         m1.swap(m2);
         ft_m1.swap(ft_m2);
 

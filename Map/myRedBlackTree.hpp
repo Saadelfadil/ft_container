@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/11 00:04:18 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/11 00:30:12 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ namespace ft {
 
 			RedBlackTree()
 			{
-				this->root = nullptr;
+				this->root = NULL;
 			}
 			
 			void rotateLeft(RedBlack *&root, RedBlack *&node)
@@ -525,7 +525,7 @@ namespace ft {
 			// 	std::swap(this->_alloc, other._alloc);
 			// }
 			
-			void	swap (RedBlackTree &src )
+			void	swap (RedBlackTree &src)
 			{
 				std::swap(root, src.root);
 				std::swap(_alloc, src._alloc);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pair.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/14 23:08:20 by sel-fadi          #+#    #+#             */
-/*   Updated: 2021/12/23 11:46:09 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/11 02:50:17 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,12 @@ namespace ft
 			typedef T2 second_type;
 			
 			pair() : first(), second() {};
+			
+			pair ( const first_type &a, const second_type &b ) : first(a), second(b) {};
+			
 			template<class U, class V> 
 			pair ( const pair<U, V>& pai ) : first(pai.first), second(pai.second) {};
-			pair ( const first_type &a, const second_type &b ) : first(a), second(b) {};
+			
 			pair& operator= ( const pair& pai )
 			{
 				if (this != &pai)

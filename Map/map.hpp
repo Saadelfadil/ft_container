@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/10 23:54:47 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/11 00:09:00 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ namespace ft  {
 			
 			typedef	ptrdiff_t	difference_type;
 			typedef	size_t		size_type;
+			
 			public:
 				class value_compare : public std::binary_function<value_type,value_type,bool>
 				{   
