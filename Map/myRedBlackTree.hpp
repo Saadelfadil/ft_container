@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/11 00:30:12 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/11 23:22:07 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -470,7 +470,7 @@ namespace ft {
 			// searches for given value
 			// if found returns the node (used for delete)
 			// else returns the last node while traversing (used in insert)
-			RedBlack *search(value_type val)
+			RedBlack *search(value_type val) const
 			{
 				RedBlack *tmp = root;
 				while (1)
@@ -571,26 +571,29 @@ namespace ft {
 
 			size_type count (const key& k) const 
 			{
-				RedBlack *tmp = search(k);
+				value_type val = ft::make_pair(k, mapped_type());
+				RedBlack *tmp = search(val);
 				if (!tmp)
 					return 0;
 				else
 					return 1;
 			}
+			
 			RedBlack *found(key index,RedBlack *root,RedBlack **p)  const
 			{
 				if (!root)
 					return root;
-				if (_comp(index, root->p->first))
+				if (_cmp(index, root->data->first))
 				{   
 					*p = root;
 					return found(index,root->left,p);
 				}
-				else if (_comp(root->p->first,index))
+				else if (_cmp(root->data->first,index))
 					return found(index,root->right,p);
 				else 
 					return root;
 			}
+			
 			iterator lower_bound (const key& k)
 			{
 				RedBlack *p = NULL;

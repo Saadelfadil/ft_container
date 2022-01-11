@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/11 00:09:00 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/11 23:11:01 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,12 @@ namespace ft  {
 			
 			typedef	ptrdiff_t	difference_type;
 			typedef	size_t		size_type;
-			
-			public:
 				class value_compare : public std::binary_function<value_type,value_type,bool>
 				{   
 					protected:
 						Compare comp;
-						value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
 					public:
+						value_compare (Compare c) : comp(c) {}  // constructed with map's comparison object
 						typedef bool result_type;
 						typedef value_type first_argument_type;
 						typedef value_type second_argument_type;
@@ -169,12 +167,6 @@ namespace ft  {
 				}
 			}
 			
-			// void swap (Map& x)
-			// {
-			// 	this->_rbt.swap(x._rbt);
-			// 	std::swap(this->_size, x._size);
-			// }
-
 			void	swap (Map& x)
 			{
 				std::swap(_size, x._size);
@@ -182,19 +174,12 @@ namespace ft  {
 				std::swap(_cmp, x._cmp);
 				this->_rbt.swap(x._rbt);
 			}
-
-			// void swap (Map& x)
-			// {
-			// 	this->_rbt.swap(x._rbt);
-			// 	std::swap(this->_size,x._size); 
-			// }
 			
 			void clear()
 			{
 				if (this->size() > 0)	
 					this->erase(this->begin(), this->end());
 			}
-
 
 			key_compare key_comp() const
 			{
@@ -204,7 +189,6 @@ namespace ft  {
 			{
 				return value_compare(_cmp);
 			}
-
 
 			iterator find (const key_type& k)
 			{
