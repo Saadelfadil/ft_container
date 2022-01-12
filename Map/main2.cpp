@@ -1524,8 +1524,8 @@ void testModifiers()
         cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
 
 
-        std::map<std::string, std::string, std::greater<std::string> > m1, m2;
-        ft::Map<std::string, std::string, std::greater<std::string> > ft_m1, ft_m2;
+        std::map<std::string, std::string, std::less<std::string> > m1, m2;
+        ft::Map<std::string, std::string, std::less<std::string> > ft_m1, ft_m2;
 
         m1["γ"] = "gamma";
         m1["β"] = "beta";
@@ -1546,26 +1546,12 @@ void testModifiers()
         ft_m2["ε"] = "epsilon";
 
         const std::pair<std::string, std::string> &ref = *(m1.begin());
-        const std::map<std::string, std::string, std::greater<std::string> >::iterator iter = std::next(m1.begin());
+        const std::map<std::string, std::string, std::less<std::string> >::iterator iter = std::next(m1.begin());
         const ft::pair<std::string, std::string> &ft_ref = *(ft_m1.begin());
-        const ft::Map<std::string, std::string, std::greater<std::string> >::iterator ft_iter = std::next(ft_m1.begin());
+        const ft::Map<std::string, std::string, std::less<std::string> >::iterator ft_iter = std::next(ft_m1.begin());
 
         cond = cond && ref.first == ft_ref.first && ref.second == ft_ref.second && iter->second == ft_iter->second && iter->first == ft_iter->first && m1.size() == ft_m1.size() && m2.size() && ft_m2.size();
 
-        std::cout << std::endl;
-        std::cout << "STD SWAP -> " << ref.first << std::endl;
-        std::cout << "My SWAP -> " << ft_ref.first << std::endl;
-        std::cout << "STD SWAP -> " << ref.second << std::endl;
-        std::cout << "My SWAP -> " << ft_ref.second << std::endl;
-        // std::cout << "STD SWAP -> " << iter->second << std::endl;
-        // std::cout << "My SWAP -> " << ft_iter->second << std::endl;
-        // std::cout << "STD SWAP -> " << iter->first << std::endl;
-        // std::cout << "My SWAP -> " << ft_iter->first << std::endl;
-        // std::cout << "STD SWAP -> " << m1.size() << std::endl;
-        // std::cout << "My SWAP -> " << ft_m1.size() << std::endl;
-        // std::cout << "STD SWAP -> " << m2.size() << std::endl;
-        // std::cout << "My SWAP -> " << ft_m2.size() << std::endl;
-        std::cout << "Cond  -> " << cond << std::endl;
         m1.swap(m2);
         ft_m1.swap(ft_m2);
 
@@ -2224,45 +2210,45 @@ int main ()
     std::cout << RED << "--------------------------------------------------------------------------------------------------------" << RESET << std::endl;
     signal(SIGALRM, alarm_handler);
 
-    // std::cout << YELLOW << "Testing Iterators;" << RESET << std::endl;
-    // TEST_CASE(iterator_tests);
-    // TEST_CASE(const_iterator_tests);
-    // TEST_CASE(reverse_iterator_tests);
-    // std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
-    // TEST_CASE(testConstructors);
+    std::cout << YELLOW << "Testing Iterators;" << RESET << std::endl;
+    TEST_CASE(iterator_tests);
+    TEST_CASE(const_iterator_tests);
+    TEST_CASE(reverse_iterator_tests);
+    std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
+    TEST_CASE(testConstructors);
 
-    // std::cout << YELLOW << "Testing Iterator Methods;" << RESET << std::endl;
-    // TEST_CASE(testIterators);
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Iterator Methods;" << RESET << std::endl;
+    TEST_CASE(testIterators);
+    std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Capacity Methods;" << RESET << std::endl;
-    // TEST_CASE(testCapacityMethods)
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Capacity Methods;" << RESET << std::endl;
+    TEST_CASE(testCapacityMethods)
+    std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
-    // TEST_CASE(testElementAccess);
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
+    TEST_CASE(testElementAccess);
+    std::cout << std::endl;
 
     // still last test of swap WA
     std::cout << YELLOW << "Testing Modifiers Methods;" << RESET << std::endl;
     TEST_CASE(testModifiers)
     std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Observers Methods;" << RESET << std::endl;
-    // TEST_CASE(testObservers)
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Observers Methods;" << RESET << std::endl;
+    TEST_CASE(testObservers)
+    std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Operations Methods;" << RESET << std::endl;
-    // TEST_CASE(testOperations)
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Operations Methods;" << RESET << std::endl;
+    TEST_CASE(testOperations)
+    std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Allocator Methods;" << RESET << std::endl;
-    // TEST_CASE(testAllocatorMethodes)
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Allocator Methods;" << RESET << std::endl;
+    TEST_CASE(testAllocatorMethodes)
+    std::cout << std::endl;
 
-    // std::cout << YELLOW << "Testing Retional Operators; " << RESET << std::endl;
-    // TEST_CASE(testRetionalOperators);
-    // std::cout << std::endl;
+    std::cout << YELLOW << "Testing Retional Operators; " << RESET << std::endl;
+    TEST_CASE(testRetionalOperators);
+    std::cout << std::endl;
 
     // std::cout << YELLOW << "Testing Non-Member Swap  ; " << RESET << std::endl;
     // TEST_CASE(testNonMemberSwap);
