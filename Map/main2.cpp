@@ -28,7 +28,7 @@
 #define RESET "\e[0m"
 
 #define EQUAL(x) ((x) ? (std::cout << "\033[1;32mAC\033[0m\n") : (std::cout << "\033[1;31mWA\033[0m\n"))
-#define TIME_FAC 4 // the ft::Map methods can be slower up to std::map methods * TIME_FAC (MAX 20)
+#define TIME_FAC 5 // the ft::Map methods can be slower up to std::map methods * TIME_FAC (MAX 20)
 
 typedef std::pair<std::map<int, std::string>::iterator, std::map<int, std::string>::iterator> iter_def;
 typedef ft::pair<ft::Map<int, std::string>::iterator, ft::Map<int, std::string>::iterator> ft_iter_def;
@@ -1546,16 +1546,9 @@ void testModifiers()
         ft_m2["ε"] = "epsilon";
 
         const std::pair<std::string, std::string> &ref = *(m1.begin());
-        // std::cout << "DUO -> " << ref.first << std::endl;
-        // std::cout << "DUO -> " << ref.second << std::endl;
         const std::map<std::string, std::string, std::greater<std::string> >::iterator iter = std::next(m1.begin());
         const ft::pair<std::string, std::string> &ft_ref = *(ft_m1.begin());
-        std::cout << "DUO -> " << ft_ref.first << std::endl;
-        std::cout << "DUO -> " << ft_ref.second << std::endl;
         const ft::Map<std::string, std::string, std::greater<std::string> >::iterator ft_iter = std::next(ft_m1.begin());
-        // std::cout << "──────── before swap ────────\n"
-        //           << "m1: " << m1 << "m2: " << m2 << "ref: " << ref
-        //           << "\niter: " << *iter << '\n';
 
         cond = cond && ref.first == ft_ref.first && ref.second == ft_ref.second && iter->second == ft_iter->second && iter->first == ft_iter->first && m1.size() == ft_m1.size() && m2.size() && ft_m2.size();
 
@@ -2231,48 +2224,48 @@ int main ()
     std::cout << RED << "--------------------------------------------------------------------------------------------------------" << RESET << std::endl;
     signal(SIGALRM, alarm_handler);
 
-    std::cout << YELLOW << "Testing Iterators;" << RESET << std::endl;
-    TEST_CASE(iterator_tests);
-    TEST_CASE(const_iterator_tests);
-    TEST_CASE(reverse_iterator_tests);
-    std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
-    TEST_CASE(testConstructors);
+    // std::cout << YELLOW << "Testing Iterators;" << RESET << std::endl;
+    // TEST_CASE(iterator_tests);
+    // TEST_CASE(const_iterator_tests);
+    // TEST_CASE(reverse_iterator_tests);
+    // std::cout << YELLOW << "Testing Constructors;" << RESET << std::endl;
+    // TEST_CASE(testConstructors);
 
-    std::cout << YELLOW << "Testing Iterator Methods;" << RESET << std::endl;
-    TEST_CASE(testIterators);
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Iterator Methods;" << RESET << std::endl;
+    // TEST_CASE(testIterators);
+    // std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Capacity Methods;" << RESET << std::endl;
-    TEST_CASE(testCapacityMethods)
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Capacity Methods;" << RESET << std::endl;
+    // TEST_CASE(testCapacityMethods)
+    // std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
-    TEST_CASE(testElementAccess);
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Access Element Methods; " << RESET << std::endl;
+    // TEST_CASE(testElementAccess);
+    // std::cout << std::endl;
 
     // still last test of swap WA
     std::cout << YELLOW << "Testing Modifiers Methods;" << RESET << std::endl;
     TEST_CASE(testModifiers)
     std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Observers Methods;" << RESET << std::endl;
-    TEST_CASE(testObservers)
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Observers Methods;" << RESET << std::endl;
+    // TEST_CASE(testObservers)
+    // std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Operations Methods;" << RESET << std::endl;
-    TEST_CASE(testOperations)
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Operations Methods;" << RESET << std::endl;
+    // TEST_CASE(testOperations)
+    // std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Allocator Methods;" << RESET << std::endl;
-    TEST_CASE(testAllocatorMethodes)
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Allocator Methods;" << RESET << std::endl;
+    // TEST_CASE(testAllocatorMethodes)
+    // std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Retional Operators; " << RESET << std::endl;
-    TEST_CASE(testRetionalOperators);
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Retional Operators; " << RESET << std::endl;
+    // TEST_CASE(testRetionalOperators);
+    // std::cout << std::endl;
 
-    std::cout << YELLOW << "Testing Non-Member Swap  ; " << RESET << std::endl;
-    TEST_CASE(testNonMemberSwap);
-    std::cout << std::endl;
+    // std::cout << YELLOW << "Testing Non-Member Swap  ; " << RESET << std::endl;
+    // TEST_CASE(testNonMemberSwap);
+    // std::cout << std::endl;
     return 0;
 }

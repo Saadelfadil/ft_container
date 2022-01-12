@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/11 23:22:07 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/12 01:22:09 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -499,8 +499,7 @@ namespace ft {
 				deleteNode(targetNode);
 				return 1;
 			}
-			
-			// functions of map //
+
 			iterator begin() { return iterator(successor(this->root), this); }
 			const_iterator begin() const { return const_iterator(successor(this->root),this); }
 			iterator end() { return iterator(NULL, this); }
@@ -519,12 +518,6 @@ namespace ft {
 				return (*((this->insertion(make_pair(k,mapped_type()))).first)).second;
 			}
 
-			// void swap( RedBlackTree& other )
-			// {
-			// 	std::swap(this->root, other.root);
-			// 	std::swap(this->_alloc, other._alloc);
-			// }
-			
 			void	swap (RedBlackTree &src)
 			{
 				std::swap(root, src.root);
@@ -532,27 +525,6 @@ namespace ft {
 				std::swap(_cmp, src._cmp);
 				std::swap(_allocRebind, src._allocRebind);
 			}
-
-			// void swap( RedBlackTree& other )
-			// {
-			// 	this->swap(this->root,other.root);
-			// }
-
-			// template<class B>
-			// void swap(B& a,B& b)
-			// {
-			// 	B tmp = a;
-			// 	a = b;
-			// 	b = tmp;
-			// }
-
-			// template<class S>
-			// void swap(S& a,S& b)
-			// {
-			// 	S tmp = a;
-			// 	a = b;
-			// 	b = tmp;
-			// }
 			
 			iterator find (const value_type& k)
 			{
