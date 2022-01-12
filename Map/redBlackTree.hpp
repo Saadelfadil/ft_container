@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   myRedBlackTree.hpp                                 :+:      :+:    :+:   */
+/*   redBlackTree.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/12 01:22:09 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/12 19:25:34 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,54 @@ namespace ft {
 		RedBlackNode(value_type val)
 		{
 			this->data = _alloc.allocate(1);
-			_alloc.construct(this->data, val);
+			_alloc.construct(this->data, value_type(val.first,val.second));
 			left = right = parent = NULL;
 			this->color = RED;
 		}
 		
+		RedBlackNode	&operator=(RedBlackNode const& src)
+		{
+			if (data)
+			{
+				_alloc.destroy(data);
+				_alloc.deallocate(data, 1);
+			}
+			this->data = _alloc.allocate(1);
+			_alloc.construct(this->data, value_type(src.first,src.second));
+			this->left = src.left;
+			this->right = src.right;
+			this->parent = src.parent;
+			this->color = src.color;
+			return *this;
+		}
+
+		RedBlackNode(const RedBlackNode& src)
+        {
+			if (data)
+			{
+				_alloc.destroy(data);
+				_alloc.deallocate(data, 1);
+			}
+            this->data = _alloc.allocate(1);
+            _alloc.construct(this->data, value_type(src.data->first, src.data->second));
+            this->parent = src.parent;
+            this->right = src.right;
+            this->left = src.left;
+            this->color = src.color;
+        }
+		
+		~RedBlackNode()
+		{
+			if (data)
+			{
+				_alloc.destroy(data);
+				_alloc.deallocate(data, 1);
+			}
+		}
+		
 	};
 	template < class T,                                     // map::key_type
-           class Compare = std::less<typename T::first_type>,                     // map::key_compare
+           class Compare,                     // map::key_compare
            class Alloc = std::allocator<T>    // map::allocator_type
            >
 	class RedBlackTree
@@ -70,16 +110,17 @@ namespace ft {
 		private:
 			allocator_type _alloc;
 			key_compare _cmp;
-		private:
 			RedBlack *root;
-
-		public:
-			RedBlack * getRoot() const { return this->root; }
+		
 		public:
 
 			RedBlackTree()
 			{
 				this->root = NULL;
+			}
+
+			~RedBlackTree()
+			{
 			}
 			
 			void rotateLeft(RedBlack *&root, RedBlack *&node)
@@ -204,17 +245,16 @@ namespace ft {
 				if (src == NULL)
 					return newNode;
 				/* Otherwise, recur down the tree */
-				if (newNode->data->first < src->data->first)
+				if (_cmp(newNode->data->first, src->data->first))
 				{
 					src->left  = insertionBST(src->left, newNode);
 					src->left->parent = src;
 				}
-				else if (newNode->data->first > src->data->first)
+				else
 				{
 					src->right = insertionBST(src->right, newNode);
 					src->right->parent = src;
 				}
-			
 				/* return the (unchanged) node pointer */
 				return src;
 			}
@@ -479,7 +519,7 @@ namespace ft {
 						return NULL;
 					if (val.first == tmp->data->first)
 						return tmp;
-					if (val.first < tmp->data->first)
+					if (_cmp(val.first, tmp->data->first))
 						tmp = tmp->left;
 					else
 						tmp = tmp->right;
@@ -500,6 +540,8 @@ namespace ft {
 				return 1;
 			}
 
+			RedBlack * getRoot() const { return this->root; }
+
 			iterator begin() { return iterator(successor(this->root), this); }
 			const_iterator begin() const { return const_iterator(successor(this->root),this); }
 			iterator end() { return iterator(NULL, this); }
@@ -518,6 +560,22 @@ namespace ft {
 				return (*((this->insertion(make_pair(k,mapped_type()))).first)).second;
 			}
 
+			void	clear_help(RedBlack *src)
+			{
+				if (src == NULL)
+					return ;
+				clear_help(src->left);
+				clear_help(src->right);
+				_alloc.deallocate(src->data, 1);
+				_allocRebind.deallocate(src, 1);
+			}
+			
+			void clear()
+			{
+				clear_help(root);
+				this->root = NULL;
+			}
+			
 			void	swap (RedBlackTree &src)
 			{
 				std::swap(root, src.root);
@@ -618,76 +676,6 @@ namespace ft {
 				return tmp;
 			}
 			
-		public:
-			void    print() { if (this->root) this->printHelper(this->root, nullptr, false); std::cout << std::endl;}
-		private:
-					/* ---------- | Recursive print of a "RBT" | ---------- */
-			struct Trunk {
-				Trunk *prev;
-				std::string str;
-				Trunk( Trunk *prev, std::string str ) { this->prev = prev; this->str = str; }
-			};
-			
-			void showTrunks(Trunk *p) {
-				if (p == nullptr) { return ; }
-				showTrunks(p->prev);
-				std::cout << p->str;
-			}
-
-			void printHelper( RedBlack* root, Trunk *prev, bool isLeft ) {
-				if (root == nullptr) { return; }
-				std::string prev_str = "    ";
-				Trunk *trunk = new Trunk(prev, prev_str);
-				printHelper(root->right, trunk, true);
-				if (!prev) { trunk->str = "——— "; }
-				else if (isLeft) { trunk->str = " .——— "; prev_str = "   |"; }
-				else { trunk->str = " `——— "; prev->str = prev_str; }
-				showTrunks(trunk);
-				std::string sColor = root->color ? "R" : "B";
-				std::cout << root->data->first << "(" << sColor <<  ")" << std::endl;
-				if (prev) { prev->str = prev_str; }
-				trunk->str = "   |";
-				printHelper(root->left, trunk, false);
-			}
 	};
 }
-
-	// int main()
-	//  {
-	// 	ft::RedBlackTree<ft::pair<int, int> > redblack;
-	// 	ft::pair<int, int> f  = ft::make_pair(55, 1);
-	// 	ft::pair<int, int> f1 = ft::make_pair(40, 2);
-	// 	ft::pair<int, int> f2 = ft::make_pair(65, 3);
-	// 	ft::pair<int, int> f3 = ft::make_pair(60, 4);
-	// 	ft::pair<int, int> f4 = ft::make_pair(75, 5);
-	// 	ft::pair<int, int> f5 = ft::make_pair(57, 6);
-	// 	ft::pair<int, int> f6 = ft::make_pair(56, 7);
-	// 	ft::pair<int, int> f7 = ft::make_pair(64, 8);
-	// 	ft::pair<int, int> f8 = ft::make_pair(12, 9);
-	// 	redblack.insertion(f);
-	// 	redblack.insertion(f1);
-	// 	redblack.insertion(f2);
-	// 	redblack.insertion(f3);
-	// 	redblack.insertion(f4);
-	// 	redblack.insertion(f5);
-	// 	redblack.insertion(f6);
-	// 	redblack.insertion(f7);
-	// 	redblack.insertion(f8);
-		
-	// 	std::cout << std::endl
-	// 	   << "After Insertion" << std::endl;
-	// 	redblack.print();
-		
-	// 	std::cout << std::endl
-	// 	   << "After deleting" << std::endl;
-		
-	// 	redblack.deleteByVal(f8);
-	// 	redblack.deleteByVal(f6);
-	// 	redblack.deleteByVal(f7);
-	// 	redblack.deleteByVal(f4);
-	// 	redblack.deleteByVal(f);
-	// 	redblack.deleteByVal(f2);
-	// 	redblack.deleteByVal(f5);
-	// 	redblack.print();
-	// 	}
 

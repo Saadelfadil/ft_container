@@ -6,7 +6,7 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/12 01:27:04 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/12 19:28:34 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,9 @@ namespace ft  {
 				return *this;
 			}
 			
-			~Map() {this->clear();};
+			~Map()
+			{
+			}
 			
 			iterator begin() { return this->_rbt.begin(); }
             const_iterator begin() const { return this->_rbt.begin(); }
@@ -177,8 +179,8 @@ namespace ft  {
 			
 			void clear()
 			{
-				if (this->size() > 0)	
-					this->erase(this->begin(), this->end());
+				this->_rbt.clear();
+				this->_size = 0;
 			}
 
 			key_compare key_comp() const
