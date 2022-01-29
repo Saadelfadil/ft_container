@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redBlackTree.hpp                                   :+:      :+:    :+:   */
+/*   SetRBT.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/30 00:26:51 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/30 00:19:40 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ namespace ft {
 		RedBlackNode(value_type val)
 		{
 			this->data = _alloc.allocate(1);
-			_alloc.construct(this->data, value_type(val.first,val.second));
+			_alloc.construct(this->data, val);
 			left = right = parent = NULL;
 			this->color = RED;
 		}
@@ -72,11 +72,11 @@ namespace ft {
 		
 		~RedBlackNode()
 		{
-			// if (data)
-			// {
-			// 	_alloc.destroy(data);
-			// 	_alloc.deallocate(data, 1);
-			// }
+			if (data)
+			{
+				_alloc.destroy(data);
+				_alloc.deallocate(data, 1);
+			}
 		}
 		
 	};
