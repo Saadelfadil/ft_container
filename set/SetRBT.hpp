@@ -6,15 +6,15 @@
 /*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/30 00:19:40 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/30 01:07:53 by mcadmin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <iostream>
 #include <utility>
-#include "pair.hpp"
-#include "mapIterator.hpp"
+#include "../Map/pair.hpp"
+#include "setIterator.hpp"
 #include "../tools/reverse_iterator.hpp"
 
 
@@ -31,7 +31,7 @@ namespace ft {
 		RedBlackNode *left;
 		bool color;
 
-		RedBlackNode(value_type val)
+		RedBlackNode(value_type *val)
 		{
 			this->data = _alloc.allocate(1);
 			_alloc.construct(this->data, val);
@@ -72,11 +72,11 @@ namespace ft {
 		
 		~RedBlackNode()
 		{
-			if (data)
-			{
-				_alloc.destroy(data);
-				_alloc.deallocate(data, 1);
-			}
+			// if (data)
+			// {
+			// 	_alloc.destroy(data);
+			// 	_alloc.deallocate(data, 1);
+			// }
 		}
 		
 	};
@@ -87,9 +87,7 @@ namespace ft {
 	class RedBlackTree
 	{
 		public:
-			typedef typename T::first_type key;
-			typedef typename T::second_type mapped_type;
-			typedef pair<key, mapped_type> value_type;
+			typedef T value_type;
 			typedef Compare     key_compare;
             typedef Alloc       allocator_type;
             typedef ptrdiff_t   difference_type;
@@ -98,8 +96,8 @@ namespace ft {
 			typedef	RedBlackNode<value_type, Alloc>	RedBlack;
 			typedef RedBlackTree<value_type, Compare, Alloc> rbt;
 			
-			typedef ft::MapIterator<value_type, RedBlack, rbt > iterator;
-			typedef ft::MapIterator<const value_type, RedBlack, const rbt > const_iterator;
+			typedef ft::SetIterator<value_type, RedBlack, rbt > iterator;
+			typedef ft::SetIterator<const value_type, RedBlack, const rbt > const_iterator;
 			
 			typedef ft::reverse_iterator<iterator > reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator > const_reverse_iterator;
@@ -246,7 +244,7 @@ namespace ft {
 				if (src == NULL)
 					return newNode;
 				/* Otherwise, recur down the tree */
-				if (_cmp(newNode->data->first, src->data->first))
+				if (_cmp(newNode->data, src->data))
 				{
 					src->left  = insertionBST(src->left, newNode);
 					src->left->parent = src;
@@ -260,7 +258,7 @@ namespace ft {
 				return src;
 			}
 			
-			void insertion(value_type val)
+			void insertion(value_type *val)
 			{
 				RedBlack *newNode = _allocRebind.allocate(1);
 				_allocRebind.construct(newNode, val);
@@ -511,16 +509,16 @@ namespace ft {
 			// searches for given value
 			// if found returns the node (used for delete)
 			// else returns the last node while traversing (used in insert)
-			RedBlack *search(value_type val) const
+			RedBlack *search(value_type *val) const
 			{
 				RedBlack *tmp = root;
 				while (1)
 				{
 					if (tmp == NULL)
 						return NULL;
-					if (val.first == tmp->data->first)
+					if (val == tmp->data)
 						return tmp;
-					if (_cmp(val.first, tmp->data->first))
+					if (_cmp(val, tmp->data))
 						tmp = tmp->left;
 					else
 						tmp = tmp->right;
@@ -528,7 +526,7 @@ namespace ft {
 				return tmp;
 			}
 			
-			size_type deleteByVal(value_type val)
+			size_type deleteByVal(value_type *val)
 			{
 				// Tree is empty
 				if (root == NULL)
@@ -555,11 +553,6 @@ namespace ft {
 
 			bool empty() const { return this->root == NULL; };
 			size_type max_size() const { return this->_alloc.max_size(); }
-			
-			mapped_type& operator[] (const key& k)
-			{
-				return (*((this->insertion(make_pair(k,mapped_type()))).first)).second;
-			}
 
 			void	clear_help(RedBlack *src)
 			{
@@ -600,32 +593,31 @@ namespace ft {
 				return const_iterator(tmp, this);
 			}
 
-			size_type count (const key& k) const 
+			size_type count (const value_type& k) const 
 			{
-				value_type val = ft::make_pair(k, mapped_type());
-				RedBlack *tmp = search(val);
+				RedBlack *tmp = search(k);
 				if (!tmp)
 					return 0;
 				else
 					return 1;
 			}
 			
-			RedBlack *found(key index,RedBlack *root,RedBlack **p)  const
+			RedBlack *found(value_type *index,RedBlack *root,RedBlack **p)  const
 			{
 				if (!root)
 					return root;
-				if (_cmp(index, root->data->first))
+				if (_cmp(index, root->data))
 				{   
 					*p = root;
 					return found(index,root->left,p);
 				}
-				else if (_cmp(root->data->first,index))
+				else if (_cmp(root->data,index))
 					return found(index,root->right,p);
 				else 
 					return root;
 			}
 			
-			iterator lower_bound (const key& k)
+			iterator lower_bound (const value_type& k)
 			{
 				RedBlack *p = NULL;
 				RedBlack *tmp = found(k,this->root,&p);
@@ -633,7 +625,7 @@ namespace ft {
 					return iterator(p,this);
 				return iterator(tmp,this);
 			}
-			const_iterator lower_bound (const key& k) const
+			const_iterator lower_bound (const value_type& k) const
 			{
 				RedBlack *p = NULL;
 				RedBlack *tmp = found(k,this->root,&p);
@@ -641,7 +633,7 @@ namespace ft {
 					return const_iterator(p,this);
 				return const_iterator(tmp,this);
 			}
-			iterator upper_bound (const key& k)
+			iterator upper_bound (const value_type& k)
 			{
 				RedBlack *p = NULL;
 				RedBlack *tmp = found(k,this->root,&p);
@@ -649,7 +641,7 @@ namespace ft {
 					return iterator(p,this);
 				return ++iterator(tmp,this);
 			}
-			const_iterator upper_bound (const key& k) const
+			const_iterator upper_bound (const value_type& k) const
 			{
 				RedBlack *p = NULL;
 				RedBlack *tmp = found(k,this->root,&p);
@@ -658,18 +650,18 @@ namespace ft {
 				return ++const_iterator(tmp,this);
 			}
 			
-			RedBlack	*bound(const key& k) const
+			RedBlack	*bound(const value_type& k) const
 			{
 				RedBlack src = root;
 				RedBlack tmp = src;
 				while (src != NULL && src != NULL)
 				{
-					if (_cmp(k, src->data->first))
+					if (_cmp(k, src->data))
 					{
 						tmp = src;
 						src = src->left;
 					}
-					else if (_cmp(src->data->first, k))
+					else if (_cmp(src->data, k))
 						src = src->right;
 					else 
 						return src;
