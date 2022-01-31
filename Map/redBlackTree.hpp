@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/31 14:56:20 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/31 14:58:04 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ namespace ft {
 		
 		~RedBlackNode()
 		{
-			// if (data)
-			// {
-			// 	_alloc.destroy(data);
-			// 	_alloc.deallocate(data, 1);
-			// }
+			if (data)
+			{
+				_alloc.destroy(data);
+				_alloc.deallocate(data, 1);
+			}
 		}
 		
 	};
