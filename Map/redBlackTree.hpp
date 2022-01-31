@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/31 14:58:04 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/01/31 19:07:37 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ namespace ft {
 		
 		RedBlackNode	&operator=(RedBlackNode const& src)
 		{
-			// if (data)
-			// {
-			// 	_alloc.destroy(data);
-			// 	_alloc.deallocate(data, 1);
-			// }
+			if (data)
+			{
+				_alloc.destroy(data);
+				_alloc.deallocate(data, 1);
+			}
 			this->data = _alloc.allocate(1);
 			_alloc.construct(this->data, src.data);
 			this->left = src.left;
@@ -57,11 +57,11 @@ namespace ft {
 
 		RedBlackNode(const RedBlackNode& src)
         {
-			// if (data)
-			// {
-			// 	_alloc.destroy(data);
-			// 	_alloc.deallocate(data, 1);
-			// }
+			if (data)
+			{
+				_alloc.destroy(data);
+				_alloc.deallocate(data, 1);
+			}
             this->data = _alloc.allocate(1);
             _alloc.construct(this->data, src.data);
             this->parent = src.parent;
@@ -478,10 +478,10 @@ namespace ft {
 							parentTarget->right = NULL;
 					}
 					// _alloc.destroy(targetNode->data);
-					_alloc.deallocate(targetNode->data, 1);
-					// _allocRebind.destroy(targetNode);
+					// _alloc.deallocate(targetNode->data, 1);
+					_allocRebind.destroy(targetNode);
 					_allocRebind.deallocate(targetNode, 1);
-
+					targetNode = NULL;
 					// delete targetNode;
 					return;
 				}
@@ -495,9 +495,10 @@ namespace ft {
 						targetNode->data = nodeReplaceTarget->data;
 						targetNode->left = targetNode->right = NULL;
 						// _alloc.destroy(nodeReplaceTarget->data);
-						_alloc.deallocate(nodeReplaceTarget->data, 1);
-						// _allocRebind.destroy(nodeReplaceTarget);
+						// _alloc.deallocate(nodeReplaceTarget->data, 1);
+						_allocRebind.destroy(nodeReplaceTarget);
 						_allocRebind.deallocate(nodeReplaceTarget, 1);
+						nodeReplaceTarget = NULL;
 						// delete nodeReplaceTarget;
 					}
 					else
@@ -509,9 +510,10 @@ namespace ft {
 							parentTarget->right = nodeReplaceTarget;
 						// delete targetNode;
 						// _alloc.destroy(targetNode->data);
-						_alloc.deallocate(targetNode->data, 1);
-						// _allocRebind.destroy(targetNode);
+						// _alloc.deallocate(targetNode->data, 1);
+						_allocRebind.destroy(targetNode);
 						_allocRebind.deallocate(targetNode, 1);
+						targetNode = NULL;
 						nodeReplaceTarget->parent = parentTarget;
 						if (rtBlack)
 							// u and v both black, fix double black at u
