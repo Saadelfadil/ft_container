@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redBlackTree.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/30 00:26:51 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/31 14:56:20 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ namespace ft {
 		
 		RedBlackNode	&operator=(RedBlackNode const& src)
 		{
-			if (data)
-			{
-				_alloc.destroy(data);
-				_alloc.deallocate(data, 1);
-			}
+			// if (data)
+			// {
+			// 	_alloc.destroy(data);
+			// 	_alloc.deallocate(data, 1);
+			// }
 			this->data = _alloc.allocate(1);
 			_alloc.construct(this->data, src.data);
 			this->left = src.left;
@@ -57,11 +57,11 @@ namespace ft {
 
 		RedBlackNode(const RedBlackNode& src)
         {
-			if (data)
-			{
-				_alloc.destroy(data);
-				_alloc.deallocate(data, 1);
-			}
+			// if (data)
+			// {
+			// 	_alloc.destroy(data);
+			// 	_alloc.deallocate(data, 1);
+			// }
             this->data = _alloc.allocate(1);
             _alloc.construct(this->data, src.data);
             this->parent = src.parent;
@@ -114,6 +114,19 @@ namespace ft {
 		
 		public:
 
+			//
+			void ext_inorder(void){
+				inorder(root);
+			}
+			void 	inorder(RedBlack* root)
+			{
+				if (root == NULL)
+					return ;
+				inorder(root->left);
+				std::cout << root << std::endl;
+				inorder(root->right);
+			}
+			//
 			RedBlackTree()
 			{
 				this->root = NULL;
@@ -464,8 +477,11 @@ namespace ft {
 						else
 							parentTarget->right = NULL;
 					}
-					_allocRebind.destroy(targetNode);
+					// _alloc.destroy(targetNode->data);
+					_alloc.deallocate(targetNode->data, 1);
+					// _allocRebind.destroy(targetNode);
 					_allocRebind.deallocate(targetNode, 1);
+
 					// delete targetNode;
 					return;
 				}
@@ -478,7 +494,9 @@ namespace ft {
 						// targetNode is root, assign the value of u to targetNode, and delete u
 						targetNode->data = nodeReplaceTarget->data;
 						targetNode->left = targetNode->right = NULL;
-						_allocRebind.destroy(nodeReplaceTarget);
+						// _alloc.destroy(nodeReplaceTarget->data);
+						_alloc.deallocate(nodeReplaceTarget->data, 1);
+						// _allocRebind.destroy(nodeReplaceTarget);
 						_allocRebind.deallocate(nodeReplaceTarget, 1);
 						// delete nodeReplaceTarget;
 					}
@@ -489,9 +507,11 @@ namespace ft {
 							parentTarget->left = nodeReplaceTarget;
 						else
 							parentTarget->right = nodeReplaceTarget;
-						_allocRebind.destroy(targetNode);
-						_allocRebind.deallocate(targetNode, 1);
 						// delete targetNode;
+						// _alloc.destroy(targetNode->data);
+						_alloc.deallocate(targetNode->data, 1);
+						// _allocRebind.destroy(targetNode);
+						_allocRebind.deallocate(targetNode, 1);
 						nodeReplaceTarget->parent = parentTarget;
 						if (rtBlack)
 							// u and v both black, fix double black at u
@@ -506,7 +526,6 @@ namespace ft {
 				swapValues(nodeReplaceTarget, targetNode);
 				deleteNode(nodeReplaceTarget);
 			}
-
 			
 			// searches for given value
 			// if found returns the node (used for delete)

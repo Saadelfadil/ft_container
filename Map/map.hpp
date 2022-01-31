@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/12 19:28:34 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/01/31 14:47:12 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,9 +164,7 @@ namespace ft  {
 					++first;
 				}
 				for (size_type i = 0; i < tmp.size(); i++)
-				{
 					this->erase(tmp[i]);
-				}
 			}
 			
 			void	swap (Map& x)
@@ -239,6 +237,12 @@ namespace ft  {
 			{
 				return this->_alloc;
 			}
+
+			//
+			void   hamiiid(){
+				_rbt.ext_inorder();
+			}
+			//
 			private:
 				rbt _rbt;
 				Compare _cmp;
