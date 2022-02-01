@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 16:08:09 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/02/01 14:28:41 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/02/01 16:39:58 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,11 +238,6 @@ namespace ft  {
 				return this->_alloc;
 			}
 
-			//
-			void   hamiiid(){
-				_rbt.ext_inorder();
-			}
-			//
 			private:
 				rbt _rbt;
 				Compare _cmp;

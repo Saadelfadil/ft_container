@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mapIterator.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 17:29:15 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 20:24:57 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/02/01 16:38:33 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ namespace ft
 			typedef typename iterator_traits::reference reference;
 			typedef typename iterator_traits::difference_type difference_type;
 			typedef typename iterator_traits::iterator_category iterator_category;
-
-            // typedef MapIterator<const T, Node, Tree> const_iterator;
         
             MapIterator() : _node(), _rbt() {};
             MapIterator( Node *node, const Tree *rbt ) : _node(node), _rbt(rbt) {};
@@ -125,5 +123,4 @@ namespace ft
             friend bool operator== (const MapIterator& lhs, const MapIterator& rhs) { return lhs.base() == rhs.base(); }
             friend bool operator!= (const MapIterator& lhs, const MapIterator& rhs) { return !operator==(lhs, rhs); }
     };
-    
 };

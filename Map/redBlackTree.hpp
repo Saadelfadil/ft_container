@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/02/01 14:29:25 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/02/01 16:39:38 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,19 +103,6 @@ namespace ft {
 		
 		public:
 
-			//
-			void ext_inorder(void){
-				inorder(root);
-			}
-			void 	inorder(RedBlack* root)
-			{
-				if (root == NULL)
-					return ;
-				inorder(root->left);
-				std::cout << root << std::endl;
-				inorder(root->right);
-			}
-			//
 			RedBlackTree()
 			{
 				this->root = NULL;
@@ -125,10 +112,8 @@ namespace ft {
 			{
 				if (this->root)
 					this->clear();
-				
 			}
 
-			
 			void rotateLeft(RedBlack *&root, RedBlack *&node)
 			{
 				RedBlack *node_right = node->right;
@@ -469,12 +454,8 @@ namespace ft {
 						else
 							parentTarget->right = NULL;
 					}
-					// _alloc.destroy(targetNode->data);
-					// _alloc.deallocate(targetNode->data, 1);
 					_allocRebind.destroy(targetNode);
 					_allocRebind.deallocate(targetNode, 1);
-					// delete targetNode;
-					
 					return;
 				}
 			
@@ -485,11 +466,8 @@ namespace ft {
 					{
 						std::swap(targetNode->data, nodeReplaceTarget->data);
 						targetNode->left = targetNode->right = NULL;
-						// _alloc.destroy(nodeReplaceTarget->data);
-						// _alloc.deallocate(nodeReplaceTarget->data, 1);
 						_allocRebind.destroy(nodeReplaceTarget);
 						_allocRebind.deallocate(nodeReplaceTarget, 1);
-						// delete nodeReplaceTarget;
 					}
 					else
 					{
@@ -498,9 +476,6 @@ namespace ft {
 							parentTarget->left = nodeReplaceTarget;
 						else
 							parentTarget->right = nodeReplaceTarget;
-						// delete targetNode;
-						// _alloc.destroy(targetNode->data);
-						// _alloc.deallocate(targetNode->data, 1);
 						_allocRebind.destroy(targetNode);
 						_allocRebind.deallocate(targetNode, 1);
 						nodeReplaceTarget->parent = parentTarget;

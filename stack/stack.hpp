@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 00:27:49 by mcadmin           #+#    #+#             */
-/*   Updated: 2022/01/12 00:37:14 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/02/01 16:37:41 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "../Vector/vector.hpp"
-
+#include "../vector/vector.hpp"
 namespace ft{
 
 	template <class T, class Container = ft::Vector<T> >

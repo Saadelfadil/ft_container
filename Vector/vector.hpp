@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcadmin <mcadmin@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 15:07:41 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/09 20:32:41 by mcadmin          ###   ########.fr       */
+/*   Updated: 2022/02/01 16:29:48 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ namespace ft {
 			virtual ~Vector()
 			{
 				for (size_type i = 0; i < m_Size; i++)
-					my_allocator.destroy(&m_data[i]);
+					_alloc.destroy(&m_data[i]);
 				if (m_data)
-					my_allocator.deallocate(m_data, m_Size);
+					_alloc.deallocate(m_data, m_Size);
 				this->m_Size = 0;
 			}
 
@@ -180,12 +180,12 @@ namespace ft {
 			template <class InputIterator>
 			void assign (InputIterator first, InputIterator last, typename std::enable_if<!std::is_integral<InputIterator>::value, InputIterator >::type = InputIterator())
 			{
-				size_type len = last - first;
+				size_type len = std::distance(first, last);
+				size_type i = 0;
 				if (len > this->m_Capacity)
 					reserve(len);
-				else
-					m_data = _alloc.allocate(len);
-				size_type i = 0;
+				for (size_type i = 0; i < m_Size; i++)
+					_alloc.destroy(m_data + i);
 				while (first != last)
 				{
 					_alloc.construct(&m_data[i], *first);
