@@ -6,7 +6,7 @@
 /*   By: sel-fadi <sel-fadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:22:33 by sel-fadi          #+#    #+#             */
-/*   Updated: 2022/01/31 19:07:37 by sel-fadi         ###   ########.fr       */
+/*   Updated: 2022/02/01 14:29:25 by sel-fadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include "pair.hpp"
 #include "mapIterator.hpp"
 #include "../tools/reverse_iterator.hpp"
-
 
 namespace ft {
 
@@ -41,11 +40,6 @@ namespace ft {
 		
 		RedBlackNode	&operator=(RedBlackNode const& src)
 		{
-			if (data)
-			{
-				_alloc.destroy(data);
-				_alloc.deallocate(data, 1);
-			}
 			this->data = _alloc.allocate(1);
 			_alloc.construct(this->data, src.data);
 			this->left = src.left;
@@ -57,11 +51,6 @@ namespace ft {
 
 		RedBlackNode(const RedBlackNode& src)
         {
-			if (data)
-			{
-				_alloc.destroy(data);
-				_alloc.deallocate(data, 1);
-			}
             this->data = _alloc.allocate(1);
             _alloc.construct(this->data, src.data);
             this->parent = src.parent;
@@ -134,8 +123,11 @@ namespace ft {
 
 			~RedBlackTree()
 			{
-				// this->clear();
+				if (this->root)
+					this->clear();
+				
 			}
+
 			
 			void rotateLeft(RedBlack *&root, RedBlack *&node)
 			{
@@ -441,7 +433,7 @@ namespace ft {
 			// deletes the given node
 			void deleteNode(RedBlack *&targetNode)
 			{
-				RedBlack *nodeReplaceTarget = BSTreplace(targetNode);
+				RedBlack *nodeReplaceTarget = BSTreplace(targetNode); // looking here debug
 			
 				// True when u and v are both black
 				bool rtBlack = ((nodeReplaceTarget == NULL || nodeReplaceTarget->color == BLACK) && (targetNode->color == BLACK));
@@ -481,8 +473,8 @@ namespace ft {
 					// _alloc.deallocate(targetNode->data, 1);
 					_allocRebind.destroy(targetNode);
 					_allocRebind.deallocate(targetNode, 1);
-					targetNode = NULL;
 					// delete targetNode;
+					
 					return;
 				}
 			
@@ -491,14 +483,12 @@ namespace ft {
 					// targetNode has 1 child
 					if (targetNode == root)
 					{
-						// targetNode is root, assign the value of u to targetNode, and delete u
-						targetNode->data = nodeReplaceTarget->data;
+						std::swap(targetNode->data, nodeReplaceTarget->data);
 						targetNode->left = targetNode->right = NULL;
 						// _alloc.destroy(nodeReplaceTarget->data);
 						// _alloc.deallocate(nodeReplaceTarget->data, 1);
 						_allocRebind.destroy(nodeReplaceTarget);
 						_allocRebind.deallocate(nodeReplaceTarget, 1);
-						nodeReplaceTarget = NULL;
 						// delete nodeReplaceTarget;
 					}
 					else
@@ -513,7 +503,6 @@ namespace ft {
 						// _alloc.deallocate(targetNode->data, 1);
 						_allocRebind.destroy(targetNode);
 						_allocRebind.deallocate(targetNode, 1);
-						targetNode = NULL;
 						nodeReplaceTarget->parent = parentTarget;
 						if (rtBlack)
 							// u and v both black, fix double black at u
@@ -555,7 +544,7 @@ namespace ft {
 				if (root == NULL)
 					return 0;
 			
-				RedBlack *targetNode = search(val);
+				RedBlack *targetNode = search(val); // this search return NULL in case val.first == 'b' and it's last which should not be the case
 				if (targetNode == NULL)
 					return 0;
 				deleteNode(targetNode);
